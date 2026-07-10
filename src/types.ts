@@ -4,7 +4,8 @@ export type OverlayType =
   | 'goldenSpiral'
   | 'spiralCircles'
   | 'spiralDiagonal'
-  | 'dynamicSymmetry';
+  | 'dynamicSymmetry'
+  | 'harmonicArmature';
 
 export interface OverlayState {
   type: OverlayType;
@@ -34,6 +35,7 @@ export const OVERLAY_DEFS: OverlayDef[] = [
   { type: 'spiralCircles', label: 'Golden Circles' },
   { type: 'spiralDiagonal', label: 'Diagonal Spiral' },
   { type: 'dynamicSymmetry', label: 'Dynamic Symmetry' },
+  { type: 'harmonicArmature', label: 'Harmonic Armature' },
 ];
 
 /** Overlay types built from the same golden-spiral square construction — these are the only

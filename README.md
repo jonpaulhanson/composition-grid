@@ -1,10 +1,10 @@
 # Composition Grid Overlay
 
 A single-purpose tool for checking an image's composition against classic composition
-grids — rule of thirds, golden triangle, golden spiral (plus two variants), and dynamic
-symmetry. Upload an image, toggle on one or more grid overlays, adjust their orientation,
-and visually check alignment. Everything runs client-side; the image never leaves the
-browser.
+grids — rule of thirds, golden triangle, golden spiral (plus two variants), dynamic
+symmetry, and the harmonic armature. Upload an image, toggle on one or more grid overlays,
+adjust their orientation, and visually check alignment. Everything runs client-side; the
+image never leaves the browser.
 
 ## Running locally
 
@@ -38,6 +38,9 @@ the implementation:
     they share one geometry function.
 - **Dynamic Symmetry** — both main diagonals of the frame, plus the diagonals of each
   half (split along the shorter axis).
+- **Harmonic Armature** — the classic 14-line construction: both main diagonals, a line
+  from each corner to the midpoint of each edge it doesn't touch (8 lines), and a diagonal
+  connecting each pair of adjacent edge midpoints (4 lines, tracing the inscribed rhombus).
 
 Flip and rotation are implemented by relabeling which real corner of the rectangle plays
 each role (`src/geometry/orientation.ts`), rather than literally transforming coordinates

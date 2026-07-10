@@ -5,6 +5,7 @@ import { goldenTriangleLines } from './goldenTriangle';
 import { goldenSpiralGeometry } from './goldenSpiral';
 import type { SpiralSquare } from './goldenSpiral';
 import { dynamicSymmetryLines } from './dynamicSymmetry';
+import { harmonicArmatureLines } from './harmonicArmature';
 
 export interface Circle {
   cx: number;
@@ -48,6 +49,8 @@ export function buildOverlayGeometry(overlay: OverlayState, width: number, heigh
     }
     case 'dynamicSymmetry':
       return { lines: dynamicSymmetryLines(width, height), rects: [], circles: [], spiralPath: '' };
+    case 'harmonicArmature':
+      return { lines: harmonicArmatureLines(width, height), rects: [], circles: [], spiralPath: '' };
   }
 }
 

@@ -70,6 +70,26 @@ export function OverlayControls({ overlay, onChange, onRemove }: OverlayControls
             >
               ↕
             </button>
+            <div className="multiplicity-group">
+              {([1, 2, 4] as const).map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  className={`icon-btn${overlay.multiplicity === n ? ' icon-btn--active' : ''}`}
+                  onClick={() => onChange({ multiplicity: n })}
+                  aria-pressed={overlay.multiplicity === n}
+                  title={
+                    n === 1
+                      ? 'Single spiral'
+                      : n === 2
+                        ? 'Two spirals (mirrored)'
+                        : 'Four spirals (all rotations)'
+                  }
+                >
+                  {n}×
+                </button>
+              ))}
+            </div>
           </>
         )}
 

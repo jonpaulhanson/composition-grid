@@ -23,6 +23,10 @@ export interface OverlayState {
   stretchX: boolean;
   /** Same as `stretchX`, for the image's top/bottom edges. */
   stretchY: boolean;
+  /** How many rotated/mirrored copies of the construction to layer into this one overlay.
+   * 2 = the current orientation plus its horizontal mirror; 4 = all 4 rotations of the
+   * current flip state. Only meaningful for the golden-spiral family. */
+  multiplicity: 1 | 2 | 4;
 }
 
 export interface OverlayDef {
@@ -69,5 +73,6 @@ export function createDefaultOverlay(type: OverlayType): OverlayState {
     strokeWidth: 2.75, // midpoint of the 0.5-5 thickness slider range
     stretchX: false,
     stretchY: false,
+    multiplicity: 1,
   };
 }

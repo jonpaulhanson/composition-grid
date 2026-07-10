@@ -65,6 +65,14 @@ centered in whatever gap is left, rather than left pinned wherever it happened t
 Thirds, golden triangle, and dynamic symmetry always span corner-to-corner already, so
 they don't show these controls at all.
 
+The golden-spiral family also gets a "1×/2×/4×" multiplicity control that layers extra
+copies of the same construction into one overlay instead of just showing a single spiral:
+2× pairs the current orientation with its horizontal mirror, 4× shows all 4 rotations of
+the current flip state at once (a symmetric 4-corner pinwheel). Implemented by generating
+the underlying square/arc geometry once per orientation variant and merging the results
+(`buildSpiralGeometry` in `src/geometry/index.ts`) — stretch-to-fill, if enabled, applies
+to the combined bounding box of all copies together, not per-copy.
+
 ## Future work
 
 Not built in v1, in rough priority order:

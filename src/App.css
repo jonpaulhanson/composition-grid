@@ -251,6 +251,11 @@
   color: var(--accent-text);
 }
 
+.multiplicity-group {
+  display: flex;
+  gap: 4px;
+}
+
 .swatch-group {
   display: flex;
   gap: 6px;

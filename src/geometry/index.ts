@@ -22,6 +22,46 @@ export interface OverlayGeometry {
   spiralPath: string;
 }
 
+interface SpiralOrientation {
+  rotation: number;
+  flipH: boolean;
+  flipV: boolean;
+}
+
+/** The orientation variants to layer together for a given multiplicity, built off the
+ * overlay's own flip/rotation state: 2 pairs the current orientation with its horizontal
+ * mirror; 4 uses all 4 rotations of the current flip state. */
+function spiralOrientations(overlay: OverlayState): SpiralOrientation[] {
+  const { rotation, flipH, flipV, multiplicity } = overlay;
+  if (multiplicity === 2) {
+    return [
+      { rotation, flipH, flipV },
+      { rotation, flipH: !flipH, flipV },
+    ];
+  }
+  if (multiplicity === 4) {
+    return [0, 1, 2, 3].map((r) => ({ rotation: (rotation + r) % 4, flipH, flipV }));
+  }
+  return [{ rotation, flipH, flipV }];
+}
+
+function buildSpiralGeometry(
+  overlay: OverlayState,
+  width: number,
+  height: number,
+  render: (squares: SpiralSquare[], pathD: string, chain: ReturnType<typeof goldenSpiralGeometry>['chain']) => OverlayGeometry,
+): OverlayGeometry {
+  const variants = spiralOrientations(overlay).map((o) => goldenSpiralGeometry(width, height, o.rotation, o.flipH, o.flipV));
+  return variants
+    .map((v) => render(v.squares, v.pathD, v.chain))
+    .reduce((merged, g) => ({
+      lines: [...merged.lines, ...g.lines],
+      rects: [...merged.rects, ...g.rects],
+      circles: [...merged.circles, ...g.circles],
+      spiralPath: merged.spiralPath ? `${merged.spiralPath} ${g.spiralPath}` : g.spiralPath,
+    }));
+}
+
 export function buildOverlayGeometry(overlay: OverlayState, width: number, height: number): OverlayGeometry {
   const { type, rotation, flipH, flipV } = overlay;
 
@@ -44,20 +84,27 @@ export function buildOverlayGeometry(overlay: OverlayState, width: number, heigh
         circles: [],
         spiralPath: '',
       };
-    case 'goldenSpiral': {
-      const { squares, pathD } = goldenSpiralGeometry(width, height, rotation, flipH, flipV);
-      return { lines: [], rects: squares, circles: [], spiralPath: pathD };
-    }
-    case 'spiralCircles': {
-      const { squares } = goldenSpiralGeometry(width, height, rotation, flipH, flipV);
-      const circles = squares.map((s) => ({ cx: s.x + s.size / 2, cy: s.y + s.size / 2, r: s.size / 2 }));
-      return { lines: [], rects: [], circles, spiralPath: '' };
-    }
-    case 'spiralDiagonal': {
-      const { chain } = goldenSpiralGeometry(width, height, rotation, flipH, flipV);
-      const lines: [Point, Point][] = chain.map((arc) => [arc.start, arc.end]);
-      return { lines, rects: [], circles: [], spiralPath: '' };
-    }
+    case 'goldenSpiral':
+      return buildSpiralGeometry(overlay, width, height, (squares, pathD) => ({
+        lines: [],
+        rects: squares,
+        circles: [],
+        spiralPath: pathD,
+      }));
+    case 'spiralCircles':
+      return buildSpiralGeometry(overlay, width, height, (squares) => ({
+        lines: [],
+        rects: [],
+        circles: squares.map((s) => ({ cx: s.x + s.size / 2, cy: s.y + s.size / 2, r: s.size / 2 })),
+        spiralPath: '',
+      }));
+    case 'spiralDiagonal':
+      return buildSpiralGeometry(overlay, width, height, (_squares, _pathD, chain) => ({
+        lines: chain.map((arc) => [arc.start, arc.end]) as [Point, Point][],
+        rects: [],
+        circles: [],
+        spiralPath: '',
+      }));
     case 'dynamicSymmetry':
       return { lines: dynamicSymmetryLines(width, height), rects: [], circles: [], spiralPath: '' };
     case 'harmonicArmature':

@@ -73,6 +73,16 @@ the underlying square/arc geometry once per orientation variant and merging the 
 (`buildSpiralGeometry` in `src/geometry/index.ts`) — stretch-to-fill, if enabled, applies
 to the combined bounding box of all copies together, not per-copy.
 
+## Image formats
+
+Upload accepts any browser-displayable image format, plus `.heic`/`.heif` (the default
+format for iPhone photos) — which most browsers besides Safari can't decode natively.
+HEIC files are converted to JPEG entirely client-side (`heic2any`, a WASM build of
+libheif) before display, so the "image never leaves the browser" guarantee still holds.
+That decoder is a ~1.3MB dependency, so it's dynamically imported only when a HEIC file is
+actually selected (`src/utils/heic.ts`) rather than bundled into the main app — everyone
+else's page weight is unaffected.
+
 ## Future work
 
 Not built in v1, in rough priority order:

@@ -8,9 +8,10 @@ interface ImageStageProps {
   imageUrl: string | null;
   overlays: OverlayState[];
   onFileSelected: (file: File) => void;
+  isConverting: boolean;
 }
 
-export function ImageStage({ imageUrl, overlays, onFileSelected }: ImageStageProps) {
+export function ImageStage({ imageUrl, overlays, onFileSelected, isConverting }: ImageStageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const box = useImageBox(imgRef, containerRef, imageUrl);
@@ -31,6 +32,8 @@ export function ImageStage({ imageUrl, overlays, onFileSelected }: ImageStagePro
             </div>
           )}
         </>
+      ) : isConverting ? (
+        <p className="stage-status">Converting HEIC image…</p>
       ) : (
         <Dropzone onFileSelected={onFileSelected} />
       )}

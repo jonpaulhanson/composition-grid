@@ -68,6 +68,11 @@
   overflow: hidden;
 }
 
+.stage-status {
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
 /* ---------------------------------------------------------------- */
 /* Dropzone                                                          */
 /* ---------------------------------------------------------------- */
@@ -149,6 +154,12 @@
   margin: 0;
   font-size: 12.5px;
   color: var(--text-dim);
+}
+
+.control-error {
+  margin: 0;
+  font-size: 12.5px;
+  color: #e0392c;
 }
 
 .chip-group {

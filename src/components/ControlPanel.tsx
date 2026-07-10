@@ -10,6 +10,8 @@ interface ControlPanelProps {
   onToggleOverlay: (type: OverlayType) => void;
   onChangeOverlay: (type: OverlayType, patch: Partial<OverlayState>) => void;
   onResetAll: () => void;
+  isConverting: boolean;
+  conversionError: string | null;
 }
 
 export function ControlPanel({
@@ -19,6 +21,8 @@ export function ControlPanel({
   onToggleOverlay,
   onChangeOverlay,
   onResetAll,
+  isConverting,
+  conversionError,
 }: ControlPanelProps) {
   const activeTypes = new Set(overlays.map((o) => o.type));
 
@@ -26,11 +30,14 @@ export function ControlPanel({
     <aside className="control-panel">
       <div className="control-section">
         <h2 className="control-section-title">Image</h2>
-        {hasImage ? (
+        {isConverting ? (
+          <p className="control-hint">Converting HEIC image…</p>
+        ) : hasImage ? (
           <Dropzone onFileSelected={onFileSelected} compact />
         ) : (
           <p className="control-hint">Upload an image to get started.</p>
         )}
+        {conversionError && <p className="control-error">{conversionError}</p>}
       </div>
 
       <div className="control-section">

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import type { ChangeEvent, DragEvent } from 'react';
+import { isHeic } from '../utils/heic';
 
 interface DropzoneProps {
   onFileSelected: (file: File) => void;
@@ -12,7 +13,8 @@ export function Dropzone({ onFileSelected, compact }: DropzoneProps) {
 
   const handleFiles = (files: FileList | null) => {
     const file = files?.[0];
-    if (file && file.type.startsWith('image/')) {
+    // HEIC/HEIF files frequently report an empty `type`, so isHeic() checks the extension too.
+    if (file && (file.type.startsWith('image/') || isHeic(file))) {
       onFileSelected(file);
     }
   };
@@ -47,7 +49,7 @@ export function Dropzone({ onFileSelected, compact }: DropzoneProps) {
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept="image/*,.heic,.heif"
         onChange={handleInputChange}
         hidden
       />

@@ -1,6 +1,7 @@
 import type { OverlayState } from '../types';
 import type { Point } from './orientation';
 import { thirdsLines } from './thirds';
+import { goldenSectionLines } from './goldenSection';
 import { goldenTriangleLines } from './goldenTriangle';
 import { harmoniousTriangleLines } from './harmoniousTriangle';
 import { goldenSpiralGeometry } from './goldenSpiral';
@@ -27,6 +28,8 @@ export function buildOverlayGeometry(overlay: OverlayState, width: number, heigh
   switch (type) {
     case 'thirds':
       return { lines: thirdsLines(width, height), rects: [], circles: [], spiralPath: '' };
+    case 'goldenSection':
+      return { lines: goldenSectionLines(width, height), rects: [], circles: [], spiralPath: '' };
     case 'goldenTriangle':
       return {
         lines: goldenTriangleLines(width, height, rotation, flipH, flipV),

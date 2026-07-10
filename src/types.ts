@@ -1,5 +1,6 @@
 export type OverlayType =
   | 'thirds'
+  | 'goldenSection'
   | 'goldenTriangle'
   | 'harmoniousTriangle'
   | 'goldenSpiral'
@@ -31,6 +32,7 @@ export interface OverlayDef {
 
 export const OVERLAY_DEFS: OverlayDef[] = [
   { type: 'thirds', label: 'Rule of Thirds' },
+  { type: 'goldenSection', label: 'Golden Section' },
   { type: 'goldenTriangle', label: 'Golden Triangle' },
   { type: 'harmoniousTriangle', label: 'Harmonious Triangle' },
   { type: 'goldenSpiral', label: 'Golden Spiral' },
@@ -47,7 +49,12 @@ export const SPIRAL_FAMILY: OverlayType[] = ['goldenSpiral', 'spiralCircles', 's
 
 /** Overlay types that are symmetric under flip/rotation — flip H, flip V, and rotate all
  * produce the exact same lines, so these don't show orientation controls at all. */
-export const ORIENTATION_INVARIANT: OverlayType[] = ['thirds', 'dynamicSymmetry', 'harmonicArmature'];
+export const ORIENTATION_INVARIANT: OverlayType[] = [
+  'thirds',
+  'goldenSection',
+  'dynamicSymmetry',
+  'harmonicArmature',
+];
 
 export const COLOR_PRESETS = ['#000000', '#e63946', '#ffffff'] as const;
 

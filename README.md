@@ -1,10 +1,10 @@
 # Composition Grid Overlay
 
 A single-purpose tool for checking an image's composition against classic composition
-grids — rule of thirds, golden triangle, harmonious triangle, golden spiral (plus two
-variants), dynamic symmetry, and the harmonic armature. Upload an image, toggle on one or
-more grid overlays, adjust their orientation, and visually check alignment. Everything
-runs client-side; the image never leaves the browser.
+grids — rule of thirds, golden section, golden triangle, harmonious triangle, golden
+spiral (plus two variants), dynamic symmetry, and the harmonic armature. Upload an image,
+toggle on one or more grid overlays, adjust their orientation, and visually check
+alignment. Everything runs client-side; the image never leaves the browser.
 
 ## Running locally
 
@@ -23,6 +23,9 @@ right angles and the spiral stays a spiral at any aspect ratio. See `src/geometr
 the implementation:
 
 - **Rule of Thirds** — two vertical and two horizontal lines at the 1/3 and 2/3 marks.
+- **Golden Section** — the same 4-line pattern as rule of thirds, but at 1/φ² and 1/φ
+  (≈38.2% and ≈61.8%) instead of exact thirds — lines sit closer together around the
+  center than a thirds grid does.
 - **Golden Triangle** — one corner-to-corner diagonal, plus a true perpendicular dropped
   from each of the other two corners onto it. Where the feet land shifts with the aspect
   ratio (matching the 1/3 and 2/3 thirds points only for one specific ratio).

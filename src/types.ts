@@ -43,6 +43,10 @@ export const OVERLAY_DEFS: OverlayDef[] = [
  * controls (see `stretchX`/`stretchY` above). */
 export const SPIRAL_FAMILY: OverlayType[] = ['goldenSpiral', 'spiralCircles', 'spiralDiagonal'];
 
+/** Overlay types that are symmetric under flip/rotation — flip H, flip V, and rotate all
+ * produce the exact same lines, so these don't show orientation controls at all. */
+export const ORIENTATION_INVARIANT: OverlayType[] = ['thirds', 'dynamicSymmetry', 'harmonicArmature'];
+
 export const COLOR_PRESETS = ['#000000', '#e63946', '#ffffff'] as const;
 
 export function createDefaultOverlay(type: OverlayType): OverlayState {

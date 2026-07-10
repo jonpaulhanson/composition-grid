@@ -1,4 +1,4 @@
-import { COLOR_PRESETS, OVERLAY_DEFS, SPIRAL_FAMILY } from '../types';
+import { COLOR_PRESETS, ORIENTATION_INVARIANT, OVERLAY_DEFS, SPIRAL_FAMILY } from '../types';
 import type { OverlayState } from '../types';
 
 interface OverlayControlsProps {
@@ -20,32 +20,36 @@ export function OverlayControls({ overlay, onChange, onRemove }: OverlayControls
       </div>
 
       <div className="overlay-controls-row">
-        <button
-          type="button"
-          className={`icon-btn${overlay.flipH ? ' icon-btn--active' : ''}`}
-          onClick={() => onChange({ flipH: !overlay.flipH })}
-          aria-pressed={overlay.flipH}
-          title="Flip horizontal"
-        >
-          ⇋
-        </button>
-        <button
-          type="button"
-          className={`icon-btn${overlay.flipV ? ' icon-btn--active' : ''}`}
-          onClick={() => onChange({ flipV: !overlay.flipV })}
-          aria-pressed={overlay.flipV}
-          title="Flip vertical"
-        >
-          ⇵
-        </button>
-        <button
-          type="button"
-          className="icon-btn"
-          onClick={() => onChange({ rotation: ((overlay.rotation + 1) % 4) as OverlayState['rotation'] })}
-          title="Rotate 90°"
-        >
-          ⟳
-        </button>
+        {!ORIENTATION_INVARIANT.includes(overlay.type) && (
+          <>
+            <button
+              type="button"
+              className={`icon-btn${overlay.flipH ? ' icon-btn--active' : ''}`}
+              onClick={() => onChange({ flipH: !overlay.flipH })}
+              aria-pressed={overlay.flipH}
+              title="Flip horizontal"
+            >
+              ⇋
+            </button>
+            <button
+              type="button"
+              className={`icon-btn${overlay.flipV ? ' icon-btn--active' : ''}`}
+              onClick={() => onChange({ flipV: !overlay.flipV })}
+              aria-pressed={overlay.flipV}
+              title="Flip vertical"
+            >
+              ⇵
+            </button>
+            <button
+              type="button"
+              className="icon-btn"
+              onClick={() => onChange({ rotation: ((overlay.rotation + 1) % 4) as OverlayState['rotation'] })}
+              title="Rotate 90°"
+            >
+              ⟳
+            </button>
+          </>
+        )}
         {SPIRAL_FAMILY.includes(overlay.type) && (
           <>
             <button

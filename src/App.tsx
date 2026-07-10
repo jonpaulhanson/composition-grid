@@ -45,7 +45,7 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Composition Grid Overlay</h1>
+        <h1>Composition Armatures</h1>
       </header>
       <div className="app-body">
         <ImageStage imageUrl={imageUrl} overlays={overlays} onFileSelected={handleFileSelected} />

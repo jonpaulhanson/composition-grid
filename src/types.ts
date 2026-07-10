@@ -52,7 +52,7 @@ export function createDefaultOverlay(type: OverlayType): OverlayState {
     flipV: false,
     rotation: 0,
     color: COLOR_PRESETS[0],
-    opacity: 0.85,
+    opacity: 1.00,
     strokeWidth: 2.75, // midpoint of the 0.5-5 thickness slider range
     stretchX: false,
     stretchY: false,

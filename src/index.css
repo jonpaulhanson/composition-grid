@@ -1,0 +1,45 @@
+:root {
+  --bg: #1b1c1f;
+  --bg-elevated: #232428;
+  --bg-sunken: #131417;
+  --text: #e8e8ea;
+  --text-dim: #9a9ba3;
+  --border: #34353a;
+  --accent: #4d8dff;
+  --accent-text: #ffffff;
+  --checker-a: #202124;
+  --checker-b: #1a1b1e;
+
+  color-scheme: dark;
+  font: 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+input[type='range'] {
+  accent-color: var(--accent);
+}

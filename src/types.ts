@@ -1,6 +1,7 @@
 export type OverlayType =
   | 'thirds'
   | 'goldenTriangle'
+  | 'harmoniousTriangle'
   | 'goldenSpiral'
   | 'spiralCircles'
   | 'spiralDiagonal'
@@ -31,6 +32,7 @@ export interface OverlayDef {
 export const OVERLAY_DEFS: OverlayDef[] = [
   { type: 'thirds', label: 'Rule of Thirds' },
   { type: 'goldenTriangle', label: 'Golden Triangle' },
+  { type: 'harmoniousTriangle', label: 'Harmonious Triangle' },
   { type: 'goldenSpiral', label: 'Golden Spiral' },
   { type: 'spiralCircles', label: 'Golden Circles' },
   { type: 'spiralDiagonal', label: 'Diagonal Spiral' },

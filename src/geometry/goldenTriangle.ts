@@ -1,15 +1,23 @@
 import { resolveOrientation } from './orientation';
 import type { Point } from './orientation';
 
-function pointAlong(a: Point, b: Point, t: number): Point {
-  return [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])];
+function footOfPerpendicular(a: Point, b: Point, p: Point): Point {
+  const abx = b[0] - a[0];
+  const aby = b[1] - a[1];
+  const apx = p[0] - a[0];
+  const apy = p[1] - a[1];
+  const lenSq = abx * abx + aby * aby;
+  const t = lenSq === 0 ? 0 : (apx * abx + apy * aby) / lenSq;
+  return [a[0] + t * abx, a[1] + t * aby];
 }
 
 /**
- * One diagonal (the baseline) plus a line from each of the other two corners to the
- * diagonal's own rule-of-thirds points — the main diagonal of any rectangle always passes
- * exactly through the 1/3 and 2/3 points along itself, regardless of aspect ratio, so this
- * lands the two side lines exactly on real thirds points without needing a fixed ratio.
+ * One diagonal (the baseline) plus a true perpendicular dropped from each of the other two
+ * corners onto it — the classic three-line golden triangle. Works for any aspect ratio
+ * because it's a perpendicular construction, not a ratio-dependent template. Where the feet
+ * land depends on the aspect ratio (matching the 1/3 and 2/3 thirds points only for one
+ * specific ratio); see harmoniousTriangle.ts for the variant that always lands on those
+ * exact thirds points instead.
  */
 export function goldenTriangleLines(
   width: number,
@@ -20,11 +28,11 @@ export function goldenTriangleLines(
 ): [Point, Point][] {
   const { corners } = resolveOrientation(rotation, flipH, flipV);
   const { TL, TR, BR, BL } = corners(width, height);
-  const nearTL = pointAlong(TL, BR, 1 / 3);
-  const nearBR = pointAlong(TL, BR, 2 / 3);
+  const footFromTR = footOfPerpendicular(TL, BR, TR);
+  const footFromBL = footOfPerpendicular(TL, BR, BL);
   return [
     [TL, BR],
-    [TR, nearBR],
-    [BL, nearTL],
+    [TR, footFromTR],
+    [BL, footFromBL],
   ];
 }

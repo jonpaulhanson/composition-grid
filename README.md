@@ -1,10 +1,10 @@
 # Composition Grid Overlay
 
 A single-purpose tool for checking an image's composition against classic composition
-grids — rule of thirds, golden triangle, golden spiral (plus two variants), dynamic
-symmetry, and the harmonic armature. Upload an image, toggle on one or more grid overlays,
-adjust their orientation, and visually check alignment. Everything runs client-side; the
-image never leaves the browser.
+grids — rule of thirds, golden triangle, harmonious triangle, golden spiral (plus two
+variants), dynamic symmetry, and the harmonic armature. Upload an image, toggle on one or
+more grid overlays, adjust their orientation, and visually check alignment. Everything
+runs client-side; the image never leaves the browser.
 
 ## Running locally
 
@@ -23,10 +23,15 @@ right angles and the spiral stays a spiral at any aspect ratio. See `src/geometr
 the implementation:
 
 - **Rule of Thirds** — two vertical and two horizontal lines at the 1/3 and 2/3 marks.
-- **Golden Triangle** — one corner-to-corner diagonal, plus a line from each of the other
-  two corners to the diagonal's own 1/3 and 2/3 points. A rectangle's main diagonal always
-  passes exactly through those two points regardless of aspect ratio, so the side lines
-  land on real rule-of-thirds points for any image.
+- **Golden Triangle** — one corner-to-corner diagonal, plus a true perpendicular dropped
+  from each of the other two corners onto it. Where the feet land shifts with the aspect
+  ratio (matching the 1/3 and 2/3 thirds points only for one specific ratio).
+- **Harmonious Triangle** — same diagonal, but the other two corners connect straight to
+  the diagonal's own 1/3 and 2/3 points instead of a true perpendicular. A rectangle's main
+  diagonal always passes exactly through those two points regardless of aspect ratio, so
+  the side lines land on real rule-of-thirds points for any image. These two get confused
+  for each other constantly online — Wikipedia's "golden triangle" is specifically the
+  perpendicular version, so that's the one this app calls Golden Triangle.
 - **Golden Spiral** — recursively cuts a square off one end of the rectangle for ~8
   iterations (each side 61.8% of the current longer dimension), inscribing a quarter-circle
   arc in each square. Reduces to the exact classic golden spiral sequence when the image

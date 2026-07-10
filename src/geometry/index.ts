@@ -2,6 +2,7 @@ import type { OverlayState } from '../types';
 import type { Point } from './orientation';
 import { thirdsLines } from './thirds';
 import { goldenTriangleLines } from './goldenTriangle';
+import { harmoniousTriangleLines } from './harmoniousTriangle';
 import { goldenSpiralGeometry } from './goldenSpiral';
 import type { SpiralSquare } from './goldenSpiral';
 import { dynamicSymmetryLines } from './dynamicSymmetry';
@@ -29,6 +30,13 @@ export function buildOverlayGeometry(overlay: OverlayState, width: number, heigh
     case 'goldenTriangle':
       return {
         lines: goldenTriangleLines(width, height, rotation, flipH, flipV),
+        rects: [],
+        circles: [],
+        spiralPath: '',
+      };
+    case 'harmoniousTriangle':
+      return {
+        lines: harmoniousTriangleLines(width, height, rotation, flipH, flipV),
         rects: [],
         circles: [],
         spiralPath: '',

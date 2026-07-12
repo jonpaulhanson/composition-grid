@@ -77,6 +77,6 @@ export function createDefaultOverlay(type: OverlayType): OverlayState {
     stretchX: false,
     stretchY: false,
     multiplicity: 1,
-    showSquares: true,
+    showSquares: false,
   };
 }

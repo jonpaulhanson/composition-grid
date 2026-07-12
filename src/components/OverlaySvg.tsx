@@ -10,7 +10,11 @@ interface OverlaySvgProps {
 export function OverlaySvg({ overlay, width, height }: OverlaySvgProps) {
   const geometry = buildOverlayGeometry(overlay, width, height);
   const { lines, rects, circles, spiralPath } = geometry;
-  const { color, opacity, strokeWidth, stretchX, stretchY } = overlay;
+  const { color, opacity, strokeWidth, stretchX, stretchY, showSquares } = overlay;
+  // `rects` still feeds computeBounds below either way (the spiral arc is always inscribed
+  // within them, so they're needed for correct stretch-to-fill bounds) — this only skips
+  // drawing them, matching "just the spiral curve" for anyone who doesn't want the squares.
+  const drawSquares = overlay.type !== 'goldenSpiral' || showSquares;
 
   // Most constructions (thirds, golden triangle, dynamic symmetry) already span corner to
   // corner. The golden spiral's first square is only 61.8% of the longer side by design (to
@@ -48,9 +52,8 @@ export function OverlaySvg({ overlay, width, height }: OverlaySvgProps) {
         {lines.map(([[x1, y1], [x2, y2]], i) => (
           <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} />
         ))}
-        {rects.map((r, i) => (
-          <rect key={i} x={r.x} y={r.y} width={r.size} height={r.size} />
-        ))}
+        {drawSquares &&
+          rects.map((r, i) => <rect key={i} x={r.x} y={r.y} width={r.size} height={r.size} />)}
         {circles.map((c, i) => (
           <circle key={i} cx={c.cx} cy={c.cy} r={c.r} />
         ))}

@@ -27,6 +27,9 @@ export interface OverlayState {
    * 2 = the current orientation plus its horizontal mirror; 4 = all 4 rotations of the
    * current flip state. Only meaningful for the golden-spiral family. */
   multiplicity: 1 | 2 | 4;
+  /** Whether to draw the nested square outlines alongside the spiral curve. Only meaningful
+   * for 'goldenSpiral' — the other two spiral variants never draw squares in the first place. */
+  showSquares: boolean;
 }
 
 export interface OverlayDef {
@@ -74,5 +77,6 @@ export function createDefaultOverlay(type: OverlayType): OverlayState {
     stretchX: false,
     stretchY: false,
     multiplicity: 1,
+    showSquares: true,
   };
 }

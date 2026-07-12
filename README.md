@@ -73,6 +73,12 @@ the underlying square/arc geometry once per orientation variant and merging the 
 (`buildSpiralGeometry` in `src/geometry/index.ts`) — stretch-to-fill, if enabled, applies
 to the combined bounding box of all copies together, not per-copy.
 
+Golden Spiral specifically (not Golden Circles or Diagonal Spiral, which never draw them)
+also has a "▢" toggle for the nested square outlines, off leaves just the curve. This only
+affects what's drawn (`OverlaySvg.tsx`) — the square geometry is still generated and still
+feeds stretch-to-fill's bounding-box math either way, so hiding the squares doesn't disable
+or change stretch behavior.
+
 ## Image formats
 
 Upload accepts any browser-displayable image format, plus `.heic`/`.heif` (the default

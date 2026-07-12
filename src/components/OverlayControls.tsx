@@ -90,6 +90,17 @@ export function OverlayControls({ overlay, onChange, onRemove }: OverlayControls
                 </button>
               ))}
             </div>
+            {overlay.type === 'goldenSpiral' && (
+              <button
+                type="button"
+                className={`icon-btn${overlay.showSquares ? ' icon-btn--active' : ''}`}
+                onClick={() => onChange({ showSquares: !overlay.showSquares })}
+                aria-pressed={overlay.showSquares}
+                title="Show square outlines"
+              >
+                ▢
+              </button>
+            )}
           </>
         )}
 

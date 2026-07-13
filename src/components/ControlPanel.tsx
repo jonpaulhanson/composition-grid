@@ -12,6 +12,8 @@ interface ControlPanelProps {
   onResetAll: () => void;
   isConverting: boolean;
   conversionError: string | null;
+  grayscale: number;
+  onGrayscaleChange: (value: number) => void;
 }
 
 export function ControlPanel({
@@ -23,6 +25,8 @@ export function ControlPanel({
   onResetAll,
   isConverting,
   conversionError,
+  grayscale,
+  onGrayscaleChange,
 }: ControlPanelProps) {
   const activeTypes = new Set(overlays.map((o) => o.type));
 
@@ -38,6 +42,19 @@ export function ControlPanel({
           <p className="control-hint">Upload an image to get started.</p>
         )}
         {conversionError && <p className="control-error">{conversionError}</p>}
+        {hasImage && (
+          <label className="slider-label">
+            Grayscale
+            <input
+              type="range"
+              min={0}
+              max={100}
+              step={1}
+              value={grayscale}
+              onChange={(e) => onGrayscaleChange(Number(e.target.value))}
+            />
+          </label>
+        )}
       </div>
 
       <div className="control-section">

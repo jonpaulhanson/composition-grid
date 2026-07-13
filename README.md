@@ -89,6 +89,15 @@ That decoder is a ~1.3MB dependency, so it's dynamically imported only when a HE
 actually selected (`src/utils/heic.ts`) rather than bundled into the main app — everyone
 else's page weight is unaffected.
 
+## Image display controls
+
+A "Grayscale" slider (0–100%) in the Image section desaturates the photo itself — useful
+for judging tonal/value structure independent of color. It's a plain CSS `filter:
+grayscale()` on the `<img>` element (`ImageStage.tsx`), so it's a display-only change: it
+never touches the uploaded file, and has no effect on overlay geometry or colors. A slider
+rather than an on/off toggle, since partial desaturation is often more useful than a hard
+switch for this — you can dial in how much color to keep while judging values.
+
 ## Future work
 
 Not built in v1, in rough priority order:

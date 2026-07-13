@@ -9,9 +9,10 @@ interface ImageStageProps {
   overlays: OverlayState[];
   onFileSelected: (file: File) => void;
   isConverting: boolean;
+  grayscale: number;
 }
 
-export function ImageStage({ imageUrl, overlays, onFileSelected, isConverting }: ImageStageProps) {
+export function ImageStage({ imageUrl, overlays, onFileSelected, isConverting, grayscale }: ImageStageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const box = useImageBox(imgRef, containerRef, imageUrl);
@@ -20,7 +21,13 @@ export function ImageStage({ imageUrl, overlays, onFileSelected, isConverting }:
     <div className="stage-frame" ref={containerRef}>
       {imageUrl ? (
         <>
-          <img ref={imgRef} src={imageUrl} alt="Uploaded" className="stage-img" />
+          <img
+            ref={imgRef}
+            src={imageUrl}
+            alt="Uploaded"
+            className="stage-img"
+            style={grayscale > 0 ? { filter: `grayscale(${grayscale}%)` } : undefined}
+          />
           {box.width > 0 && (
             <div
               className="overlay-stack"

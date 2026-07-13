@@ -11,6 +11,7 @@ function App() {
   const [overlays, setOverlays] = useState<OverlayState[]>([]);
   const [isConverting, setIsConverting] = useState(false);
   const [conversionError, setConversionError] = useState<string | null>(null);
+  const [grayscale, setGrayscale] = useState(0);
   const objectUrlRef = useRef<string | null>(null);
 
   const handleFileSelected = useCallback(async (file: File) => {
@@ -71,6 +72,7 @@ function App() {
           overlays={overlays}
           onFileSelected={handleFileSelected}
           isConverting={isConverting}
+          grayscale={grayscale}
         />
         <ControlPanel
           hasImage={imageUrl !== null}
@@ -81,6 +83,8 @@ function App() {
           onResetAll={handleResetAll}
           isConverting={isConverting}
           conversionError={conversionError}
+          grayscale={grayscale}
+          onGrayscaleChange={setGrayscale}
         />
       </div>
     </div>

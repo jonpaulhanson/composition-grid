@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ImageStage } from './components/ImageStage';
 import { ControlPanel } from './components/ControlPanel';
-import { createDefaultOverlay, OVERLAY_DEFS } from './types';
-import type { OverlayState, OverlayType } from './types';
+import { createDefaultOverlay, FULL_CROP, OVERLAY_DEFS } from './types';
+import type { CropRect, OverlayState, OverlayType } from './types';
 import { convertHeicToJpeg, isHeic } from './utils/heic';
 import './App.css';
 
@@ -12,6 +12,9 @@ function App() {
   const [isConverting, setIsConverting] = useState(false);
   const [conversionError, setConversionError] = useState<string | null>(null);
   const [grayscale, setGrayscale] = useState(0);
+  const [crop, setCrop] = useState<CropRect | null>(null);
+  const [isCropping, setIsCropping] = useState(false);
+  const [draftCrop, setDraftCrop] = useState<CropRect>(FULL_CROP);
   const objectUrlRef = useRef<string | null>(null);
 
   const handleFileSelected = useCallback(async (file: File) => {
@@ -34,6 +37,8 @@ function App() {
     const url = URL.createObjectURL(finalFile);
     objectUrlRef.current = url;
     setImageUrl(url);
+    setCrop(null);
+    setIsCropping(false);
   }, []);
 
   useEffect(() => {
@@ -61,6 +66,25 @@ function App() {
     setOverlays([]);
   }, []);
 
+  const handleStartCrop = useCallback(() => {
+    setDraftCrop(crop ?? FULL_CROP);
+    setIsCropping(true);
+  }, [crop]);
+
+  const handleApplyCrop = useCallback(() => {
+    setCrop(draftCrop);
+    setIsCropping(false);
+  }, [draftCrop]);
+
+  const handleCancelCrop = useCallback(() => {
+    setIsCropping(false);
+  }, []);
+
+  const handleResetCrop = useCallback(() => {
+    setCrop(null);
+    setIsCropping(false);
+  }, []);
+
   return (
     <div className="app">
       <header className="app-header">
@@ -73,6 +97,10 @@ function App() {
           onFileSelected={handleFileSelected}
           isConverting={isConverting}
           grayscale={grayscale}
+          crop={crop}
+          isCropping={isCropping}
+          draftCrop={draftCrop}
+          onDraftCropChange={setDraftCrop}
         />
         <ControlPanel
           hasImage={imageUrl !== null}
@@ -85,6 +113,12 @@ function App() {
           conversionError={conversionError}
           grayscale={grayscale}
           onGrayscaleChange={setGrayscale}
+          hasCrop={crop !== null}
+          isCropping={isCropping}
+          onStartCrop={handleStartCrop}
+          onApplyCrop={handleApplyCrop}
+          onCancelCrop={handleCancelCrop}
+          onResetCrop={handleResetCrop}
         />
       </div>
     </div>

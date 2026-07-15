@@ -65,6 +65,18 @@ export const ORIENTATION_INVARIANT: OverlayType[] = [
 
 export const COLOR_PRESETS = ['#000000', '#e63946', '#ffffff'] as const;
 
+/** A crop rectangle in normalized (0-1) fractions of the image's natural width/height —
+ * independent of actual pixel dimensions, so a default "full frame" rect doesn't require
+ * knowing the image's size, and it survives being recomputed against any display size. */
+export interface CropRect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+export const FULL_CROP: CropRect = { x: 0, y: 0, w: 1, h: 1 };
+
 export function createDefaultOverlay(type: OverlayType): OverlayState {
   return {
     type,

@@ -14,6 +14,12 @@ interface ControlPanelProps {
   conversionError: string | null;
   grayscale: number;
   onGrayscaleChange: (value: number) => void;
+  hasCrop: boolean;
+  isCropping: boolean;
+  onStartCrop: () => void;
+  onApplyCrop: () => void;
+  onCancelCrop: () => void;
+  onResetCrop: () => void;
 }
 
 export function ControlPanel({
@@ -27,6 +33,12 @@ export function ControlPanel({
   conversionError,
   grayscale,
   onGrayscaleChange,
+  hasCrop,
+  isCropping,
+  onStartCrop,
+  onApplyCrop,
+  onCancelCrop,
+  onResetCrop,
 }: ControlPanelProps) {
   const activeTypes = new Set(overlays.map((o) => o.type));
 
@@ -54,6 +66,31 @@ export function ControlPanel({
               onChange={(e) => onGrayscaleChange(Number(e.target.value))}
             />
           </label>
+        )}
+        {hasImage && (
+          <div className="crop-controls">
+            {isCropping ? (
+              <>
+                <button type="button" className="btn-primary" onClick={onApplyCrop}>
+                  Apply crop
+                </button>
+                <button type="button" className="btn-secondary" onClick={onCancelCrop}>
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button type="button" className="btn-secondary" onClick={onStartCrop}>
+                  {hasCrop ? 'Edit crop' : 'Crop'}
+                </button>
+                {hasCrop && (
+                  <button type="button" className="btn-secondary" onClick={onResetCrop}>
+                    Reset crop
+                  </button>
+                )}
+              </>
+            )}
+          </div>
         )}
       </div>
 

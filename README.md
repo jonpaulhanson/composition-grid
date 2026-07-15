@@ -98,6 +98,23 @@ never touches the uploaded file, and has no effect on overlay geometry or colors
 rather than an on/off toggle, since partial desaturation is often more useful than a hard
 switch for this — you can dial in how much color to keep while judging values.
 
+## Cropping
+
+The "Crop" button (Image section) enters an editing mode: a draggable rectangle over the
+full image, with corner handles for resizing and drag-to-move on the rectangle itself
+(`CropEditor.tsx`). Everything outside the rectangle is dimmed, and any active overlays
+are live-previewed inside it as it's resized, so you can see how the grid will land before
+committing. Crop state is stored as normalized (0–1) fractions of the image's natural
+width/height (`CropRect` in `types.ts`) rather than pixels, so it doesn't need to know the
+image's size up front and survives any display size.
+
+Hitting "Apply crop" doesn't touch the uploaded file — it switches the stage to a
+letterboxed viewport sized to the crop rectangle's aspect ratio, with the full image scaled
+and offset inside it (`overflow: hidden` clips the rest), so the cropped region fills the
+frame (`useCropViewport.ts`). Overlays then recompute against that cropped W×H like any
+other image, exactly as if you'd uploaded the cropped region directly. "Edit crop" reopens
+the rectangle at its last position; "Reset crop" clears it back to the full image.
+
 ## Future work
 
 Not built in v1, in rough priority order:

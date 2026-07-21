@@ -115,6 +115,26 @@ frame (`useCropViewport.ts`). Overlays then recompute against that cropped W×H 
 other image, exactly as if you'd uploaded the cropped region directly. "Edit crop" reopens
 the rectangle at its last position; "Reset crop" clears it back to the full image.
 
+## Feedback
+
+The header's "Feedback" button opens a modal (`FeedbackModal.tsx`) with a message box and an
+optional reply email. Since the app is fully client-side with no backend, submissions POST
+directly to [Web3Forms](https://web3forms.com) — a free form-to-email relay — which forwards
+each one to your inbox. No server, database, or account dashboard involved.
+
+To enable it, set a single environment variable:
+
+1. Get a free access key from [web3forms.com](https://web3forms.com) (enter the email you
+   want feedback delivered to; they email you a key).
+2. Copy `.env.example` to `.env.local` and paste the key into `VITE_WEB3FORMS_ACCESS_KEY`
+   (git ignores `.env.local`).
+3. Add the same `VITE_WEB3FORMS_ACCESS_KEY` variable in your Vercel project settings so
+   production picks it up.
+
+The key is read at build time via `import.meta.env` and is safe to ship in client code —
+Web3Forms access keys are designed to be public. Until a key is set, the form still opens but
+reports that it isn't configured on submit. A hidden honeypot field drops obvious bots.
+
 ## Future work
 
 Not built in v1, in rough priority order:

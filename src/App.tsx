@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ImageStage } from './components/ImageStage';
 import { ControlPanel } from './components/ControlPanel';
+import { FeedbackModal } from './components/FeedbackModal';
 import { createDefaultOverlay, FULL_CROP, OVERLAY_DEFS } from './types';
 import type { CropRect, OverlayState, OverlayType } from './types';
 import { convertHeicToJpeg, isHeic } from './utils/heic';
@@ -15,6 +16,7 @@ function App() {
   const [crop, setCrop] = useState<CropRect | null>(null);
   const [isCropping, setIsCropping] = useState(false);
   const [draftCrop, setDraftCrop] = useState<CropRect>(FULL_CROP);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const objectUrlRef = useRef<string | null>(null);
 
   const handleFileSelected = useCallback(async (file: File) => {
@@ -88,7 +90,32 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Composition Armatures</h1>
+        <div className="app-brand">
+          <svg
+            className="app-logo"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            aria-hidden="true"
+          >
+            <rect x="2.5" y="2.5" width="19" height="19" rx="2.5" />
+            <line x1="9" y1="3" x2="9" y2="21" />
+            <line x1="15" y1="3" x2="15" y2="21" />
+            <line x1="3" y1="9" x2="21" y2="9" />
+            <line x1="3" y1="15" x2="21" y2="15" />
+          </svg>
+          <div className="app-titles">
+            <h1 className="app-title">Composition Armatures</h1>
+            <p className="app-tagline">Check your photo against classic composition grids</p>
+          </div>
+        </div>
+        <button type="button" className="feedback-btn" onClick={() => setFeedbackOpen(true)}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.9-.9L3 21l1.9-5.6A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z" />
+          </svg>
+          Feedback
+        </button>
       </header>
       <div className="app-body">
         <ImageStage
@@ -121,6 +148,7 @@ function App() {
           onResetCrop={handleResetCrop}
         />
       </div>
+      <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
     </div>
   );
 }

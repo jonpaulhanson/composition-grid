@@ -6,16 +6,79 @@
 
 .app-header {
   flex: 0 0 auto;
-  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
   border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
 }
 
-.app-header h1 {
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.app-logo {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  color: var(--accent);
+}
+
+.app-titles {
+  min-width: 0;
+}
+
+.app-title {
   margin: 0;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
   color: var(--text);
+}
+
+.app-tagline {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  line-height: 1.2;
+  color: var(--text-dim);
+}
+
+.feedback-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-sunken);
+  color: var(--text);
+  border-radius: 7px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.feedback-btn:hover {
+  border-color: var(--accent);
+  background: var(--bg-elevated);
+}
+
+.feedback-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+@media (max-width: 480px) {
+  .app-tagline {
+    display: none;
+  }
 }
 
 .app-body {
@@ -344,8 +407,13 @@
   color: var(--accent-text);
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   filter: brightness(1.08);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .btn-secondary {
@@ -426,6 +494,144 @@
   bottom: -7px;
   left: -7px;
   cursor: nesw-resize;
+}
+
+/* ---------------------------------------------------------------- */
+/* Modal / Feedback                                                  */
+/* ---------------------------------------------------------------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.modal-close {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 22px;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.modal-close:hover {
+  color: var(--text);
+}
+
+.modal-subtitle {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  color: var(--text-dim);
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feedback-textarea,
+.feedback-email {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-sunken);
+  color: var(--text);
+  font: inherit;
+  padding: 10px 12px;
+}
+
+.feedback-textarea {
+  resize: vertical;
+  min-height: 96px;
+  font-size: 13.5px;
+}
+
+.feedback-email {
+  font-size: 13px;
+}
+
+.feedback-textarea:focus,
+.feedback-email:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.feedback-textarea::placeholder,
+.feedback-email::placeholder {
+  color: var(--text-dim);
+}
+
+.feedback-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.feedback-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.feedback-actions .btn-primary,
+.feedback-actions .btn-secondary {
+  flex: 0 0 auto;
+  min-width: 84px;
+}
+
+.feedback-success {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 8px 0 2px;
+}
+
+.feedback-success p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.feedback-success .btn-primary {
+  flex: 0 0 auto;
+  min-width: 84px;
 }
 
 /* ---------------------------------------------------------------- */

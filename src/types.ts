@@ -54,6 +54,21 @@ export const OVERLAY_DEFS: OverlayDef[] = [
  * controls (see `stretchX`/`stretchY` above). */
 export const SPIRAL_FAMILY: OverlayType[] = ['goldenSpiral', 'spiralCircles', 'spiralDiagonal'];
 
+export interface OverlayGroup {
+  label: string;
+  types: OverlayType[];
+}
+
+/** How the overlay toggles are organized into collapsible groups in the control panel.
+ * Grouped by construction family so related armatures sit together and the list stays
+ * scannable (one row per overlay). Every OverlayType must appear in exactly one group. */
+export const OVERLAY_GROUPS: OverlayGroup[] = [
+  { label: 'Thirds & Sections', types: ['thirds', 'goldenSection'] },
+  { label: 'Triangles', types: ['goldenTriangle', 'harmoniousTriangle'] },
+  { label: 'Golden Spiral', types: ['goldenSpiral', 'spiralCircles', 'spiralDiagonal'] },
+  { label: 'Armatures', types: ['dynamicSymmetry', 'harmonicArmature'] },
+];
+
 /** Overlay types that are symmetric under flip/rotation — flip H, flip V, and rotate all
  * produce the exact same lines, so these don't show orientation controls at all. */
 export const ORIENTATION_INVARIANT: OverlayType[] = [

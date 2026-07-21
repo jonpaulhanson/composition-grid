@@ -225,36 +225,111 @@
   color: #e0392c;
 }
 
-.chip-group {
+.overlay-groups {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.chip {
+.overlay-group-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 7px 2px;
+  color: var(--text-dim);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.overlay-group-header:hover {
+  color: var(--text);
+}
+
+.overlay-group-chevron {
+  flex: 0 0 auto;
+  width: 13px;
+  height: 13px;
+  transition: transform 0.15s;
+}
+
+.overlay-group-chevron--open {
+  transform: rotate(90deg);
+}
+
+.overlay-group-label {
+  flex: 1 1 auto;
+  text-align: left;
+}
+
+.overlay-group-count {
+  flex: 0 0 auto;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.overlay-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 2px 0 8px;
+}
+
+.overlay-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   cursor: pointer;
   border: 1px solid var(--border);
   background: var(--bg-sunken);
   color: var(--text);
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-size: 12.5px;
+  border-radius: 8px;
+  padding: 11px 13px;
+  font-size: 14px;
+  text-align: left;
   transition: border-color 0.15s, background 0.15s;
 }
 
-.chip:hover:not(:disabled) {
+.overlay-row:hover:not(:disabled) {
   border-color: var(--accent);
 }
 
-.chip:disabled {
+.overlay-row:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
 
-.chip--active {
-  background: var(--accent);
+.overlay-row--active {
   border-color: var(--accent);
-  color: var(--accent-text);
+  background: rgba(77, 141, 255, 0.12);
+}
+
+.overlay-row-label {
+  flex: 1 1 auto;
+}
+
+.overlay-row-check {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
 }
 
 /* ---------------------------------------------------------------- */

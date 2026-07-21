@@ -1,7 +1,10 @@
-import { OVERLAY_DEFS } from '../types';
+import { useState } from 'react';
+import { OVERLAY_DEFS, OVERLAY_GROUPS } from '../types';
 import type { OverlayState, OverlayType } from '../types';
 import { OverlayControls } from './OverlayControls';
 import { Dropzone } from './Dropzone';
+
+const OVERLAY_LABELS = new Map(OVERLAY_DEFS.map((d) => [d.type, d.label]));
 
 interface ControlPanelProps {
   hasImage: boolean;
@@ -41,6 +44,17 @@ export function ControlPanel({
   onResetCrop,
 }: ControlPanelProps) {
   const activeTypes = new Set(overlays.map((o) => o.type));
+  // Every group starts expanded so all options are visible; collapsing is a tidy-up affordance.
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
+
+  const toggleGroup = (label: string) => {
+    setCollapsedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(label)) next.delete(label);
+      else next.add(label);
+      return next;
+    });
+  };
 
   return (
     <aside className="control-panel">
@@ -96,19 +110,67 @@ export function ControlPanel({
 
       <div className="control-section">
         <h2 className="control-section-title">Overlays</h2>
-        <div className="chip-group">
-          {OVERLAY_DEFS.map((def) => (
-            <button
-              key={def.type}
-              type="button"
-              className={`chip${activeTypes.has(def.type) ? ' chip--active' : ''}`}
-              onClick={() => onToggleOverlay(def.type)}
-              aria-pressed={activeTypes.has(def.type)}
-              disabled={!hasImage}
-            >
-              {def.label}
-            </button>
-          ))}
+        <div className="overlay-groups">
+          {OVERLAY_GROUPS.map((group) => {
+            const collapsed = collapsedGroups.has(group.label);
+            const activeCount = group.types.filter((t) => activeTypes.has(t)).length;
+            return (
+              <div className="overlay-group" key={group.label}>
+                <button
+                  type="button"
+                  className="overlay-group-header"
+                  onClick={() => toggleGroup(group.label)}
+                  aria-expanded={!collapsed}
+                >
+                  <svg
+                    className={`overlay-group-chevron${collapsed ? '' : ' overlay-group-chevron--open'}`}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    aria-hidden="true"
+                  >
+                    <polyline points="9 6 15 12 9 18" />
+                  </svg>
+                  <span className="overlay-group-label">{group.label}</span>
+                  {collapsed && activeCount > 0 && (
+                    <span className="overlay-group-count">{activeCount}</span>
+                  )}
+                </button>
+                {!collapsed && (
+                  <div className="overlay-list">
+                    {group.types.map((type) => {
+                      const active = activeTypes.has(type);
+                      return (
+                        <button
+                          key={type}
+                          type="button"
+                          className={`overlay-row${active ? ' overlay-row--active' : ''}`}
+                          onClick={() => onToggleOverlay(type)}
+                          aria-pressed={active}
+                          disabled={!hasImage}
+                        >
+                          <span className="overlay-row-label">{OVERLAY_LABELS.get(type)}</span>
+                          {active && (
+                            <svg
+                              className="overlay-row-check"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="3"
+                              aria-hidden="true"
+                            >
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 

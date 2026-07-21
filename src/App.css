@@ -600,32 +600,42 @@
   cursor: nesw-resize;
 }
 
-.crop-handle--n {
-  top: -10px;
+/* Edge midpoints are elongated capsules running parallel to the edge they resize — longer
+ * grab targets, and visually distinct from the round corner handles. */
+.crop-handle--n,
+.crop-handle--s {
+  width: 34px;
+  height: 12px;
+  border-radius: 999px;
   left: 50%;
   transform: translateX(-50%);
   cursor: ns-resize;
+}
+
+.crop-handle--n {
+  top: -6px;
 }
 
 .crop-handle--s {
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  cursor: ns-resize;
+  bottom: -6px;
+}
+
+.crop-handle--w,
+.crop-handle--e {
+  width: 12px;
+  height: 34px;
+  border-radius: 999px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: ew-resize;
 }
 
 .crop-handle--w {
-  left: -10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: ew-resize;
+  left: -6px;
 }
 
 .crop-handle--e {
-  right: -10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: ew-resize;
+  right: -6px;
 }
 
 /* ---------------------------------------------------------------- */

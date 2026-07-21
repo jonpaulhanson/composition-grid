@@ -16,23 +16,16 @@ export function OverlayControls({ overlay, onChange }: OverlayControlsProps) {
         <div className="ctrl-group">
           <span className="ctrl-group-label">Orientation</span>
           <div className="ctrl-group-buttons">
+            {/* A single mirror flip: combined with Rotate's four steps it reaches every
+             * orientation, so a second (vertical) flip would be redundant. */}
             <button
               type="button"
               className={`ctrl-btn${overlay.flipH ? ' ctrl-btn--active' : ''}`}
               onClick={() => onChange({ flipH: !overlay.flipH })}
               aria-pressed={overlay.flipH}
-              title="Flip horizontal"
+              title="Flip (mirror)"
             >
-              Flip H
-            </button>
-            <button
-              type="button"
-              className={`ctrl-btn${overlay.flipV ? ' ctrl-btn--active' : ''}`}
-              onClick={() => onChange({ flipV: !overlay.flipV })}
-              aria-pressed={overlay.flipV}
-              title="Flip vertical"
-            >
-              Flip V
+              Flip
             </button>
             <button
               type="button"

@@ -10,30 +10,27 @@ interface OverlaySvgProps {
 export function OverlaySvg({ overlay, width, height }: OverlaySvgProps) {
   const geometry = buildOverlayGeometry(overlay, width, height);
   const { lines, rects, circles, spiralPath } = geometry;
-  const { color, opacity, strokeWidth, stretch, showSquares } = overlay;
-  // `rects` still feeds computeBounds below either way (the spiral arc is always inscribed
-  // within them, so they're needed for correct stretch-to-fill bounds) — this only skips
-  // drawing them, matching "just the spiral curve" for anyone who doesn't want the squares.
+  const { color, opacity, strokeWidth, showSquares } = overlay;
+  // `rects` still feeds computeBounds below either way (used to center the construction), so
+  // this only skips drawing them, matching "just the spiral curve" for anyone who doesn't
+  // want the squares.
   const drawSquares = overlay.type !== 'goldenSpiral' || showSquares;
 
   // Most constructions (thirds, golden triangle, dynamic symmetry) already span corner to
   // corner. The golden spiral's first square is only 61.8% of the longer side by design (to
   // keep every square strictly smaller than the last), so its bounding box can fall short of
-  // the image edges — but always on only one axis: the other axis is provably always already
-  // full (see `stretch` in types.ts), so one flag gates both. Stretching maps the short axis's
-  // natural bounding box onto the full image; it's a no-op on the already-full axis, since
-  // scale is 1 whenever bounds already match width/height. On the unstretched axis, the
-  // natural-size bounding box is centered rather than left wherever the construction happened
-  // to anchor it — which is itself a no-op on the already-full axis, since there's no gap left
-  // to center within.
+  // the image edges — always at true, undistorted golden-ratio proportions rather than
+  // stretched to fill the frame (stretching would scale the two axes differently, breaking
+  // the φ relationship between squares that makes the construction "golden" in the first
+  // place). The natural-size bounding box is centered in whatever gap is left, rather than
+  // left wherever the construction happened to anchor it — a no-op for constructions that
+  // already fill the frame, since there's no gap left to center within.
   const bounds = computeBounds(geometry, width, height);
   const boundsWidth = bounds.maxX - bounds.minX;
   const boundsHeight = bounds.maxY - bounds.minY;
-  const scaleX = stretch && boundsWidth > 0 ? width / boundsWidth : 1;
-  const scaleY = stretch && boundsHeight > 0 ? height / boundsHeight : 1;
-  const translateX = stretch ? -bounds.minX : (width - boundsWidth) / 2 - bounds.minX;
-  const translateY = stretch ? -bounds.minY : (height - boundsHeight) / 2 - bounds.minY;
-  const transform = `scale(${scaleX} ${scaleY}) translate(${translateX} ${translateY})`;
+  const translateX = (width - boundsWidth) / 2 - bounds.minX;
+  const translateY = (height - boundsHeight) / 2 - bounds.minY;
+  const transform = `translate(${translateX} ${translateY})`;
 
   return (
     <svg

@@ -41,17 +41,8 @@ export function OverlayControls({ overlay, onChange }: OverlayControlsProps) {
 
       {showSpiral && (
         <div className="ctrl-group">
-          <span className="ctrl-group-label">Fit &amp; repeat</span>
+          <span className="ctrl-group-label">Repeat</span>
           <div className="ctrl-group-buttons">
-            <button
-              type="button"
-              className={`ctrl-btn${overlay.stretch ? ' ctrl-btn--active' : ''}`}
-              onClick={() => onChange({ stretch: !overlay.stretch })}
-              aria-pressed={overlay.stretch}
-              title="Stretch to fill the frame"
-            >
-              Stretch
-            </button>
             <div className="multiplicity-group">
               {([1, 2, 4] as const).map((n) => (
                 <button

@@ -42,8 +42,8 @@ the implementation:
   - **Golden Circles** and **Diagonal Spiral** are the same square construction
     (`goldenSpiralGeometry` in `src/geometry/goldenSpiral.ts`), just drawn differently: a
     circle inscribed in each square, or a straight chord across each square instead of the
-    quarter-circle arc. Flip/rotate/stretch all behave identically across all three since
-    they share one geometry function.
+    quarter-circle arc. Flip and rotate behave identically across all three since they share
+    one geometry function.
 - **Dynamic Symmetry** — both main diagonals of the frame, plus the diagonals of each
   half (split along the shorter axis).
 - **Harmonic Armature** — the classic 14-line construction: both main diagonals, a line
@@ -56,28 +56,26 @@ each role (`src/geometry/orientation.ts`), rather than literally transforming co
 
 The golden-spiral family (Golden Spiral, Golden Circles, Diagonal Spiral) is the only
 construction whose bounding box can fall short of an image edge (each square is 61.8% of
-the previous one by design, so the first square alone won't always reach the far edge) —
-but only ever on one axis at a time: the other axis's natural bounding box is provably
-always already full, for every aspect ratio, rotation, flip, and multiplicity. So a single
-"Stretch" toggle is enough — it scales the short axis's natural bounding box up to the
-image edge, and is a no-op on whichever axis already reaches it. Off by default, so the
-construction keeps its true, undistorted proportions and is centered in whatever gap is
-left, rather than left pinned wherever it happened to start. Thirds, golden triangle, and
-dynamic symmetry always span corner-to-corner already, so they don't show this control at all.
+the previous one by design, so the first square alone won't always reach the far edge).
+It's always centered in whatever gap is left rather than pinned wherever it happened to
+start — but never stretched to fill the frame: doing so would scale the two axes
+differently, breaking the φ relationship between successive squares that makes the
+construction "golden" in the first place, which would defeat the point of overlaying it.
+Thirds, golden triangle, and dynamic symmetry always span corner-to-corner already, so
+this doesn't come up for them.
 
 The golden-spiral family also gets a "1×/2×/4×" multiplicity control that layers extra
 copies of the same construction into one overlay instead of just showing a single spiral:
 2× pairs the current orientation with its horizontal mirror, 4× shows all 4 rotations of
 the current flip state at once (a symmetric 4-corner pinwheel). Implemented by generating
 the underlying square/arc geometry once per orientation variant and merging the results
-(`buildSpiralGeometry` in `src/geometry/index.ts`) — stretch-to-fill, if enabled, applies
-to the combined bounding box of all copies together, not per-copy.
+(`buildSpiralGeometry` in `src/geometry/index.ts`).
 
 Golden Spiral specifically (not Golden Circles or Diagonal Spiral, which never draw them)
-also has a "▢" toggle for the nested square outlines, off by default (just the curve), on
-adds them in. This only affects what's drawn (`OverlaySvg.tsx`) — the square geometry is
-still generated and still feeds stretch-to-fill's bounding-box math either way, so hiding
-the squares doesn't disable or change stretch behavior.
+also has a "Squares" toggle for the nested square outlines, off by default (just the
+curve), on adds them in. This only affects what's drawn (`OverlaySvg.tsx`) — the square
+geometry is still generated and still feeds the centering bounding-box math either way, so
+hiding the squares doesn't change where the curve sits.
 
 ## Image formats
 

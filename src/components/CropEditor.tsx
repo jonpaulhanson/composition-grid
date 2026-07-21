@@ -11,7 +11,7 @@ interface CropEditorProps {
   overlays: OverlayState[];
 }
 
-type DragMode = 'move' | 'nw' | 'ne' | 'se' | 'sw';
+type DragMode = 'move' | 'nw' | 'ne' | 'se' | 'sw' | 'n' | 'e' | 's' | 'w';
 
 interface DragState {
   mode: DragMode;
@@ -21,6 +21,9 @@ interface DragState {
 }
 
 const MIN_SIZE = 0.05;
+
+// Rendered clockwise from the top-left; corners resize both axes, edge midpoints resize one.
+const HANDLES = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'] as const;
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -50,25 +53,26 @@ export function CropEditor({ box, draft, onChange, overlays }: CropEditorProps) 
       const y = clamp(startRect.y + dy, 0, 1 - startRect.h);
       next = { ...startRect, x, y };
     } else {
+      // Each edge letter in the mode ('n'/'e'/'s'/'w', or two for a corner) resizes that side.
       let { x, y, w, h } = startRect;
       const x2 = startRect.x + startRect.w;
       const y2 = startRect.y + startRect.h;
 
-      if (mode === 'nw' || mode === 'sw') {
+      if (mode.includes('w')) {
         const newX = clamp(startRect.x + dx, 0, x2 - MIN_SIZE);
         x = newX;
         w = x2 - newX;
       }
-      if (mode === 'ne' || mode === 'se') {
+      if (mode.includes('e')) {
         const newX2 = clamp(x2 + dx, x + MIN_SIZE, 1);
         w = newX2 - x;
       }
-      if (mode === 'nw' || mode === 'ne') {
+      if (mode.includes('n')) {
         const newY = clamp(startRect.y + dy, 0, y2 - MIN_SIZE);
         y = newY;
         h = y2 - newY;
       }
-      if (mode === 'sw' || mode === 'se') {
+      if (mode.includes('s')) {
         const newY2 = clamp(y2 + dy, y + MIN_SIZE, 1);
         h = newY2 - y;
       }
@@ -129,11 +133,11 @@ export function CropEditor({ box, draft, onChange, overlays }: CropEditorProps) 
             <OverlaySvg key={overlay.type} overlay={overlay} width={rectWidth} height={rectHeight} />
           ))}
         </div>
-        {(['nw', 'ne', 'se', 'sw'] as const).map((corner) => (
+        {HANDLES.map((h) => (
           <div
-            key={corner}
-            className={`crop-handle crop-handle--${corner}`}
-            onPointerDown={beginDrag(corner)}
+            key={h}
+            className={`crop-handle crop-handle--${h}`}
+            onPointerDown={beginDrag(h)}
             onPointerMove={handleMove}
             onPointerUp={endDrag}
             onPointerCancel={endDrag}

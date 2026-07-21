@@ -560,36 +560,72 @@
 
 .crop-handle {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: var(--accent);
   border: 2px solid var(--accent-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   touch-action: none;
 }
 
+/* Invisible padding that extends the tap target to ~40px without enlarging the visible dot. */
+.crop-handle::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+}
+
 .crop-handle--nw {
-  top: -7px;
-  left: -7px;
+  top: -10px;
+  left: -10px;
   cursor: nwse-resize;
 }
 
 .crop-handle--ne {
-  top: -7px;
-  right: -7px;
+  top: -10px;
+  right: -10px;
   cursor: nesw-resize;
 }
 
 .crop-handle--se {
-  bottom: -7px;
-  right: -7px;
+  bottom: -10px;
+  right: -10px;
   cursor: nwse-resize;
 }
 
 .crop-handle--sw {
-  bottom: -7px;
-  left: -7px;
+  bottom: -10px;
+  left: -10px;
   cursor: nesw-resize;
+}
+
+.crop-handle--n {
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: ns-resize;
+}
+
+.crop-handle--s {
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: ns-resize;
+}
+
+.crop-handle--w {
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: ew-resize;
+}
+
+.crop-handle--e {
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: ew-resize;
 }
 
 /* ---------------------------------------------------------------- */

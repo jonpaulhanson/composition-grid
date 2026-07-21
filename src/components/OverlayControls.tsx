@@ -7,65 +7,73 @@ interface OverlayControlsProps {
 }
 
 export function OverlayControls({ overlay, onChange }: OverlayControlsProps) {
+  const showOrientation = !ORIENTATION_INVARIANT.includes(overlay.type);
+  const showSpiral = SPIRAL_FAMILY.includes(overlay.type);
+
   return (
     <div className="overlay-controls">
-      <div className="overlay-controls-row">
-        {!ORIENTATION_INVARIANT.includes(overlay.type) && (
-          <>
+      {showOrientation && (
+        <div className="ctrl-group">
+          <span className="ctrl-group-label">Orientation</span>
+          <div className="ctrl-group-buttons">
             <button
               type="button"
-              className={`icon-btn${overlay.flipH ? ' icon-btn--active' : ''}`}
+              className={`ctrl-btn${overlay.flipH ? ' ctrl-btn--active' : ''}`}
               onClick={() => onChange({ flipH: !overlay.flipH })}
               aria-pressed={overlay.flipH}
               title="Flip horizontal"
             >
-              ⇋
+              Flip H
             </button>
             <button
               type="button"
-              className={`icon-btn${overlay.flipV ? ' icon-btn--active' : ''}`}
+              className={`ctrl-btn${overlay.flipV ? ' ctrl-btn--active' : ''}`}
               onClick={() => onChange({ flipV: !overlay.flipV })}
               aria-pressed={overlay.flipV}
               title="Flip vertical"
             >
-              ⇵
+              Flip V
             </button>
             <button
               type="button"
-              className="icon-btn"
+              className="ctrl-btn"
               onClick={() => onChange({ rotation: ((overlay.rotation + 1) % 4) as OverlayState['rotation'] })}
               title="Rotate 90°"
             >
-              ⟳
+              Rotate
             </button>
-          </>
-        )}
-        {SPIRAL_FAMILY.includes(overlay.type) && (
-          <>
+          </div>
+        </div>
+      )}
+
+      {showSpiral && (
+        <div className="ctrl-group">
+          <span className="ctrl-group-label">Fit &amp; repeat</span>
+          <div className="ctrl-group-buttons">
             <button
               type="button"
-              className={`icon-btn${overlay.stretchX ? ' icon-btn--active' : ''}`}
+              className={`ctrl-btn${overlay.stretchX ? ' ctrl-btn--active' : ''}`}
               onClick={() => onChange({ stretchX: !overlay.stretchX })}
               aria-pressed={overlay.stretchX}
               title="Stretch to fill width"
             >
-              ↔
+              Stretch W
             </button>
             <button
               type="button"
-              className={`icon-btn${overlay.stretchY ? ' icon-btn--active' : ''}`}
+              className={`ctrl-btn${overlay.stretchY ? ' ctrl-btn--active' : ''}`}
               onClick={() => onChange({ stretchY: !overlay.stretchY })}
               aria-pressed={overlay.stretchY}
               title="Stretch to fill height"
             >
-              ↕
+              Stretch H
             </button>
             <div className="multiplicity-group">
               {([1, 2, 4] as const).map((n) => (
                 <button
                   key={n}
                   type="button"
-                  className={`icon-btn${overlay.multiplicity === n ? ' icon-btn--active' : ''}`}
+                  className={`ctrl-btn${overlay.multiplicity === n ? ' ctrl-btn--active' : ''}`}
                   onClick={() => onChange({ multiplicity: n })}
                   aria-pressed={overlay.multiplicity === n}
                   title={
@@ -83,17 +91,20 @@ export function OverlayControls({ overlay, onChange }: OverlayControlsProps) {
             {overlay.type === 'goldenSpiral' && (
               <button
                 type="button"
-                className={`icon-btn${overlay.showSquares ? ' icon-btn--active' : ''}`}
+                className={`ctrl-btn${overlay.showSquares ? ' ctrl-btn--active' : ''}`}
                 onClick={() => onChange({ showSquares: !overlay.showSquares })}
                 aria-pressed={overlay.showSquares}
                 title="Show square outlines"
               >
-                ▢
+                Squares
               </button>
             )}
-          </>
-        )}
+          </div>
+        </div>
+      )}
 
+      <div className="ctrl-group">
+        <span className="ctrl-group-label">Color</span>
         <div className="swatch-group">
           {COLOR_PRESETS.map((color) => (
             <button
@@ -109,9 +120,9 @@ export function OverlayControls({ overlay, onChange }: OverlayControlsProps) {
         </div>
       </div>
 
-      <div className="overlay-controls-row overlay-controls-sliders">
+      <div className="overlay-controls-sliders">
         <label className="slider-label">
-          Opacity
+          <span className="slider-label-text">Opacity</span>
           <input
             type="range"
             min={0.1}
@@ -122,7 +133,7 @@ export function OverlayControls({ overlay, onChange }: OverlayControlsProps) {
           />
         </label>
         <label className="slider-label">
-          Thickness
+          <span className="slider-label-text">Thickness</span>
           <input
             type="range"
             min={0.5}

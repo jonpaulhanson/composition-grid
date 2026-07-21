@@ -45,21 +45,12 @@ export function OverlayControls({ overlay, onChange }: OverlayControlsProps) {
           <div className="ctrl-group-buttons">
             <button
               type="button"
-              className={`ctrl-btn${overlay.stretchX ? ' ctrl-btn--active' : ''}`}
-              onClick={() => onChange({ stretchX: !overlay.stretchX })}
-              aria-pressed={overlay.stretchX}
-              title="Stretch to fill width"
+              className={`ctrl-btn${overlay.stretch ? ' ctrl-btn--active' : ''}`}
+              onClick={() => onChange({ stretch: !overlay.stretch })}
+              aria-pressed={overlay.stretch}
+              title="Stretch to fill the frame"
             >
-              Stretch W
-            </button>
-            <button
-              type="button"
-              className={`ctrl-btn${overlay.stretchY ? ' ctrl-btn--active' : ''}`}
-              onClick={() => onChange({ stretchY: !overlay.stretchY })}
-              aria-pressed={overlay.stretchY}
-              title="Stretch to fill height"
-            >
-              Stretch H
+              Stretch
             </button>
             <div className="multiplicity-group">
               {([1, 2, 4] as const).map((n) => (

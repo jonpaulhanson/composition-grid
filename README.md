@@ -56,14 +56,14 @@ each role (`src/geometry/orientation.ts`), rather than literally transforming co
 
 The golden-spiral family (Golden Spiral, Golden Circles, Diagonal Spiral) is the only
 construction whose bounding box can fall short of an image edge (each square is 61.8% of
-the previous one by design, so the first square alone won't always reach the far edge).
-Those three get their own "Stretch to fill width" (↔) / "Stretch to fill height" (↕)
-toggles that scale the natural bounding box up to the image edge on whichever axis falls
-short — never below its natural size, and a no-op on any axis that already reaches the
-edge. Off by default, so the construction keeps its true, undistorted proportions and is
-centered in whatever gap is left, rather than left pinned wherever it happened to start.
-Thirds, golden triangle, and dynamic symmetry always span corner-to-corner already, so
-they don't show these controls at all.
+the previous one by design, so the first square alone won't always reach the far edge) —
+but only ever on one axis at a time: the other axis's natural bounding box is provably
+always already full, for every aspect ratio, rotation, flip, and multiplicity. So a single
+"Stretch" toggle is enough — it scales the short axis's natural bounding box up to the
+image edge, and is a no-op on whichever axis already reaches it. Off by default, so the
+construction keeps its true, undistorted proportions and is centered in whatever gap is
+left, rather than left pinned wherever it happened to start. Thirds, golden triangle, and
+dynamic symmetry always span corner-to-corner already, so they don't show this control at all.
 
 The golden-spiral family also gets a "1×/2×/4×" multiplicity control that layers extra
 copies of the same construction into one overlay instead of just showing a single spiral:

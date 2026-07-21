@@ -10,7 +10,7 @@ interface OverlaySvgProps {
 export function OverlaySvg({ overlay, width, height }: OverlaySvgProps) {
   const geometry = buildOverlayGeometry(overlay, width, height);
   const { lines, rects, circles, spiralPath } = geometry;
-  const { color, opacity, strokeWidth, stretchX, stretchY, showSquares } = overlay;
+  const { color, opacity, strokeWidth, stretch, showSquares } = overlay;
   // `rects` still feeds computeBounds below either way (the spiral arc is always inscribed
   // within them, so they're needed for correct stretch-to-fill bounds) — this only skips
   // drawing them, matching "just the spiral curve" for anyone who doesn't want the squares.
@@ -19,18 +19,20 @@ export function OverlaySvg({ overlay, width, height }: OverlaySvgProps) {
   // Most constructions (thirds, golden triangle, dynamic symmetry) already span corner to
   // corner. The golden spiral's first square is only 61.8% of the longer side by design (to
   // keep every square strictly smaller than the last), so its bounding box can fall short of
-  // the image edges. Stretching maps that natural bounding box onto the full image — it never
-  // shrinks anything that already fills the frame, since scale is 1 whenever bounds already
-  // match width/height. On any axis left unstretched (ratio locked), the natural-size bounding
-  // box is centered rather than left wherever the construction happened to anchor it — which
-  // is a no-op on axes that already fill the frame, since there's no gap left to center within.
+  // the image edges — but always on only one axis: the other axis is provably always already
+  // full (see `stretch` in types.ts), so one flag gates both. Stretching maps the short axis's
+  // natural bounding box onto the full image; it's a no-op on the already-full axis, since
+  // scale is 1 whenever bounds already match width/height. On the unstretched axis, the
+  // natural-size bounding box is centered rather than left wherever the construction happened
+  // to anchor it — which is itself a no-op on the already-full axis, since there's no gap left
+  // to center within.
   const bounds = computeBounds(geometry, width, height);
   const boundsWidth = bounds.maxX - bounds.minX;
   const boundsHeight = bounds.maxY - bounds.minY;
-  const scaleX = stretchX && boundsWidth > 0 ? width / boundsWidth : 1;
-  const scaleY = stretchY && boundsHeight > 0 ? height / boundsHeight : 1;
-  const translateX = stretchX ? -bounds.minX : (width - boundsWidth) / 2 - bounds.minX;
-  const translateY = stretchY ? -bounds.minY : (height - boundsHeight) / 2 - bounds.minY;
+  const scaleX = stretch && boundsWidth > 0 ? width / boundsWidth : 1;
+  const scaleY = stretch && boundsHeight > 0 ? height / boundsHeight : 1;
+  const translateX = stretch ? -bounds.minX : (width - boundsWidth) / 2 - bounds.minX;
+  const translateY = stretch ? -bounds.minY : (height - boundsHeight) / 2 - bounds.minY;
   const transform = `scale(${scaleX} ${scaleY}) translate(${translateX} ${translateY})`;
 
   return (

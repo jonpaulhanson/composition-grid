@@ -17,12 +17,13 @@ export interface OverlayState {
   color: string;
   opacity: number;
   strokeWidth: number;
-  /** Whether the overlay's geometry stretches to touch the image's left/right edges (off = its
-   * natural, as-constructed width — never shrunk below that). Only matters for the golden-spiral
-   * family (goldenSpiral, spiralCircles, spiralDiagonal), which don't always span edge-to-edge. */
-  stretchX: boolean;
-  /** Same as `stretchX`, for the image's top/bottom edges. */
-  stretchY: boolean;
+  /** Whether the overlay's geometry stretches to touch the image's edges on whichever axis
+   * doesn't already reach them (off = its natural, as-constructed size — never shrunk below
+   * that). Only matters for the golden-spiral family (goldenSpiral, spiralCircles,
+   * spiralDiagonal): one axis of their natural bounding box always already spans edge-to-edge
+   * — provably, for every aspect ratio, rotation, flip, and multiplicity — so a single flag
+   * (rather than separate X/Y toggles) is enough; it's a no-op on whichever axis is already full. */
+  stretch: boolean;
   /** How many rotated/mirrored copies of the construction to layer into this one overlay.
    * 2 = the current orientation plus its horizontal mirror; 4 = all 4 rotations of the
    * current flip state. Only meaningful for the golden-spiral family. */
@@ -51,7 +52,7 @@ export const OVERLAY_DEFS: OverlayDef[] = [
 
 /** Overlay types built from the same golden-spiral square construction — these are the only
  * ones whose bounding box can fall short of the image edge, so only they show the stretch
- * controls (see `stretchX`/`stretchY` above). */
+ * control (see `stretch` above). */
 export const SPIRAL_FAMILY: OverlayType[] = ['goldenSpiral', 'spiralCircles', 'spiralDiagonal'];
 
 export interface OverlayGroup {
@@ -101,8 +102,7 @@ export function createDefaultOverlay(type: OverlayType): OverlayState {
     color: COLOR_PRESETS[0],
     opacity: 1.00,
     strokeWidth: 2.75, // midpoint of the 0.5-5 thickness slider range
-    stretchX: false,
-    stretchY: false,
+    stretch: false,
     multiplicity: 1,
     showSquares: false,
   };

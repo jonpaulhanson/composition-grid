@@ -100,6 +100,7 @@
   justify-content: center;
   overflow: hidden;
   padding: 24px;
+  transition: padding 320ms cubic-bezier(0.4, 0, 0.2, 1);
   background-color: var(--checker-a);
   background-image:
     linear-gradient(45deg, var(--checker-b) 25%, transparent 25%),
@@ -108,6 +109,17 @@
     linear-gradient(-45deg, transparent 75%, var(--checker-b) 75%);
   background-size: 24px 24px;
   background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+}
+
+/* Extra breathing room around the image while cropping. The drag handles sit right at the
+ * image's edge, and on a touchscreen (notably iPad) a drag starting too close to the
+ * physical screen edge gets intercepted by the OS swipe gesture (home/app-switcher) instead
+ * of grabbing the handle. Padding (not the handle/image sizes themselves) transitions, so
+ * the shrink is a smooth, CSS-driven layout animation rather than a jump cut — the image and
+ * live crop box naturally follow along frame-by-frame via the same ResizeObserver that
+ * already keeps them in sync during any resize. */
+.stage-frame--cropping {
+  padding: 48px 40px 72px;
 }
 
 .stage-img {

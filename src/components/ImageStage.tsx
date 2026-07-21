@@ -42,7 +42,7 @@ export function ImageStage({
   const imgStyle = grayscale > 0 ? { filter: `grayscale(${grayscale}%)` } : undefined;
 
   return (
-    <div className="stage-frame" ref={containerRef}>
+    <div className={`stage-frame${isCropping ? ' stage-frame--cropping' : ''}`} ref={containerRef}>
       {imageUrl && showCroppedView ? (
         viewport.viewportWidth > 0 && (
           <div className="crop-viewport" style={{ width: viewport.viewportWidth, height: viewport.viewportHeight }}>

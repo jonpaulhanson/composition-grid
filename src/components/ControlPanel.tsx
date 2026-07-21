@@ -44,6 +44,7 @@ export function ControlPanel({
   onResetCrop,
 }: ControlPanelProps) {
   const activeTypes = new Set(overlays.map((o) => o.type));
+  const overlayByType = new Map(overlays.map((o) => [o.type, o]));
   // Every group starts expanded so all options are visible; collapsing is a tidy-up affordance.
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
 
@@ -141,29 +142,40 @@ export function ControlPanel({
                   <div className="overlay-list">
                     {group.types.map((type) => {
                       const active = activeTypes.has(type);
+                      const overlay = overlayByType.get(type);
                       return (
-                        <button
+                        <div
                           key={type}
-                          type="button"
-                          className={`overlay-row${active ? ' overlay-row--active' : ''}`}
-                          onClick={() => onToggleOverlay(type)}
-                          aria-pressed={active}
-                          disabled={!hasImage}
+                          className={`overlay-item${active ? ' overlay-item--active' : ''}`}
                         >
-                          <span className="overlay-row-label">{OVERLAY_LABELS.get(type)}</span>
-                          {active && (
-                            <svg
-                              className="overlay-row-check"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="3"
-                              aria-hidden="true"
-                            >
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
+                          <button
+                            type="button"
+                            className="overlay-row"
+                            onClick={() => onToggleOverlay(type)}
+                            aria-pressed={active}
+                            disabled={!hasImage}
+                          >
+                            <span className="overlay-row-label">{OVERLAY_LABELS.get(type)}</span>
+                            {active && (
+                              <svg
+                                className="overlay-row-check"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="3"
+                                aria-hidden="true"
+                              >
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            )}
+                          </button>
+                          {active && overlay && (
+                            <OverlayControls
+                              overlay={overlay}
+                              onChange={(patch) => onChangeOverlay(type, patch)}
+                            />
                           )}
-                        </button>
+                        </div>
                       );
                     })}
                   </div>
@@ -173,19 +185,6 @@ export function ControlPanel({
           })}
         </div>
       </div>
-
-      {overlays.length > 0 && (
-        <div className="control-section">
-          {overlays.map((overlay) => (
-            <OverlayControls
-              key={overlay.type}
-              overlay={overlay}
-              onChange={(patch) => onChangeOverlay(overlay.type, patch)}
-              onRemove={() => onToggleOverlay(overlay.type)}
-            />
-          ))}
-        </div>
-      )}
 
       <div className="control-section">
         <button type="button" className="btn-reset" onClick={onResetAll} disabled={overlays.length === 0}>

@@ -1,24 +1,14 @@
-import { COLOR_PRESETS, ORIENTATION_INVARIANT, OVERLAY_DEFS, SPIRAL_FAMILY } from '../types';
+import { COLOR_PRESETS, ORIENTATION_INVARIANT, SPIRAL_FAMILY } from '../types';
 import type { OverlayState } from '../types';
 
 interface OverlayControlsProps {
   overlay: OverlayState;
   onChange: (patch: Partial<OverlayState>) => void;
-  onRemove: () => void;
 }
 
-export function OverlayControls({ overlay, onChange, onRemove }: OverlayControlsProps) {
-  const label = OVERLAY_DEFS.find((d) => d.type === overlay.type)?.label ?? overlay.type;
-
+export function OverlayControls({ overlay, onChange }: OverlayControlsProps) {
   return (
     <div className="overlay-controls">
-      <div className="overlay-controls-header">
-        <span className="overlay-controls-title">{label}</span>
-        <button type="button" className="icon-btn" onClick={onRemove} aria-label={`Remove ${label} overlay`}>
-          ×
-        </button>
-      </div>
-
       <div className="overlay-controls-row">
         {!ORIENTATION_INVARIANT.includes(overlay.type) && (
           <>

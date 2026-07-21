@@ -316,9 +316,24 @@
   cursor: not-allowed;
 }
 
-.overlay-row--active {
-  border-color: var(--accent);
-  background: rgba(77, 141, 255, 0.12);
+/* An active overlay's toggle row and its settings fuse into one accent-bordered card, so the
+ * controls read as belonging to the overlay you turned on rather than floating separately. */
+.overlay-item--active {
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: rgba(77, 141, 255, 0.1);
+  overflow: hidden;
+}
+
+.overlay-item--active .overlay-row {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  font-weight: 600;
+}
+
+.overlay-item--active .overlay-row:hover:not(:disabled) {
+  background: rgba(77, 141, 255, 0.06);
 }
 
 .overlay-row-label {
@@ -336,29 +351,14 @@
 /* Overlay controls                                                  */
 /* ---------------------------------------------------------------- */
 
+/* Rendered inside .overlay-item--active as the fused settings body — no card chrome of its
+ * own; a faint accent divider separates it from the toggle row above. */
 .overlay-controls {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 12px;
-  background: var(--bg-sunken);
+  padding: 10px 13px 12px;
+  border-top: 1px solid rgba(77, 141, 255, 0.22);
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-.overlay-controls + .overlay-controls {
-  margin-top: -2px;
-}
-
-.overlay-controls-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.overlay-controls-title {
-  font-size: 12.5px;
-  font-weight: 600;
 }
 
 .overlay-controls-row {

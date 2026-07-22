@@ -5,8 +5,9 @@ import type { NaturalSize } from '../hooks/useNaturalSize';
 import { OverlaySvg } from './OverlaySvg';
 import { Dropzone } from './Dropzone';
 import { CropEditor } from './CropEditor';
-import { FULL_CROP } from '../types';
+import { FULL_CROP, SPIRAL_FAMILY } from '../types';
 import type { CropRect, OverlayState } from '../types';
+import { isSpiralViable } from '../geometry/goldenSpiral';
 
 interface ImageStageProps {
   imageUrl: string | null;
@@ -42,8 +43,37 @@ export function ImageStage({
 
   const imgStyle = grayscale > 0 ? { filter: `grayscale(${grayscale}%)` } : undefined;
 
+  // While cropping, an active spiral overlay is hidden from the live preview once the draft
+  // crop passes the viable ratio (CropEditor filters it out). Call that out in-canvas so it
+  // doesn't look like the overlay silently vanished — the ratio check is scale-invariant, so
+  // natural dimensions work fine here.
+  const spiralHiddenWhileCropping =
+    isCropping &&
+    natural.width > 0 &&
+    overlays.some((o) => SPIRAL_FAMILY.includes(o.type)) &&
+    !isSpiralViable(draftCrop.w * natural.width, draftCrop.h * natural.height);
+
   return (
     <div className={`stage-frame${isCropping ? ' stage-frame--cropping' : ''}`} ref={containerRef}>
+      {spiralHiddenWhileCropping && (
+        <div className="crop-notice" role="status">
+          <svg
+            className="callout-notice-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          Golden spiral hidden at this crop ratio
+        </div>
+      )}
       {imageUrl && showCroppedView ? (
         viewport.viewportWidth > 0 && (
           <div className="crop-viewport" style={{ width: viewport.viewportWidth, height: viewport.viewportHeight }}>

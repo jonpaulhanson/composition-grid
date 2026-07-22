@@ -1,7 +1,9 @@
 import { useRef } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
+import { SPIRAL_FAMILY } from '../types';
 import type { CropRect, OverlayState } from '../types';
 import type { ImageBox } from '../hooks/useImageBox';
+import { isSpiralViable } from '../geometry/goldenSpiral';
 import { OverlaySvg } from './OverlaySvg';
 
 interface CropEditorProps {
@@ -94,6 +96,12 @@ export function CropEditor({ box, draft, onChange, overlays }: CropEditorProps) 
   const rectWidth = draft.w * box.width;
   const rectHeight = draft.h * box.height;
 
+  // Ratio-only check, so it's unaffected by box being CSS display pixels rather than the
+  // image's natural ones — hide golden-spiral overlays from the live preview the moment a
+  // drag makes the draft crop too extreme for them, same as the applied view.
+  const spiralViable = isSpiralViable(rectWidth, rectHeight);
+  const previewOverlays = spiralViable ? overlays : overlays.filter((o) => !SPIRAL_FAMILY.includes(o.type));
+
   return (
     <div className="crop-editor" style={{ top: box.top, left: box.left, width: box.width, height: box.height }}>
       <div className="crop-mask crop-mask--top" style={{ top: 0, left: 0, width: box.width, height: Math.max(0, rectTop) }} />
@@ -129,7 +137,7 @@ export function CropEditor({ box, draft, onChange, overlays }: CropEditorProps) 
         onPointerCancel={endDrag}
       >
         <div className="crop-rect-preview">
-          {overlays.map((overlay) => (
+          {previewOverlays.map((overlay) => (
             <OverlaySvg key={overlay.type} overlay={overlay} width={rectWidth} height={rectHeight} />
           ))}
         </div>

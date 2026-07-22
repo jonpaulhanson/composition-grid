@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { OVERLAY_DEFS, OVERLAY_GROUPS } from '../types';
+import { OVERLAY_DEFS, OVERLAY_GROUPS, SPIRAL_FAMILY } from '../types';
 import type { OverlayState, OverlayType } from '../types';
+import { SPIRAL_MAX_ASPECT_RATIO } from '../geometry/goldenSpiral';
 import { OverlayControls } from './OverlayControls';
 import { Dropzone } from './Dropzone';
 
@@ -8,6 +9,10 @@ const OVERLAY_LABELS = new Map(OVERLAY_DEFS.map((d) => [d.type, d.label]));
 
 interface ControlPanelProps {
   hasImage: boolean;
+  /** Whether the current (cropped, if applicable) image ratio is narrow/wide enough for the
+   * golden-spiral family to still decay into a recognizable spiral. See `isSpiralViable` in
+   * `geometry/goldenSpiral.ts`. */
+  spiralViable: boolean;
   overlays: OverlayState[];
   onFileSelected: (file: File) => void;
   onToggleOverlay: (type: OverlayType) => void;
@@ -27,6 +32,7 @@ interface ControlPanelProps {
 
 export function ControlPanel({
   hasImage,
+  spiralViable,
   overlays,
   onFileSelected,
   onToggleOverlay,
@@ -115,6 +121,8 @@ export function ControlPanel({
           {OVERLAY_GROUPS.map((group) => {
             const collapsed = collapsedGroups.has(group.label);
             const activeCount = group.types.filter((t) => activeTypes.has(t)).length;
+            const isSpiralGroup = group.types.every((t) => SPIRAL_FAMILY.includes(t));
+            const spiralBlocked = isSpiralGroup && hasImage && !spiralViable;
             return (
               <div className="overlay-group" key={group.label}>
                 <button
@@ -138,6 +146,12 @@ export function ControlPanel({
                     <span className="overlay-group-count">{activeCount}</span>
                   )}
                 </button>
+                {!collapsed && spiralBlocked && (
+                  <p className="control-hint overlay-group-note">
+                    Too wide or tall for this ratio — golden-spiral overlays need the image
+                    within about {SPIRAL_MAX_ASPECT_RATIO.toFixed(1)}:1.
+                  </p>
+                )}
                 {!collapsed && (
                   <div className="overlay-list">
                     {group.types.map((type) => {
@@ -153,7 +167,7 @@ export function ControlPanel({
                             className="overlay-row"
                             onClick={() => onToggleOverlay(type)}
                             aria-pressed={active}
-                            disabled={!hasImage}
+                            disabled={!hasImage || spiralBlocked}
                           >
                             <span className="overlay-row-label">{OVERLAY_LABELS.get(type)}</span>
                             {active && (

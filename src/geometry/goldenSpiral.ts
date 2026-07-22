@@ -4,6 +4,23 @@ import type { Corner, Point } from './orientation';
 const ORDER: Corner[] = ['TL', 'TR', 'BR', 'BL'];
 const PHI_INV = 0.6180339887498949; // 1/φ
 
+/** The exact aspect ratio (long side ÷ short side) beyond which the construction stops
+ * decaying at all like a spiral. Each square's side is capped at the *shorter* dimension —
+ * so once the rectangle is wide enough, that cap keeps stamping out identical squares
+ * instead of shrinking ones, and the curve degenerates into a flat, scalloped repeat rather
+ * than a spiral. `1 + φ` is the precise ratio where a *second* square first gets forced to
+ * that same cap (the first already can, above plain `φ`) — the earliest point the
+ * construction visibly stops looking like a spiral, not a rounded guess. */
+export const SPIRAL_MAX_ASPECT_RATIO = 1 + 1 / PHI_INV;
+
+/** Whether a golden-spiral-family overlay is still meaningful at this width/height — see
+ * `SPIRAL_MAX_ASPECT_RATIO`. */
+export function isSpiralViable(width: number, height: number): boolean {
+  if (width <= 0 || height <= 0) return true;
+  const ratio = Math.max(width, height) / Math.min(width, height);
+  return ratio <= SPIRAL_MAX_ASPECT_RATIO;
+}
+
 function cornerPoints(x: number, y: number, size: number): Record<Corner, Point> {
   return {
     TL: [x, y],

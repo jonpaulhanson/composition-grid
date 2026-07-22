@@ -64,6 +64,16 @@ construction "golden" in the first place, which would defeat the point of overla
 Thirds, golden triangle, and dynamic symmetry always span corner-to-corner already, so
 this doesn't come up for them.
 
+Each square's side is capped at the *shorter* dimension of the current rectangle, so past a
+certain aspect ratio that cap — not the golden-ratio decay — is what determines every
+square's size: the construction stamps out identical squares marching sideways instead of
+shrinking ones, and stops looking like a spiral at all. `1 + φ` (≈2.618:1) is the exact
+ratio where a *second* square first gets forced to that cap (`SPIRAL_MAX_ASPECT_RATIO` in
+`src/geometry/goldenSpiral.ts`) — past it, the golden-spiral family (Golden Spiral, Golden
+Circles, Diagonal Spiral) is unavailable: their rows are disabled with an inline note, and
+an already-active one is automatically turned off if you crop into that range. This checks
+the *effective* (post-crop) ratio, not just the uploaded image's own.
+
 The golden-spiral family also gets a "1×/2×/4×" multiplicity control that layers extra
 copies of the same construction into one overlay instead of just showing a single spiral:
 2× pairs the current orientation with its horizontal mirror, 4× shows all 4 rotations of

@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useImageBox } from '../hooks/useImageBox';
 import { useCropViewport } from '../hooks/useCropViewport';
-import { useNaturalSize } from '../hooks/useNaturalSize';
+import type { NaturalSize } from '../hooks/useNaturalSize';
 import { OverlaySvg } from './OverlaySvg';
 import { Dropzone } from './Dropzone';
 import { CropEditor } from './CropEditor';
@@ -18,6 +18,7 @@ interface ImageStageProps {
   isCropping: boolean;
   draftCrop: CropRect;
   onDraftCropChange: (rect: CropRect) => void;
+  natural: NaturalSize;
 }
 
 export function ImageStage({
@@ -30,11 +31,11 @@ export function ImageStage({
   isCropping,
   draftCrop,
   onDraftCropChange,
+  natural,
 }: ImageStageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const box = useImageBox(imgRef, containerRef, imageUrl);
-  const natural = useNaturalSize(imageUrl);
 
   const showCroppedView = crop !== null && !isCropping;
   const viewport = useCropViewport(containerRef, natural.width, natural.height, crop ?? FULL_CROP, showCroppedView);

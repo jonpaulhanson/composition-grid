@@ -2,8 +2,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ImageStage } from './components/ImageStage';
 import { ControlPanel } from './components/ControlPanel';
 import { FeedbackModal } from './components/FeedbackModal';
-import { createDefaultOverlay, FULL_CROP, OVERLAY_DEFS } from './types';
+import { useNaturalSize } from './hooks/useNaturalSize';
+import { createDefaultOverlay, FULL_CROP, OVERLAY_DEFS, SPIRAL_FAMILY } from './types';
 import type { CropRect, OverlayState, OverlayType } from './types';
+import { isSpiralViable } from './geometry/goldenSpiral';
 import { convertHeicToJpeg, isHeic } from './utils/heic';
 import './App.css';
 
@@ -18,6 +20,19 @@ function App() {
   const [draftCrop, setDraftCrop] = useState<CropRect>(FULL_CROP);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const objectUrlRef = useRef<string | null>(null);
+  const natural = useNaturalSize(imageUrl);
+
+  // Effective displayed size — the cropped region if a crop is active, else the whole image.
+  const effectiveWidth = natural.width * (crop?.w ?? 1);
+  const effectiveHeight = natural.height * (crop?.h ?? 1);
+  const spiralViable = isSpiralViable(effectiveWidth, effectiveHeight);
+
+  // Cropping into too extreme a ratio should drop any spiral-family overlay that's active,
+  // rather than leave it silently showing a shape the geometry can no longer produce cleanly.
+  useEffect(() => {
+    if (spiralViable) return;
+    setOverlays((prev) => prev.filter((o) => !SPIRAL_FAMILY.includes(o.type)));
+  }, [spiralViable]);
 
   const handleFileSelected = useCallback(async (file: File) => {
     setConversionError(null);
@@ -128,9 +143,11 @@ function App() {
           isCropping={isCropping}
           draftCrop={draftCrop}
           onDraftCropChange={setDraftCrop}
+          natural={natural}
         />
         <ControlPanel
           hasImage={imageUrl !== null}
+          spiralViable={spiralViable}
           overlays={overlays}
           onFileSelected={handleFileSelected}
           onToggleOverlay={handleToggleOverlay}

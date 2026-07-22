@@ -4,21 +4,22 @@ import type { Corner, Point } from './orientation';
 const ORDER: Corner[] = ['TL', 'TR', 'BR', 'BL'];
 const PHI_INV = 0.6180339887498949; // 1/φ
 
-/** The exact aspect ratio (long side ÷ short side) beyond which the construction stops
- * decaying at all like a spiral. Each square's side is capped at the *shorter* dimension —
- * so once the rectangle is wide enough, that cap keeps stamping out identical squares
- * instead of shrinking ones, and the curve degenerates into a flat, scalloped repeat rather
- * than a spiral. `1 + φ` is the precise ratio where a *second* square first gets forced to
- * that same cap (the first already can, above plain `φ`) — the earliest point the
- * construction visibly stops looking like a spiral, not a rounded guess. */
-export const SPIRAL_MAX_ASPECT_RATIO = 1 + 1 / PHI_INV;
+/** The aspect ratio (long side ÷ short side) at and beyond which the construction can no
+ * longer read as a spiral. Past the golden ratio, the largest square is clamped to fill the
+ * whole short side (like a flex item stretching to fill the cross axis); at exactly 2:1 the
+ * leftover after that square is a *perfect square*, so there's no oriented golden rectangle
+ * left to keep curling into and the next square's curve flips the opposite way. Below 2:1
+ * every square turns the same way (verified by sweep across all ratios/rotations/flips);
+ * from 2:1 up it doesn't. So 2 is the true boundary, not a tuned guess — and it's why no
+ * amount of pivot tweaking fixes the wide case: the shape simply isn't a spiral there. */
+export const SPIRAL_MAX_ASPECT_RATIO = 2;
 
-/** Whether a golden-spiral-family overlay is still meaningful at this width/height — see
- * `SPIRAL_MAX_ASPECT_RATIO`. */
+/** Whether a golden-spiral-family overlay still reads as a spiral at this width/height —
+ * see `SPIRAL_MAX_ASPECT_RATIO`. Strict `<` since exactly 2:1 is already degenerate. */
 export function isSpiralViable(width: number, height: number): boolean {
   if (width <= 0 || height <= 0) return true;
   const ratio = Math.max(width, height) / Math.min(width, height);
-  return ratio <= SPIRAL_MAX_ASPECT_RATIO;
+  return ratio < SPIRAL_MAX_ASPECT_RATIO;
 }
 
 function cornerPoints(x: number, y: number, size: number): Record<Corner, Point> {

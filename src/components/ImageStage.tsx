@@ -71,7 +71,7 @@ export function ImageStage({
             <line x1="12" y1="9" x2="12" y2="13" />
             <line x1="12" y1="17" x2="12.01" y2="17" />
           </svg>
-          Golden spiral hidden at this crop ratio
+          Golden-ratio overlay hidden at this crop ratio
         </div>
       )}
       {imageUrl && showCroppedView ? (

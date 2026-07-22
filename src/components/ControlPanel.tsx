@@ -163,7 +163,7 @@ export function ControlPanel({
                       <line x1="12" y1="17" x2="12.01" y2="17" />
                     </svg>
                     <span>
-                      Too wide or tall for this ratio — golden-spiral overlays need the image
+                      Too wide or tall for this ratio — golden-ratio overlays need the image
                       within about {SPIRAL_MAX_ASPECT_RATIO.toFixed(1)}:1.
                     </span>
                   </p>

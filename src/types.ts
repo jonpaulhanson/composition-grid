@@ -59,7 +59,7 @@ export interface OverlayGroup {
 export const OVERLAY_GROUPS: OverlayGroup[] = [
   { label: 'Thirds & Sections', types: ['thirds', 'goldenSection'] },
   { label: 'Triangles', types: ['goldenTriangle', 'harmoniousTriangle'] },
-  { label: 'Golden Spiral', types: ['goldenSpiral', 'spiralCircles', 'spiralDiagonal'] },
+  { label: 'Golden Ratios', types: ['goldenSpiral', 'spiralCircles', 'spiralDiagonal'] },
   { label: 'Armatures', types: ['dynamicSymmetry', 'harmonicArmature'] },
 ];
 
@@ -91,7 +91,10 @@ export function createDefaultOverlay(type: OverlayType): OverlayState {
     type,
     flipH: false,
     flipV: false,
-    rotation: 0,
+    // Golden-ratio family (spiral/circles/diagonal) defaults to its eye/coil in the
+    // bottom-right quadrant — rotation 3 does that on a landscape or square frame, without
+    // engaging either flip. Every other overlay keeps its natural rotation 0.
+    rotation: SPIRAL_FAMILY.includes(type) ? 3 : 0,
     color: COLOR_PRESETS[0],
     opacity: 1.00,
     strokeWidth: 2.75, // midpoint of the 0.5-5 thickness slider range

@@ -56,6 +56,9 @@ function App() {
     setImageUrl(url);
     setCrop(null);
     setIsCropping(false);
+    // Start a fresh image with Rule of Thirds on as a sensible default; if the user already
+    // has overlays configured (e.g. swapping images mid-session), leave their setup alone.
+    setOverlays((prev) => (prev.length === 0 ? [createDefaultOverlay('thirds')] : prev));
   }, []);
 
   useEffect(() => {

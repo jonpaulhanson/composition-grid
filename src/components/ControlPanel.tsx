@@ -51,8 +51,11 @@ export function ControlPanel({
 }: ControlPanelProps) {
   const activeTypes = new Set(overlays.map((o) => o.type));
   const overlayByType = new Map(overlays.map((o) => [o.type, o]));
-  // Every group starts expanded so all options are visible; collapsing is a tidy-up affordance.
-  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
+  // Start with only the Thirds group open (the common starting point); the rest collapse to
+  // keep the panel scannable, and the user can expand them as needed.
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(
+    () => new Set(OVERLAY_GROUPS.filter((g) => !g.types.includes('thirds')).map((g) => g.label)),
+  );
 
   const toggleGroup = (label: string) => {
     setCollapsedGroups((prev) => {

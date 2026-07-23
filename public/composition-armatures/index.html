@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Composition Armatures — The Geometry Behind Strong Pictures</title>
+    <meta
+      name="description"
+      content="What composition armatures are and how to use grids — the rule of thirds, dynamic symmetry, the golden triangle, and the golden spiral — to build stronger paintings and photographs."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- NOTE: canonical/OG/JSON-LD URLs assume the production domain is armatures.app.
+         Update the ORIGIN if the live domain differs, and generate /composition-armatures/og.png. -->
+    <link rel="canonical" href="https://armatures.app/composition-armatures" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Composition Armatures" />
+    <meta property="og:title" content="Composition Armatures: The Hidden Geometry Behind Strong Paintings and Photographs" />
+    <meta
+      property="og:description"
+      content="What composition armatures are, where they come from, and how to use the rule of thirds, dynamic symmetry, the golden triangle, and the golden spiral to build stronger pictures."
+    />
+    <meta property="og:url" content="https://armatures.app/composition-armatures" />
+    <meta property="og:image" content="https://armatures.app/composition-armatures/og.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Composition Armatures: The Hidden Geometry Behind Strong Pictures" />
+    <meta
+      name="twitter:description"
+      content="What composition armatures are and how to use grids like the rule of thirds, dynamic symmetry, and the golden spiral to build stronger paintings and photographs."
+    />
+    <meta name="twitter:image" content="https://armatures.app/composition-armatures/og.png" />
+
+    <meta name="author" content="Jon" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Composition Armatures: The Hidden Geometry Behind Strong Paintings and Photographs",
+        "description": "What composition armatures are, where they come from, and how to use grids like the rule of thirds, dynamic symmetry, the golden triangle, and the golden spiral to build stronger paintings and photographs.",
+        "author": { "@type": "Person", "name": "Jon" },
+        "datePublished": "2026-07-21",
+        "dateModified": "2026-07-21",
+        "image": "https://armatures.app/composition-armatures/og.png",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://armatures.app/composition-armatures"
+        }
+      }
+    </script>
+
+    <style>
+      :root {
+        --bg: #1b1c1f;
+        --bg-elevated: #232428;
+        --bg-sunken: #131417;
+        --text: #e8e8ea;
+        --text-dim: #9a9ba3;
+        --border: #34353a;
+        --accent: #4d8dff;
+        --accent-text: #ffffff;
+        color-scheme: dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 17px/1.7 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* ---- top bar ---- */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 12px 20px;
+        background: rgba(27, 28, 31, 0.85);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--border);
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text);
+        font-weight: 600;
+        font-size: 15px;
+      }
+      .brand:hover {
+        text-decoration: none;
+      }
+      .brand svg {
+        width: 26px;
+        height: 26px;
+        color: var(--accent);
+        flex: 0 0 auto;
+      }
+      .topbar-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 7px;
+        background: var(--accent);
+        color: var(--accent-text);
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .topbar-cta:hover {
+        text-decoration: none;
+        filter: brightness(1.08);
+      }
+
+      /* ---- layout ---- */
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 40px 20px 80px;
+      }
+
+      .eyebrow {
+        margin: 0 0 12px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      h1 {
+        margin: 0 0 16px;
+        font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+      }
+
+      .byline {
+        margin: 0 0 8px;
+        font-size: 14px;
+        color: var(--text-dim);
+      }
+
+      .lede {
+        font-size: 1.15rem;
+        color: var(--text);
+      }
+
+      h2 {
+        margin: 2.6em 0 0.6em;
+        font-size: 1.55rem;
+        line-height: 1.25;
+        letter-spacing: -0.01em;
+        scroll-margin-top: 72px;
+        border-top: 1px solid var(--border);
+        padding-top: 1.4em;
+      }
+
+      h3 {
+        margin: 1.8em 0 0.4em;
+        font-size: 1.2rem;
+      }
+
+      p {
+        margin: 0 0 1.1em;
+      }
+
+      strong {
+        color: #fff;
+      }
+
+      ul,
+      ol {
+        margin: 0 0 1.1em;
+        padding-left: 1.3em;
+      }
+      li {
+        margin: 0 0 0.5em;
+      }
+
+      /* ---- table of contents ---- */
+      .toc {
+        margin: 28px 0 8px;
+        padding: 18px 22px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+      }
+      .toc-title {
+        margin: 0 0 10px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+      }
+      .toc ol {
+        margin: 0;
+        padding-left: 1.2em;
+        font-size: 15px;
+      }
+      .toc li {
+        margin: 0 0 0.35em;
+      }
+
+      /* ---- figures ---- */
+      figure {
+        margin: 2em 0;
+      }
+      .fig-frame {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--bg-sunken);
+        overflow: hidden;
+      }
+      .fig-frame svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .fig-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 200px;
+        padding: 24px;
+        text-align: center;
+        color: var(--text-dim);
+        font-size: 14px;
+        background:
+          repeating-linear-gradient(
+            45deg,
+            var(--bg-sunken),
+            var(--bg-sunken) 12px,
+            #16171a 12px,
+            #16171a 24px
+          );
+        border: 1px dashed var(--border);
+        border-radius: 10px;
+      }
+      .fig-placeholder span {
+        max-width: 340px;
+      }
+      figcaption {
+        margin-top: 10px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--text-dim);
+      }
+
+      /* ---- asides / callouts ---- */
+      aside.note {
+        margin: 2em 0;
+        padding: 16px 20px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--accent);
+        border-radius: 8px;
+        font-size: 15.5px;
+      }
+      aside.note p:last-child {
+        margin-bottom: 0;
+      }
+      aside.note .note-label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+      }
+
+      /* ---- CTA ---- */
+      .cta {
+        margin: 3em 0 1em;
+        padding: 28px 24px;
+        text-align: center;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      .cta h2 {
+        border: none;
+        padding: 0;
+        margin: 0 0 8px;
+        font-size: 1.35rem;
+      }
+      .cta p {
+        margin: 0 0 18px;
+        color: var(--text-dim);
+      }
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 8px;
+        background: var(--accent);
+        color: var(--accent-text);
+        font-weight: 600;
+      }
+      .cta-btn:hover {
+        text-decoration: none;
+        filter: brightness(1.08);
+      }
+
+      /* ---- references + footer ---- */
+      .references {
+        font-size: 15px;
+      }
+      .references li {
+        color: var(--text-dim);
+      }
+      footer {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 24px 20px 60px;
+        border-top: 1px solid var(--border);
+        color: var(--text-dim);
+        font-size: 14px;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          font-size: 16px;
+        }
+        main {
+          padding: 28px 16px 60px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <rect x="2.5" y="2.5" width="19" height="19" rx="2.5" />
+          <line x1="9" y1="3" x2="9" y2="21" />
+          <line x1="15" y1="3" x2="15" y2="21" />
+          <line x1="3" y1="9" x2="21" y2="9" />
+          <line x1="3" y1="15" x2="21" y2="15" />
+        </svg>
+        Composition Armatures
+      </a>
+      <a class="topbar-cta" href="/">Open the tool</a>
+    </header>
+
+    <main>
+      <article>
+        <p class="eyebrow">Composition</p>
+        <h1>Composition Armatures: The Hidden Geometry Behind Strong Paintings and Photographs</h1>
+        <p class="byline">By Jon · July 2026 · ~10 min read</p>
+
+        <p class="lede">
+          The best compositions feel effortless — and that's exactly the point. Underneath almost
+          every picture that "just works" is a quiet skeleton of lines the viewer never notices.
+          This is a plain-English guide to that skeleton: what composition armatures are, where the
+          famous ones come from, and how to actually use them without falling for the mythology.
+        </p>
+
+        <nav class="toc" aria-label="Table of contents">
+          <p class="toc-title">On this page</p>
+          <ol>
+            <li><a href="#what-is-an-armature">What is a composition armature?</a></li>
+            <li><a href="#no-secret-formula">A crucial caveat: there is no secret formula</a></li>
+            <li><a href="#rule-of-thirds">The rule of thirds: the gateway grid</a></li>
+            <li><a href="#golden-triangle">The golden triangle: composition for diagonals</a></li>
+            <li><a href="#dynamic-symmetry">Dynamic symmetry: the serious system</a></li>
+            <li><a href="#golden-ratio">The golden ratio &amp; the Fibonacci spiral</a></li>
+            <li><a href="#other-armatures">Other armatures worth knowing</a></li>
+            <li><a href="#how-to-use">How to use armatures in your own work</a></li>
+            <li><a href="#further-reading">Further reading</a></li>
+          </ol>
+        </nav>
+
+        <h2 id="what-is-an-armature">What is a composition armature?</h2>
+        <p>
+          In sculpture, an armature is the wire skeleton hidden inside the clay — unseen in the
+          finished piece, but the thing that holds everything up. Composition borrows the word for
+          the same idea. A <strong>composition armature</strong> is the underlying structure of
+          lines an artist uses to organize a picture: where the focal point sits, how the eye
+          travels, how masses balance against one another. The viewer never sees it, but they feel
+          its effects.
+        </p>
+        <p>
+          Here's the thing most of us forget: you're never starting from a blank slate. The moment
+          you pick a canvas, you've already got four lines to reckon with — the edges of the box
+          itself. Everything you drop inside plays off those edges, whether you mean it to or not.
+          An armature just adds a few more lines to work with: a diagonal here, a division there, a
+          handful of intersections that give you somewhere deliberate to put the shapes that matter
+          most. Land your strongest elements on those lines and crossings, and the picture tends to
+          click into place.
+        </p>
+
+        <figure>
+          <div class="fig-placeholder">
+            <span>Diagram: an empty rectangle (just its four edges) beside the same rectangle with a simple armature — diagonals plus thirds — overlaid. "The box you start with vs. the box with structure."</span>
+          </div>
+          <figcaption>
+            You always start with four lines — the edges of the frame. An armature adds a few
+            deliberate ones inside them.
+          </figcaption>
+        </figure>
+
+        <p>
+          And when it clicks, the viewer usually can't tell you why. That's the whole point. Strong
+          composition tends to disappear — people just feel that a picture works, without ever
+          seeing the scaffolding underneath. The artist is the one who gets to see it. That's the
+          inside track this whole article is about.
+        </p>
+
+        <h2 id="no-secret-formula">A crucial caveat before we start: there is no secret formula</h2>
+        <p>
+          It's tempting to treat these systems as a decoder ring — as if every great painting hides
+          the same magic geometry, and the right overlay will unlock it. It won't. There is no
+          single formula all great art follows; the golden rectangle is not lurking in every
+          masterpiece. "Good" composition is subjective, tied to the taste of a time and place — the
+          strict symmetry of a medieval altarpiece and the off-balance tension of a modern photograph
+          are both "right" by different standards. These systems are closer to fashion than physics.
+        </p>
+        <p>
+          So why learn them? Because an armature isn't a recipe for a good picture — it's a way to
+          <em>see the geometry you're already working inside.</em> Engage it, fight it, or ignore it,
+          the structure of your rectangle is always there. Learning to see it just lets you choose on
+          purpose instead of by accident. That's the honest case for grids, and a stronger one than
+          the mystical version.
+        </p>
+
+        <h2 id="rule-of-thirds">The rule of thirds: the gateway grid</h2>
+        <p>
+          If you've picked up a camera in the last twenty years, you already know this one. Divide
+          the frame into three equal columns and three equal rows, producing two vertical and two
+          horizontal lines and four intersection points. Place key elements along the lines, and your
+          focal point on one of the four crossings, rather than dead-center.
+        </p>
+
+        <figure>
+          <div class="fig-frame">
+            <svg viewBox="0 0 600 380" role="img" aria-label="A rule of thirds composition grid: two vertical and two horizontal lines dividing the frame into nine equal parts, with the four intersection points highlighted.">
+              <rect x="0.5" y="0.5" width="599" height="379" fill="#131417" stroke="#34353a" />
+              <g stroke="#c9ccd2" stroke-width="2">
+                <line x1="200" y1="0" x2="200" y2="380" />
+                <line x1="400" y1="0" x2="400" y2="380" />
+                <line x1="0" y1="126.7" x2="600" y2="126.7" />
+                <line x1="0" y1="253.3" x2="600" y2="253.3" />
+              </g>
+              <g fill="#4d8dff">
+                <circle cx="200" cy="126.7" r="7" />
+                <circle cx="400" cy="126.7" r="7" />
+                <circle cx="200" cy="253.3" r="7" />
+                <circle cx="400" cy="253.3" r="7" />
+              </g>
+            </svg>
+          </div>
+          <figcaption>
+            The rule of thirds: lines at the 1/3 and 2/3 marks, with the four intersection
+            "power points" highlighted. Generated with the same geometry the tool uses.
+          </figcaption>
+        </figure>
+
+        <p>
+          The rule of thirds works as a simplified, easy-to-apply cousin of older and more rigorous
+          systems. Its virtue is speed: it's approximate, it fits any rectangle instantly, and it
+          nudges beginners away from the reflex to center everything. Its limitation is exactly the
+          same thing — it ignores the specific proportions of your rectangle. The lines fall at 1/3
+          and 2/3 regardless of whether you're working square, wide-panoramic, or tall. That's fine
+          for a quick check; it's why the more proportion-sensitive systems below exist.
+        </p>
+
+        <aside class="note">
+          <span class="note-label">Related concept · Rabatment of the square</span>
+          <p>
+            Every rectangle contains two implied squares based on its short side. Fold each short end
+            inward and the far edge of that square lands on a "line of rabatment." The theory holds
+            that the eye subconsciously senses the square inside the rectangle, so focal points placed
+            on those lines feel resolved. Artists have used rabatment since at least the early
+            Renaissance — Giotto's <em>St. Francis Before the Sultan</em> is an unusually literal
+            example.
+          </p>
+        </aside>
+
+        <h2 id="golden-triangle">The golden triangle: composition for diagonals</h2>
+        <p>
+          The rule of thirds is built for horizontal and vertical subjects. The
+          <strong>golden triangle</strong> is its diagonal counterpart, and it's ideal for pictures
+          with a strong diagonal thrust — a road cutting across a landscape, a reclining figure, a
+          gesture that runs corner to corner.
+        </p>
+        <p>
+          The construction is simple. Draw one diagonal from corner to corner of your rectangle.
+          Then, from each of the two remaining corners, draw a line that meets that diagonal at a
+          right angle. You end up with the main diagonal plus two shorter perpendiculars, dividing
+          the space into a set of interlocking right triangles. Place your subject along the diagonal
+          and your accents where the perpendiculars strike it.
+        </p>
+
+        <figure>
+          <div class="fig-placeholder">
+            <span>Diagram: the golden triangle grid — a corner-to-corner diagonal plus a perpendicular dropped from each of the other two corners — shown side by side in two of its four possible orientations.</span>
+          </div>
+          <figcaption>
+            The golden triangle in two of its four orientations. The diagonal can run from any
+            corner, with mirror variants — flip and rotate it to fit your subject.
+          </figcaption>
+        </figure>
+
+        <p>
+          Because it's built from a perpendicular construction rather than a fixed ratio, the golden
+          triangle adapts cleanly to any aspect ratio, and it has four possible orientations (the
+          diagonal can run from any corner) plus mirror variants. It appears less often in the
+          composition literature than thirds or the golden section, which is part of its appeal — it
+          produces an aggressively dynamic flow that doesn't look like everyone else's.
+        </p>
+
+        <h2 id="dynamic-symmetry">Dynamic symmetry: the serious system</h2>
+        <p>
+          Here is where composition gets genuinely deep — and where the name of this app comes from.
+        </p>
+        <p>
+          <strong>Dynamic symmetry</strong> is a proportioning system named and popularized by Jay
+          Hambidge (1867–1924), a Canadian-born artist and theorist. Through careful measurement of
+          Greek vases and the Parthenon, Hambidge became convinced that the beauty of classical Greek
+          design came from the conscious use of a proportional system based on what he called
+          <strong>root rectangles</strong> — rectangles whose side ratios are irrational numbers: √2,
+          √3, √4, √5, and the golden ratio (φ ≈ 1.618). He laid the system out in
+          <em>Dynamic Symmetry: The Greek Vase</em> (1920) and
+          <em>The Elements of Dynamic Symmetry</em>, and it swept through American art schools in the
+          1920s and '30s — turning up in studio curricula and even department-store window displays.
+        </p>
+
+        <figure>
+          <div class="fig-placeholder">
+            <span>Diagram: a root rectangle with its diagonal and reciprocal — the corner-to-corner diagonal plus a perpendicular dropped from another vertex, carving out a smaller "reciprocal" rectangle of the same shape, with the reciprocal labeled.</span>
+          </div>
+          <figcaption>
+            The core move: a diagonal, a perpendicular from an opposite corner, and the smaller
+            <em>reciprocal</em> rectangle it carves out — the same shape as the original, rotated and
+            scaled.
+          </figcaption>
+        </figure>
+
+        <p>
+          At the heart of the system is the <strong>reciprocal rectangle</strong>. Draw a diagonal
+          across your rectangle, then drop a perpendicular to that diagonal from one of the opposite
+          corners. This carves out a smaller rectangle that is <em>the same shape</em> as the
+          original, just rotated and scaled — a reciprocal. In a root rectangle, this single ratio
+          persists through endless subdivisions, generating a lattice of diagonals and crossings that
+          all relate to each other harmonically. As Matila Ghyka put it, Hambidge's dynamic rectangles
+          produce remarkably varied and consonant subdivisions through the simple process of drawing a
+          diagonal, its perpendicular, and then any network of parallels and perpendiculars to the
+          sides and diagonals.
+        </p>
+
+        <figure>
+          <div class="fig-placeholder">
+            <span>Diagram: a fuller dynamic-symmetry armature — the crossing diagonals and reciprocals filling the rectangle (the app's Dynamic Symmetry overlay).</span>
+          </div>
+          <figcaption>
+            A fuller dynamic-symmetry armature: both main diagonals plus the reciprocals, forming a
+            lattice of harmonically related crossings.
+          </figcaption>
+        </figure>
+
+        <p>
+          Unlike the rule of thirds, dynamic symmetry's placement points <em>derive from the specific
+          proportions of the rectangle you're using</em> — which is exactly why it's more powerful and
+          more demanding. Photographers rediscovered the system in recent decades, precisely because
+          it gives a proportion-aware alternative to the one-size-fits-all thirds grid.
+        </p>
+
+        <aside class="note">
+          <span class="note-label">A note on the history</span>
+          <p>
+            Hambidge's historical claims were contested from the start. As early as 1921, archaeologist
+            Rhys Carpenter published a pointed criticism arguing Hambidge was reading a modern system
+            back into Greek work that never consciously used it. The scholarly verdict today is roughly:
+            dynamic symmetry is a genuinely useful <em>design tool</em>, but its claim to be the
+            recovered secret of Greek art is unproven and probably overstated. Both things can be true —
+            a system can be great to compose with even if its origin story is romanticized.
+          </p>
+        </aside>
+
+        <h2 id="golden-ratio">The golden ratio and the Fibonacci spiral: use it, but know the myth</h2>
+        <p>
+          No composition topic is more mythologized than the golden ratio, so let's separate the
+          useful part from the folklore.
+        </p>
+        <p>
+          The math is real and elegant. The golden ratio, φ (roughly 1.618), describes a division
+          where the whole relates to the larger part as the larger part relates to the smaller. A
+          <strong>golden rectangle</strong> has its sides in that ratio; slice the largest square off
+          one end and the leftover rectangle is another, smaller golden rectangle — forever. Inscribe
+          a quarter-circle in each of those nested squares and you approximate the
+          <strong>golden spiral</strong> — the elegant curve you've seen laid over everything from
+          nautilus shells to galaxies.
+        </p>
+
+        <figure>
+          <div class="fig-placeholder">
+            <span>Diagram: the golden spiral construction — nested squares with inscribed quarter-circle arcs forming the spiral (the app's Golden Spiral overlay).</span>
+          </div>
+          <figcaption>
+            The golden spiral: nested squares, each 1/φ the size of the last, with a quarter-circle arc
+            inscribed in each. Compose along the curve or place a focal point at its tight "eye."
+          </figcaption>
+        </figure>
+
+        <p>
+          As a composition armature, this is genuinely useful. Placing a focal point at the spiral's
+          tight "eye," or running a subject along the curve, produces a natural, inward-drawing flow.
+          Many artists compose with it deliberately and to good effect.
+        </p>
+        <p>
+          <strong>But</strong> — and this matters for your credibility as a tool — most of the popular
+          claims about the golden ratio in art history don't survive scrutiny. The idea that the
+          Parthenon, the pyramids, and the Mona Lisa were all deliberately built on φ is, to put it
+          bluntly, largely an urban legend that took hold in the 19th century. The Parthenon "golden
+          rectangle" only appears if you cherry-pick which points to measure (include the steps or not?
+          the pediment or not?), and its actual proportions vary by source. There's no documentary
+          evidence Leonardo composed the Mona Lisa on φ, and because that painting has so few straight
+          compositional lines, you can "find" a golden ratio almost anywhere you choose to start
+          measuring. The ancient Greeks never mentioned the ratio in connection with architecture at all.
+        </p>
+        <p>
+          The fair summary: the golden spiral is a legitimate and lovely tool to <em>compose</em> with.
+          It is not a hidden code proving that all beauty obeys one number. Use it because it helps you
+          make a decision, not because it certifies your work as objectively beautiful. (This is a live
+          debate, incidentally — defenders of φ argue the debunkers overreach in the other direction,
+          manipulating measurements to dismiss it. The honest position sits in the middle: real math,
+          useful tool, wildly overstated mythology.)
+        </p>
+
+        <h2 id="other-armatures">Other armatures worth knowing</h2>
+        <p>
+          The four grids above are the app's core, but artists use a wider vocabulary of structural
+          shapes. A few common ones, briefly:
+        </p>
+        <ul>
+          <li>
+            <strong>The S-curve.</strong> A meandering line — a river, a path, a road — that leads the
+            eye from foreground into the distance. Landscape painters love it. A useful trick is to let
+            the curve fade before it reaches an edge, so the eye is carried in and kept from wandering
+            straight back out.
+          </li>
+          <li>
+            <strong>The cruciform.</strong> A cross structure, an offshoot of the horizontal/vertical
+            armature, where a dominant vertical and horizontal lock together. It needn't be centered.
+          </li>
+          <li>
+            <strong>The fulcrum.</strong> A balance of major masses, like weights on a seesaw — one
+            large quiet mass offset by a smaller, more intense one. The balance can come from size,
+            value, saturation, or color temperature.
+          </li>
+          <li>
+            <strong>The "O" or radial armature.</strong> Elements arranged to circle around a central
+            focal point, leading the eye around and back inward.
+          </li>
+          <li>
+            <strong>The medallion / armature of the circle.</strong> For round (tondo) compositions:
+            divide a circle into eight slices and connect the intersection points to structure the
+            space. It descends from Gothic rose windows and medieval manuscript illumination.
+          </li>
+        </ul>
+
+        <figure>
+          <div class="fig-placeholder">
+            <span>Diagram: small multiples — five simple line diagrams, one per armature above (S-curve, cruciform, fulcrum, O/radial, medallion).</span>
+          </div>
+          <figcaption>Five more structural shapes artists reach for, at a glance.</figcaption>
+        </figure>
+
+        <p>
+          Most real paintings contain several of these at once. The goal is never to force a picture
+          onto a template; it's to arrange elements naturally while quietly using structure to guide
+          the viewer, avoiding a gimmicky, over-engineered feel.
+        </p>
+
+        <h2 id="how-to-use">How to actually use armatures in your own work</h2>
+        <p>Theory is cheap. Here's the practical loop:</p>
+        <ol>
+          <li>
+            <strong>Analyze finished work first.</strong> The fastest way to <em>see</em> armatures is
+            to overlay them on pictures you already respect — including your own. Take paintings of
+            yours that sold, won an award, or simply feel resolved, and lay grids over them. You'll
+            often find, after the fact, that your strongest pieces already sit on an armature you chose
+            by instinct. Learning to see that consciously is what lets you do it on purpose next time.
+          </li>
+          <li>
+            <strong>Choose a structure that fits the subject, not the reverse.</strong> Diagonal
+            subject → golden triangle. Horizon-and-vertical landscape → thirds or rabatment. A subject
+            with strong inward flow → the spiral. A proportion-critical studio composition → the
+            matching root rectangle.
+          </li>
+          <li>
+            <strong>Compose to the armature deliberately in a working sketch</strong> — place your
+            focal point on an intersection, align a major edge to a diagonal — then let the reference
+            bend to the composition rather than copying it slavishly.
+          </li>
+          <li>
+            <strong>Don't over-obey.</strong> The armature is a guide, not a jail. Great compositions
+            often play the structure and the deliberate break against each other.
+          </li>
+        </ol>
+
+        <figure>
+          <div class="fig-placeholder">
+            <span>Image: one of Jon's own watercolors with an armature overlaid and the focal point circled at an intersection — doubles as portfolio content.</span>
+          </div>
+          <figcaption>
+            The loop in practice: a finished painting with an armature laid over it and the focal point
+            landing on a crossing.
+          </figcaption>
+        </figure>
+
+        <p>
+          This analyze-overlay-compose loop is exactly what this tool is built for: upload a painting
+          or photo, drop one or more armatures over it, flip and rotate them to fit, and <em>see</em>
+          the geometry you're working with.
+        </p>
+
+        <div class="cta">
+          <h2>Try it on your own work</h2>
+          <p>Upload a painting or photo and overlay any of these armatures in seconds — free, in your browser.</p>
+          <a class="cta-btn" href="/">Open Composition Armatures →</a>
+        </div>
+
+        <h2 id="further-reading">Further reading</h2>
+        <ul class="references">
+          <li>
+            Jay Hambidge, <em>The Elements of Dynamic Symmetry</em> (1920) — the foundational text;
+            public-domain reprints available (Dover; Internet Archive).
+          </li>
+          <li>
+            Charles Bouleau, <em>The Painter's Secret Geometry</em> — a survey of compositional
+            geometry across 500 years of Western painting.
+          </li>
+          <li>
+            Rhys Carpenter, "Dynamic Symmetry: A Criticism," <em>American Journal of Archaeology</em>
+            (1921) — the classic contemporary rebuttal to Hambidge's historical claims.
+          </li>
+          <li>
+            Mario Livio, <em>The Golden Ratio</em> — a mathematician's balanced account of what the
+            ratio is and isn't.
+          </li>
+        </ul>
+      </article>
+    </main>
+
+    <footer>
+      <p>
+        Composition Armatures is a free, browser-based tool for overlaying classic composition grids
+        on your own paintings and photographs. <a href="/">Open the tool →</a>
+      </p>
+    </footer>
+  </body>
+</html>

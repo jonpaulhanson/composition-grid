@@ -274,6 +274,26 @@
         color: var(--text-dim);
       }
 
+      .small-multiples {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+      }
+      .sm-item .fig-frame {
+        border-radius: 8px;
+      }
+      .sm-item .sm-label {
+        margin: 8px 0 0;
+        text-align: center;
+        font-size: 13px;
+        color: var(--text-dim);
+      }
+      @media (max-width: 560px) {
+        .small-multiples {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
       /* ---- asides / callouts ---- */
       aside.note {
         margin: 2em 0;
@@ -726,9 +746,38 @@
         </ul>
 
         <figure>
-          <div class="fig-placeholder">
-            <span>Diagram: small multiples — five simple line diagrams, one per armature above (S-curve, cruciform, fulcrum, O/radial, medallion).</span>
-          </div>
+          <div class="small-multiples">
+              <div class="sm-item">
+                <div class="fig-frame"><svg viewBox="0 0 200 200" role="img" aria-label="An S-curve armature: a meandering line leading the eye from foreground into the distance, fading before it reaches the top edge." xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="199" height="199" fill="#131417" stroke="#34353a"/><defs><linearGradient id="sfade" x1="0" y1="200" x2="0" y2="0" gradientUnits="userSpaceOnUse">
+     <stop offset="0" stop-color="#4d8dff"/><stop offset="0.72" stop-color="#4d8dff"/><stop offset="1" stop-color="#4d8dff" stop-opacity="0"/>
+   </linearGradient></defs>
+   <path d="M 60 184 C 104 146, 44 112, 100 94 C 156 76, 100 44, 136 14" fill="none" stroke="url(#sfade)" stroke-width="4" stroke-linecap="round"/></svg></div>
+                <p class="sm-label">S-curve</p>
+              </div>
+              <div class="sm-item">
+                <div class="fig-frame"><svg viewBox="0 0 200 200" role="img" aria-label="A cruciform armature: a dominant vertical and horizontal line locking together off-centre." xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="199" height="199" fill="#131417" stroke="#34353a"/><line x1="130" y1="22" x2="130" y2="178" stroke="#4d8dff" stroke-width="5" stroke-linecap="round"/>
+   <line x1="22" y1="74" x2="178" y2="74" stroke="#4d8dff" stroke-width="4" stroke-linecap="round"/></svg></div>
+                <p class="sm-label">Cruciform</p>
+              </div>
+              <div class="sm-item">
+                <div class="fig-frame"><svg viewBox="0 0 200 200" role="img" aria-label="A fulcrum armature: a large quiet mass balanced against a smaller, more intense one, like weights on a seesaw." xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="199" height="199" fill="#131417" stroke="#34353a"/><line x1="28" y1="126" x2="172" y2="126" stroke="#c9ccd2" stroke-width="2.5" stroke-linecap="round"/>
+   <path d="M 86 128 L 74 156 L 98 156 Z" fill="#4d8dff"/>
+   <circle cx="56" cy="99" r="27" fill="none" stroke="#c9ccd2" stroke-width="2.4"/>
+   <circle cx="146" cy="111" r="15" fill="#4d8dff"/></svg></div>
+                <p class="sm-label">Fulcrum</p>
+              </div>
+              <div class="sm-item">
+                <div class="fig-frame"><svg viewBox="0 0 200 200" role="img" aria-label="A radial or “O” armature: elements arranged in a ring around a central focal point, leading the eye around and back inward." xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="199" height="199" fill="#131417" stroke="#34353a"/><path d="M 32.45 139 A 78 78 0 1 1 139 167.55" fill="none" stroke="#4d8dff" stroke-width="2.2" stroke-linecap="round"/>
+     <polygon points="131.21,172.05 143.5,175.34 147.4,173.09" fill="#4d8dff"/>
+     <circle cx="100" cy="40" r="6" fill="#c9ccd2"/><circle cx="151.96" cy="70" r="6" fill="#c9ccd2"/><circle cx="151.96" cy="130" r="6" fill="#c9ccd2"/><circle cx="100" cy="160" r="6" fill="#c9ccd2"/><circle cx="48.04" cy="130" r="6" fill="#c9ccd2"/><circle cx="48.04" cy="70" r="6" fill="#c9ccd2"/>
+     <circle cx="100" cy="100" r="9" fill="#4d8dff"/></svg></div>
+                <p class="sm-label">Radial / “O”</p>
+              </div>
+              <div class="sm-item">
+                <div class="fig-frame"><svg viewBox="0 0 200 200" role="img" aria-label="A medallion armature: a circle divided into eight, its points connected into an eight-pointed star, for round (tondo) compositions." xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="199" height="199" fill="#131417" stroke="#34353a"/><circle cx="100" cy="100" r="78" fill="none" stroke="#c9ccd2" stroke-width="1.6"/><line x1="100" y1="100" x2="100" y2="22" stroke="#c9ccd2" stroke-width="1.2"/><line x1="100" y1="100" x2="155.15" y2="44.85" stroke="#c9ccd2" stroke-width="1.2"/><line x1="100" y1="100" x2="178" y2="100" stroke="#c9ccd2" stroke-width="1.2"/><line x1="100" y1="100" x2="155.15" y2="155.15" stroke="#c9ccd2" stroke-width="1.2"/><line x1="100" y1="100" x2="100" y2="178" stroke="#c9ccd2" stroke-width="1.2"/><line x1="100" y1="100" x2="44.85" y2="155.15" stroke="#c9ccd2" stroke-width="1.2"/><line x1="100" y1="100" x2="22" y2="100" stroke="#c9ccd2" stroke-width="1.2"/><line x1="100" y1="100" x2="44.85" y2="44.85" stroke="#c9ccd2" stroke-width="1.2"/><polygon points="100,22 178,100 100,178 22,100" fill="none" stroke="#4d8dff" stroke-width="2.2" stroke-linejoin="round"/><polygon points="155.15,44.85 155.15,155.15 44.85,155.15 44.85,44.85" fill="none" stroke="#4d8dff" stroke-width="2.2" stroke-linejoin="round"/></svg></div>
+                <p class="sm-label">Medallion</p>
+              </div>
+            </div>
           <figcaption>Five more structural shapes artists reach for, at a glance.</figcaption>
         </figure>
 

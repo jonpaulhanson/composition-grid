@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ImageStage } from './components/ImageStage';
 import { ControlPanel } from './components/ControlPanel';
 import { FeedbackModal } from './components/FeedbackModal';
+import { track } from '@vercel/analytics';
 import { useNaturalSize } from './hooks/useNaturalSize';
 import { createDefaultOverlay, FULL_CROP, OVERLAY_DEFS, SPIRAL_FAMILY } from './types';
 import type { CropRect, OverlayState, OverlayType } from './types';
@@ -56,6 +57,7 @@ function App() {
     setImageUrl(url);
     setCrop(null);
     setIsCropping(false);
+    track('image_uploaded');
     // Start a fresh image with Rule of Thirds on as a sensible default; if the user already
     // has overlays configured (e.g. swapping images mid-session), leave their setup alone.
     setOverlays((prev) => (prev.length === 0 ? [createDefaultOverlay('thirds')] : prev));
@@ -67,16 +69,22 @@ function App() {
     };
   }, []);
 
-  const handleToggleOverlay = useCallback((type: OverlayType) => {
-    setOverlays((prev) => {
-      if (prev.some((o) => o.type === type)) {
-        return prev.filter((o) => o.type !== type);
-      }
-      const order = OVERLAY_DEFS.map((d) => d.type);
-      const next = [...prev, createDefaultOverlay(type)];
-      return next.sort((a, b) => order.indexOf(a.type) - order.indexOf(b.type));
-    });
-  }, []);
+  const handleToggleOverlay = useCallback(
+    (type: OverlayType) => {
+      // Fire the event on add only (not remove), outside the state updater so StrictMode's
+      // double-invoked updater can't double-count it.
+      if (!overlays.some((o) => o.type === type)) track('overlay_added', { overlay: type });
+      setOverlays((prev) => {
+        if (prev.some((o) => o.type === type)) {
+          return prev.filter((o) => o.type !== type);
+        }
+        const order = OVERLAY_DEFS.map((d) => d.type);
+        const next = [...prev, createDefaultOverlay(type)];
+        return next.sort((a, b) => order.indexOf(a.type) - order.indexOf(b.type));
+      });
+    },
+    [overlays],
+  );
 
   const handleChangeOverlay = useCallback((type: OverlayType, patch: Partial<OverlayState>) => {
     setOverlays((prev) => prev.map((o) => (o.type === type ? { ...o, ...patch } : o)));
@@ -94,6 +102,7 @@ function App() {
   const handleApplyCrop = useCallback(() => {
     setCrop(draftCrop);
     setIsCropping(false);
+    track('crop_applied');
   }, [draftCrop]);
 
   const handleCancelCrop = useCallback(() => {
@@ -128,7 +137,14 @@ function App() {
             <p className="app-tagline">Check your photo against classic composition grids</p>
           </div>
         </div>
-        <button type="button" className="feedback-btn" onClick={() => setFeedbackOpen(true)}>
+        <button
+          type="button"
+          className="feedback-btn"
+          onClick={() => {
+            setFeedbackOpen(true);
+            track('feedback_opened');
+          }}
+        >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
             <path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.9-.9L3 21l1.9-5.6A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z" />
           </svg>

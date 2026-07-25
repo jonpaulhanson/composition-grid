@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
+import { track } from '@vercel/analytics';
 
 interface FeedbackModalProps {
   open: boolean;
@@ -71,6 +72,7 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
         setStatus('success');
         setMessage('');
         setEmail('');
+        track('feedback_sent');
       } else {
         setStatus('error');
         setErrorMsg(data.message || 'Something went wrong — please try again.');

@@ -49,6 +49,25 @@
   color: var(--text-dim);
 }
 
+.app-header-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.app-nav-link {
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.app-nav-link:hover {
+  color: var(--text);
+}
+
 .feedback-btn {
   flex: 0 0 auto;
   display: inline-flex;

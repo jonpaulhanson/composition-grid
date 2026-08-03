@@ -49,7 +49,7 @@
         "@type": "Article",
         "headline": "Composition Armatures: The Hidden Geometry Behind Strong Paintings and Photographs",
         "description": "What composition armatures are, where they come from, and how to use grids like the rule of thirds, dynamic symmetry, the golden triangle, and the golden spiral to build stronger paintings and photographs.",
-        "author": { "@type": "Person", "name": "Jon" },
+        "author": { "@type": "Person", "name": "Jon", "description": "Painter and product designer." },
         "datePublished": "2026-07-21",
         "dateModified": "2026-07-21",
         "image": "https://armatures.app/og.jpg",
@@ -344,6 +344,27 @@
       .references li {
         color: var(--text-dim);
       }
+
+      /* ---- author bio ---- */
+      .author-bio {
+        margin: 3em 0 0;
+        padding: 20px 22px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      .author-bio-label {
+        margin: 0 0 8px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+      }
+      .author-bio p:last-child {
+        margin-bottom: 0;
+      }
+
       footer {
         max-width: 720px;
         margin: 0 auto;
@@ -804,6 +825,15 @@
             nature and art.
           </li>
         </ul>
+
+        <aside class="author-bio">
+          <p class="author-bio-label">About the author</p>
+          <p>
+            Jon is a painter and product designer. In watercolor he chases atmosphere, impressions of
+            cities, landscapes, and figures. Chasing the essence of a place and time. In software he
+            seeks to uncover clarity. Armatures is where the two meet.
+          </p>
+        </aside>
       </article>
     </main>
 

@@ -249,33 +249,11 @@
         background: var(--bg-sunken);
         overflow: hidden;
       }
-      .fig-frame svg {
+      .fig-frame svg,
+      .fig-frame img {
         display: block;
         width: 100%;
         height: auto;
-      }
-      .fig-placeholder {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 200px;
-        padding: 24px;
-        text-align: center;
-        color: var(--text-dim);
-        font-size: 14px;
-        background:
-          repeating-linear-gradient(
-            45deg,
-            var(--bg-sunken),
-            var(--bg-sunken) 12px,
-            #16171a 12px,
-            #16171a 24px
-          );
-        border: 1px dashed var(--border);
-        border-radius: 10px;
-      }
-      .fig-placeholder span {
-        max-width: 340px;
       }
       figcaption {
         margin-top: 10px;
@@ -777,12 +755,18 @@
         </ol>
 
         <figure>
-          <div class="fig-placeholder">
-            <span>Image: one of Jon's own watercolors with an armature overlaid and the focal point circled at an intersection — doubles as portfolio content.</span>
+          <div class="fig-frame">
+            <img
+              src="/composition-armatures/armature-example-watercolor.jpg"
+              width="1600"
+              height="1058"
+              loading="lazy"
+              alt="A golden spiral and rule-of-thirds grid overlaid on a watercolor of sailboats racing in a harbor — the crewed sailboat lands right at the spiral's eye, near a thirds crossing."
+            />
           </div>
           <figcaption>
-            The loop in practice: a finished painting with an armature laid over it and the focal point
-            landing on a crossing.
+            The loop in practice: a golden spiral and thirds grid laid over a finished watercolor. The
+            crewed sailboat lands right at the spiral's eye — and near a thirds crossing.
           </figcaption>
         </figure>
 

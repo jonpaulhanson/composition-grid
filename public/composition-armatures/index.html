@@ -49,7 +49,7 @@
         "@type": "Article",
         "headline": "Composition Armatures: The Hidden Geometry Behind Strong Paintings and Photographs",
         "description": "What composition armatures are, where they come from, and how to use grids like the rule of thirds, dynamic symmetry, the golden triangle, and the golden spiral to build stronger paintings and photographs.",
-        "author": { "@type": "Person", "name": "Jon", "description": "Painter and product designer." },
+        "author": { "@type": "Person", "name": "Jon", "description": "Painter and product designer.", "url": "https://jonhanson.art", "image": "https://armatures.app/composition-armatures/jon-avatar.jpg" },
         "datePublished": "2026-07-21",
         "dateModified": "2026-07-21",
         "image": "https://armatures.app/og.jpg",
@@ -347,11 +347,24 @@
 
       /* ---- author bio ---- */
       .author-bio {
+        display: flex;
+        align-items: flex-start;
+        gap: 18px;
         margin: 3em 0 0;
         padding: 20px 22px;
         background: var(--bg-elevated);
         border: 1px solid var(--border);
         border-radius: 12px;
+      }
+      .author-avatar {
+        flex: 0 0 auto;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      .author-bio-body {
+        min-width: 0;
       }
       .author-bio-label {
         margin: 0 0 8px;
@@ -361,8 +374,12 @@
         text-transform: uppercase;
         color: var(--text-dim);
       }
-      .author-bio p:last-child {
+      .author-bio-body p:last-child {
         margin-bottom: 0;
+      }
+      .author-bio-link {
+        margin-top: 10px;
+        font-size: 15px;
       }
 
       footer {
@@ -827,12 +844,25 @@
         </ul>
 
         <aside class="author-bio">
-          <p class="author-bio-label">About the author</p>
-          <p>
-            Jon is a painter and product designer. In watercolor he chases atmosphere, impressions of
-            cities, landscapes, and figures. Chasing the essence of a place and time. In software he
-            seeks to uncover clarity. Armatures is where the two meet.
-          </p>
+          <img
+            class="author-avatar"
+            src="/composition-armatures/jon-avatar.jpg"
+            alt="Jon — painter and product designer"
+            width="56"
+            height="56"
+            loading="lazy"
+          />
+          <div class="author-bio-body">
+            <p class="author-bio-label">About the author</p>
+            <p>
+              Jon is a painter and product designer. In watercolor he chases atmosphere, impressions
+              of cities, landscapes, and figures. Chasing the essence of a place and time. In software
+              he seeks to uncover clarity. Armatures is where the two meet.
+            </p>
+            <p class="author-bio-link">
+              <a href="https://jonhanson.art" target="_blank" rel="noopener">jonhanson.art →</a>
+            </p>
+          </div>
         </aside>
       </article>
     </main>

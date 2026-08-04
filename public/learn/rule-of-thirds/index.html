@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Vercel Web Analytics — cookieless, so no consent banner needed -->
+    <script>
+      window.va =
+        window.va ||
+        function () {
+          (window.vaq = window.vaq || []).push(arguments);
+        };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+
+    <title>The Rule of Thirds: The Gateway Grid (and When to Graduate)</title>
+    <meta
+      name="description"
+      content="The rule of thirds, explained honestly: what it is, why it works, where it quietly falls short, and the proportion-aware systems — rabatment, dynamic symmetry — to reach for when it does."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://armatures.app/learn/rule-of-thirds" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Composition Armatures" />
+    <meta property="og:title" content="The Rule of Thirds: The Gateway Grid (and When to Graduate)" />
+    <meta property="og:description" content="What the rule of thirds does well, where it falls short, and what to reach for when it does." />
+    <meta property="og:url" content="https://armatures.app/learn/rule-of-thirds" />
+    <meta property="og:image" content="https://armatures.app/og.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The Rule of Thirds: The Gateway Grid (and When to Graduate)" />
+    <meta name="twitter:description" content="What the rule of thirds does well, where it falls short, and what to reach for when it does." />
+    <meta name="twitter:image" content="https://armatures.app/og.jpg" />
+
+    <meta name="author" content="Jon" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "The Rule of Thirds: The Gateway Grid (and When to Graduate)",
+        "description": "What the rule of thirds is, why it works, where it falls short, and the proportion-aware systems to reach for when it does.",
+        "author": { "@type": "Person", "name": "Jon", "description": "Painter and product designer.", "url": "https://jonhanson.art", "image": "https://armatures.app/composition-armatures/jon-avatar.jpg" },
+        "datePublished": "2026-07-25",
+        "dateModified": "2026-07-25",
+        "image": "https://armatures.app/og.jpg",
+        "isPartOf": { "@type": "Article", "@id": "https://armatures.app/composition-armatures" },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://armatures.app/learn/rule-of-thirds" }
+      }
+    </script>
+
+    <link rel="stylesheet" href="/article.css" />
+  </head>
+
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <rect x="2.5" y="2.5" width="19" height="19" rx="2.5" />
+          <line x1="9" y1="3" x2="9" y2="21" />
+          <line x1="15" y1="3" x2="15" y2="21" />
+          <line x1="3" y1="9" x2="21" y2="9" />
+          <line x1="3" y1="15" x2="21" y2="15" />
+        </svg>
+        Composition Armatures
+      </a>
+      <a class="topbar-cta" href="/">Open the tool</a>
+    </header>
+
+    <main>
+      <article>
+        <p class="eyebrow"><a href="/composition-armatures">Composition guide</a> · Deep dive</p>
+        <h1>The Rule of Thirds: The Gateway Grid</h1>
+        <p class="byline">By Jon · July 2026 · ~6 min read</p>
+
+        <p class="lede">
+          Everyone's first composition rule, and for good reason — it's fast, forgiving, and it breaks
+          you of the reflex to center everything. But it's an approximation. Here's what it does well,
+          where it quietly falls short, and what to reach for when it does.
+        </p>
+
+        <nav class="toc" aria-label="Table of contents">
+          <p class="toc-title">On this page</p>
+          <ol>
+            <li><a href="#what-it-is">What the rule of thirds is</a></li>
+            <li><a href="#why-it-works">Why it works</a></li>
+            <li><a href="#where-it-fails">Where it falls short</a></li>
+            <li><a href="#rabatment">Rabatment: the smarter cousin</a></li>
+            <li><a href="#graduate">When to graduate</a></li>
+            <li><a href="#further-reading">Further reading</a></li>
+          </ol>
+        </nav>
+
+        <h2 id="what-it-is">What the rule of thirds is</h2>
+        <p>
+          Divide the frame into three equal columns and three equal rows — two vertical lines, two
+          horizontal, four intersection points. Put your key elements along the lines and your focal
+          point on one of the crossings, instead of dead-center. That's the whole rule.
+        </p>
+
+        <figure>
+          <div class="fig-frame"><svg viewBox="-12 -12 484 308" role="img" aria-label="A rule of thirds grid: two vertical and two horizontal lines dividing the frame into nine equal parts, with the four intersection points highlighted." xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="459" height="283" fill="#131417" stroke="#34353a"/><line x1="153.33" y1="0" x2="153.33" y2="284" stroke="#c9ccd2" stroke-width="2.2" stroke-linecap="round"/><line x1="306.67" y1="0" x2="306.67" y2="284" stroke="#c9ccd2" stroke-width="2.2" stroke-linecap="round"/><line x1="0" y1="94.67" x2="460" y2="94.67" stroke="#c9ccd2" stroke-width="2.2" stroke-linecap="round"/><line x1="0" y1="189.33" x2="460" y2="189.33" stroke="#c9ccd2" stroke-width="2.2" stroke-linecap="round"/><circle cx="153.33" cy="94.67" r="6" fill="#4d8dff"/><circle cx="153.33" cy="189.33" r="6" fill="#4d8dff"/><circle cx="306.67" cy="94.67" r="6" fill="#4d8dff"/><circle cx="306.67" cy="189.33" r="6" fill="#4d8dff"/></svg></div>
+          <figcaption>Lines at the 1/3 and 2/3 marks, with the four intersection "power points" highlighted.</figcaption>
+        </figure>
+
+        <h2 id="why-it-works">Why it works</h2>
+        <p>
+          Its virtue is speed. It's approximate, it fits any rectangle instantly, and it nudges beginners
+          off the instinct to plant everything in the middle. Placing your subject off-center almost
+          always makes a livelier picture than centering it, and the thirds grid is the fastest possible
+          reminder to do that. As a quick gut-check before you commit, it's hard to beat.
+        </p>
+
+        <h2 id="where-it-fails">Where it falls short</h2>
+        <p>
+          Its weakness is the same thing as its strength: it ignores the actual proportions of your
+          frame. Those lines land at 1/3 and 2/3 whether you're shooting a square, a tall portrait, or a
+          wide panorama. It's a grid that gets <em>applied</em> to your rectangle rather than derived
+          <em>from</em> it — which is fine for a fast check, and less fine when proportion is carrying
+          real weight in the composition.
+        </p>
+
+        <h2 id="rabatment">Rabatment: the smarter cousin</h2>
+        <p>
+          There's an older idea sitting right next to the rule of thirds:
+          <a href="https://en.wikipedia.org/wiki/Rabatment_of_the_rectangle" target="_blank" rel="noopener">rabatment of the square</a>.
+          Every rectangle contains two implied squares built off its short sides. Fold each short end
+          inward and the far edge lands on a "line of rabatment" — and the theory is that your eye
+          quietly senses those squares, so anything you place on those lines feels settled.
+        </p>
+
+        <figure>
+          <div class="fig-frame"><svg viewBox="-12 -12 450 308" role="img" aria-label="Rabatment of a 3:2 rectangle: the two implied squares built off the short sides, and the two lines of rabatment where their far edges fall — which, at 3:2, land exactly on the rule-of-thirds lines." xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="425" height="283" fill="#131417" stroke="#34353a"/><rect x="0" y="0" width="284" height="284" fill="rgba(77,141,255,0.12)"/><rect x="142" y="0" width="284" height="284" fill="rgba(77,141,255,0.12)"/><line x1="284" y1="0" x2="284" y2="284" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><line x1="142" y1="0" x2="142" y2="284" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/></svg></div>
+          <figcaption>
+            The two implied squares of a 3:2 rectangle. At 3:2, the lines of rabatment land exactly on
+            the rule-of-thirds lines — which is part of why thirds feels so right for that ratio.
+          </figcaption>
+        </figure>
+
+        <p>
+          That last bit is the tell. The rule of thirds is really rabatment's approximation — the two
+          happen to coincide at 3:2, the classic 35mm frame, which is where a lot of us learned to see.
+          At other proportions they part ways, and rabatment gives you the better-placed lines.
+        </p>
+
+        <h2 id="graduate">When to graduate</h2>
+        <p>
+          Keep the rule of thirds for what it's great at — a fast off-center gut-check on any frame. But
+          when a composition really hinges on proportion, it's worth reaching for a system that reads
+          your rectangle instead of ignoring it:
+        </p>
+        <ul>
+          <li>Proportion-critical work → <a href="/learn/dynamic-symmetry">dynamic symmetry</a>, whose lines come straight out of the frame's own shape.</li>
+          <li>A strong diagonal subject → the <a href="/learn/golden-triangle">golden triangle</a>.</li>
+          <li>A subject with an inward pull → the <a href="/learn/golden-ratio">golden spiral</a>.</li>
+        </ul>
+        <p>
+          The fastest way to feel the difference is to stack them. Open a picture in the tool, flip
+          between the Rule of Thirds and Dynamic Symmetry overlays, and watch how differently they treat
+          the same frame.
+        </p>
+
+        <div class="cta">
+          <h2>Try it on your own work</h2>
+          <p>Upload a painting or photo and overlay the rule of thirds — then compare it against the others, free, in your browser.</p>
+          <a class="cta-btn" href="/">Open Composition Armatures →</a>
+        </div>
+
+        <aside class="note">
+          <span class="note-label">Part of the guide</span>
+          <p>
+            This is one piece of the bigger picture — the
+            <a href="/composition-armatures">Composition Armatures guide</a> covers the whole toolkit and
+            how the grids fit together.
+          </p>
+        </aside>
+
+        <aside class="author-bio">
+          <img class="author-avatar" src="/composition-armatures/jon-avatar.jpg" alt="Jon — painter and product designer" width="56" height="56" loading="lazy" />
+          <div class="author-bio-body">
+            <p class="author-bio-label">About the author</p>
+            <p>
+              Jon is a painter and product designer. In watercolor he chases atmosphere, impressions
+              of cities, landscapes, and figures. Chasing the essence of a place and time. In software
+              he seeks to uncover clarity. Armatures is where the two meet.
+            </p>
+            <p class="author-bio-link">
+              <a href="https://jonhanson.art" target="_blank" rel="noopener">jonhanson.art →</a>
+            </p>
+          </div>
+        </aside>
+
+        <h2 id="further-reading">Further reading</h2>
+        <ul class="references">
+          <li>
+            Charles Bouleau,
+            <a href="https://books.google.com/books/about/The_Painter_s_Secret_Geometry.html?id=oBy4AAAAIAAJ" target="_blank" rel="noopener"><em>The Painter's Secret Geometry</em></a>
+            — a survey of compositional geometry across 500 years of Western painting.
+          </li>
+        </ul>
+      </article>
+    </main>
+
+    <footer>
+      <p>
+        Composition Armatures is a free, browser-based tool for overlaying classic composition grids
+        on your own paintings and photographs. <a href="/">Open the tool →</a>
+      </p>
+    </footer>
+  </body>
+</html>

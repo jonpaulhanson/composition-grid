@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Vercel Web Analytics — cookieless, so no consent banner needed -->
+    <script>
+      window.va =
+        window.va ||
+        function () {
+          (window.vaq = window.vaq || []).push(arguments);
+        };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+
+    <title>Dynamic Symmetry: How Hambidge's Composition System Works</title>
+    <meta
+      name="description"
+      content="Dynamic symmetry is a proportion-aware composition system built on root rectangles and the reciprocal. Here's how it works — and how to use it on your own paintings and photos."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://armatures.app/learn/dynamic-symmetry" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Composition Armatures" />
+    <meta property="og:title" content="Dynamic Symmetry: How Hambidge's Composition System Works" />
+    <meta
+      property="og:description"
+      content="A plain-English guide to dynamic symmetry — root rectangles, the reciprocal, and the armature — and how to compose with it."
+    />
+    <meta property="og:url" content="https://armatures.app/learn/dynamic-symmetry" />
+    <meta property="og:image" content="https://armatures.app/og.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dynamic Symmetry: How Hambidge's Composition System Works" />
+    <meta
+      name="twitter:description"
+      content="A plain-English guide to dynamic symmetry — root rectangles, the reciprocal, and the armature — and how to compose with it."
+    />
+    <meta name="twitter:image" content="https://armatures.app/og.jpg" />
+
+    <meta name="author" content="Jon" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Dynamic Symmetry: How Hambidge's Composition System Works",
+        "description": "A plain-English guide to dynamic symmetry — root rectangles, the reciprocal, and the armature — and how to compose with it on your own paintings and photos.",
+        "author": { "@type": "Person", "name": "Jon", "description": "Painter and product designer.", "url": "https://jonhanson.art", "image": "https://armatures.app/composition-armatures/jon-avatar.jpg" },
+        "datePublished": "2026-07-25",
+        "dateModified": "2026-07-25",
+        "image": "https://armatures.app/og.jpg",
+        "isPartOf": {
+          "@type": "Article",
+          "@id": "https://armatures.app/composition-armatures"
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://armatures.app/learn/dynamic-symmetry"
+        }
+      }
+    </script>
+
+    <link rel="stylesheet" href="/article.css" />
+  </head>
+
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <rect x="2.5" y="2.5" width="19" height="19" rx="2.5" />
+          <line x1="9" y1="3" x2="9" y2="21" />
+          <line x1="15" y1="3" x2="15" y2="21" />
+          <line x1="3" y1="9" x2="21" y2="9" />
+          <line x1="3" y1="15" x2="21" y2="15" />
+        </svg>
+        Composition Armatures
+      </a>
+      <a class="topbar-cta" href="/">Open the tool</a>
+    </header>
+
+    <main>
+      <article>
+        <p class="eyebrow"><a href="/composition-armatures">Composition guide</a> · Deep dive</p>
+        <h1>Dynamic Symmetry: The Composition System That Reads Your Rectangle</h1>
+        <p class="byline">By Jon · July 2026 · ~7 min read</p>
+
+        <p class="lede">
+          Most composition grids ignore the actual shape of your frame. Dynamic symmetry doesn't — it
+          builds every line out of your rectangle's own proportions. That makes it the most powerful,
+          and most demanding, system in the toolkit, and it's the one this whole app is named after.
+          Here's how it actually works.
+        </p>
+
+        <nav class="toc" aria-label="Table of contents">
+          <p class="toc-title">On this page</p>
+          <ol>
+            <li><a href="#what-it-is">What dynamic symmetry is</a></li>
+            <li><a href="#root-rectangles">Root rectangles: the foundation</a></li>
+            <li><a href="#reciprocal">The reciprocal: the one move that matters</a></li>
+            <li><a href="#armature">From reciprocals to an armature</a></li>
+            <li><a href="#vs-thirds">Why it beats the rule of thirds</a></li>
+            <li><a href="#how-to-use">How to use it on your own work</a></li>
+            <li><a href="#further-reading">Further reading</a></li>
+          </ol>
+        </nav>
+
+        <h2 id="what-it-is">What dynamic symmetry is</h2>
+        <p>
+          Dynamic symmetry is a <strong>proportioning system</strong> — a way of dividing a rectangle
+          so that every line relates back to the rectangle's own shape. It was named and popularized by
+          <a href="https://en.wikipedia.org/wiki/Jay_Hambidge" target="_blank" rel="noopener">Jay Hambidge</a>
+          (1867–1924), who measured Greek vases and architecture and became convinced their sense of
+          order came from a deliberate system of proportion rather than guesswork.
+        </p>
+        <p>
+          Whether or not the Greeks used it exactly as he described, the system he laid out is a
+          genuinely useful way to compose. Where the rule of thirds stamps the same grid onto every
+          frame, dynamic symmetry asks a sharper question: what lines does <em>this</em> rectangle want?
+        </p>
+
+        <h2 id="root-rectangles">Root rectangles: the foundation</h2>
+        <p>
+          The foundation is the <strong>root rectangle</strong> — a rectangle whose sides sit in an
+          irrational ratio: √2 (≈ 1.414), √3 (≈ 1.732), √5 (≈ 2.236), and the golden ratio, φ (≈ 1.618).
+        </p>
+
+        <figure>
+          <div class="fig-frame"><svg viewBox="-12 -12 911.3498521162644 200" role="img" aria-label="Three root rectangles — root two, root three, and root five — each shown with its diagonal and reciprocal, illustrating how dynamic symmetry is built on rectangles whose sides are irrational ratios." xmlns="http://www.w3.org/2000/svg"><g transform="translate(0,26)"><rect x="0.5" y="0.5" width="211.13203435596427" height="149" fill="#131417" stroke="#34353a"/><rect x="141.42" y="0" width="70.71" height="100" fill="rgba(77,141,255,0.14)"/><line x1="141.42" y1="0" x2="141.42" y2="100" stroke="#c9ccd2" stroke-width="2" stroke-linecap="round"/><line x1="141.42" y1="100" x2="212.13" y2="100" stroke="#c9ccd2" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="0" x2="212.13" y2="150" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><line x1="212.13" y1="0" x2="141.42" y2="100" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><circle cx="141.42" cy="100" r="5" fill="#4d8dff"/><text x="106.07" y="-9" fill="#d3d6dc" font-family="-apple-system, sans-serif" font-size="15" text-anchor="middle">√2 ≈ 1.414</text></g><g transform="translate(252.13,26)"><rect x="0.5" y="0.5" width="258.8076211353316" height="149" fill="#131417" stroke="#34353a"/><rect x="194.86" y="0" width="64.95" height="112.5" fill="rgba(77,141,255,0.14)"/><line x1="194.86" y1="0" x2="194.86" y2="112.5" stroke="#c9ccd2" stroke-width="2" stroke-linecap="round"/><line x1="194.86" y1="112.5" x2="259.81" y2="112.5" stroke="#c9ccd2" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="0" x2="259.81" y2="150" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><line x1="259.81" y1="0" x2="194.86" y2="112.5" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><circle cx="194.86" cy="112.5" r="5" fill="#4d8dff"/><text x="129.9" y="-9" fill="#d3d6dc" font-family="-apple-system, sans-serif" font-size="15" text-anchor="middle">√3 ≈ 1.732</text></g><g transform="translate(551.94,26)"><rect x="0.5" y="0.5" width="334.4101966249685" height="149" fill="#131417" stroke="#34353a"/><rect x="279.51" y="0" width="55.9" height="125" fill="rgba(77,141,255,0.14)"/><line x1="279.51" y1="0" x2="279.51" y2="125" stroke="#c9ccd2" stroke-width="2" stroke-linecap="round"/><line x1="279.51" y1="125" x2="335.41" y2="125" stroke="#c9ccd2" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="0" x2="335.41" y2="150" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><line x1="335.41" y1="0" x2="279.51" y2="125" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><circle cx="279.51" cy="125" r="5" fill="#4d8dff"/><text x="167.71" y="-9" fill="#d3d6dc" font-family="-apple-system, sans-serif" font-size="15" text-anchor="middle">√5 ≈ 2.236</text></g></svg></div>
+          <figcaption>
+            Root rectangles get wider as the root grows — √2, √3, √5 — but each shares the same trick:
+            it subdivides into smaller copies of itself.
+          </figcaption>
+        </figure>
+
+        <p>
+          These aren't arbitrary. Each has a special property: you can subdivide it into smaller copies
+          of itself, over and over, and the proportions never drift. That self-similarity is what makes
+          the resulting grid feel coherent instead of random — every division rhymes with every other.
+        </p>
+        <p>
+          (The √2 rectangle is one you already own, incidentally. It's the proportion of A4 paper —
+          which is exactly why folding a sheet in half gives you the same shape at half the size.)
+        </p>
+
+        <h2 id="reciprocal">The reciprocal: the one move that matters</h2>
+        <p>
+          The move at the heart of the whole system is the <strong>reciprocal</strong>. Draw a diagonal
+          across your rectangle, then drop a perpendicular onto that diagonal from one of the opposite
+          corners.
+        </p>
+
+        <figure>
+          <div class="fig-frame"><svg viewBox="-12 -12 484 308" role="img" aria-label="A root rectangle with its diagonal and the perpendicular from an opposite corner, carving out a smaller reciprocal rectangle of the same proportion (shaded and labelled)." xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="459" height="283" fill="#131417" stroke="#34353a"/><rect x="333.05" y="0" width="126.95" height="205.62" fill="rgba(77,141,255,0.14)"/><line x1="333.05" y1="0" x2="333.05" y2="205.62" stroke="#c9ccd2" stroke-width="2" stroke-linecap="round"/><line x1="333.05" y1="205.62" x2="460" y2="205.62" stroke="#c9ccd2" stroke-width="2" stroke-linecap="round"/><line x1="0" y1="0" x2="460" y2="284" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><line x1="460" y1="0" x2="333.05" y2="205.62" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><circle cx="333.05" cy="205.62" r="5" fill="#4d8dff"/><text x="396.53" y="102.81" fill="#d3d6dc" font-family="-apple-system, sans-serif" font-size="15" font-style="italic" text-anchor="middle" dominant-baseline="middle">reciprocal</text></svg></div>
+          <figcaption>
+            The core move: a diagonal, a perpendicular from the opposite corner, and the smaller
+            <em>reciprocal</em> rectangle it carves out — the same shape as the original, rotated and
+            shrunk.
+          </figcaption>
+        </figure>
+
+        <p>
+          That perpendicular carves off a smaller rectangle in the corner — and here's the neat part —
+          it's the <em>exact same shape</em> as the one you started with, just rotated and shrunk.
+          That's its reciprocal. In a root rectangle you can keep going forever, each reciprocal
+          spinning off the next, every one relating straight back to the original.
+        </p>
+
+        <h2 id="armature">From reciprocals to an armature</h2>
+        <p>
+          Stack those diagonals and reciprocals together and you get an <strong>armature</strong>: a web
+          of lines and crossings spread across the frame.
+        </p>
+
+        <figure>
+          <div class="fig-frame"><svg viewBox="-12 -12 484 308" role="img" aria-label="A full dynamic-symmetry armature: both main diagonals of the frame plus the reciprocal diagonals, forming a lattice of harmonically related crossings to compose against." xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="459" height="283" fill="#131417" stroke="#34353a"/><line x1="0" y1="0" x2="460" y2="284" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><line x1="460" y1="0" x2="0" y2="284" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><line x1="0" y1="0" x2="230" y2="284" stroke="#c9ccd2" stroke-width="2.2" stroke-linecap="round"/><line x1="230" y1="0" x2="0" y2="284" stroke="#c9ccd2" stroke-width="2.2" stroke-linecap="round"/><line x1="230" y1="0" x2="460" y2="284" stroke="#c9ccd2" stroke-width="2.2" stroke-linecap="round"/><line x1="460" y1="0" x2="230" y2="284" stroke="#c9ccd2" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+          <figcaption>
+            The full armature — both main diagonals plus the reciprocals — a lattice of harmonically
+            related crossings to compose against.
+          </figcaption>
+        </figure>
+
+        <p>
+          Every crossing is a candidate: a spot where a focal point, an edge, or a shift in value will
+          feel anchored rather than accidental. You don't use all of them — you pick the ones that fit
+          your subject and let the rest sit quietly in reserve.
+          <a href="https://en.wikipedia.org/wiki/Matila_Ghyka" target="_blank" rel="noopener">Matila Ghyka</a>
+          described how much variety pours out of such a simple move: a diagonal, its perpendicular, and
+          then any parallels and perpendiculars you care to add.
+        </p>
+
+        <h2 id="vs-thirds">Why it beats the rule of thirds</h2>
+        <p>
+          The <a href="/composition-armatures#rule-of-thirds">rule of thirds</a> is fast and forgiving,
+          but it's a blunt instrument — its lines land at 1/3 and 2/3 no matter what shape you're working
+          in. Dynamic symmetry's lines come out of the rectangle itself, so a wide panorama and a tall
+          portrait get genuinely different grids. That's more to think about — but for a composition
+          where proportion carries real weight, it's the difference between a grid that <em>fits</em> and
+          a grid that's merely applied.
+        </p>
+
+        <h2 id="how-to-use">How to use it on your own work</h2>
+        <p>
+          The honest way in is to <em>see</em> it first. Open a painting or photo you already like in the
+          tool, drop the Dynamic Symmetry overlay on it, and look for where your strong elements already
+          fall. More often than not, the good ones are already sitting on a crossing you found by
+          instinct. Once your eye knows what to look for, you can start composing to it on purpose:
+        </p>
+        <ul>
+          <li>Put your focal point on a crossing, not dead center.</li>
+          <li>Run a major edge — a horizon, a shoreline, the lean of a figure — along a diagonal.</li>
+          <li>Let the reciprocal's smaller rectangle frame a secondary element.</li>
+        </ul>
+        <p>
+          And don't over-obey. The armature is a guide, not a stencil — the best compositions play the
+          structure and a deliberate break against each other.
+        </p>
+
+        <div class="cta">
+          <h2>See dynamic symmetry on your own work</h2>
+          <p>Upload a painting or photo and drop the Dynamic Symmetry overlay on it — free, in your browser.</p>
+          <a class="cta-btn" href="/">Open Composition Armatures →</a>
+        </div>
+
+        <aside class="note">
+          <span class="note-label">Part of the guide</span>
+          <p>
+            New to this? Start with the
+            <a href="/composition-armatures">Composition Armatures guide</a> for the whole toolkit — the
+            rule of thirds, the golden triangle, the golden spiral, and how they all fit together.
+          </p>
+        </aside>
+
+        <aside class="author-bio">
+          <img
+            class="author-avatar"
+            src="/composition-armatures/jon-avatar.jpg"
+            alt="Jon — painter and product designer"
+            width="56"
+            height="56"
+            loading="lazy"
+          />
+          <div class="author-bio-body">
+            <p class="author-bio-label">About the author</p>
+            <p>
+              Jon is a painter and product designer. In watercolor he chases atmosphere, impressions
+              of cities, landscapes, and figures. Chasing the essence of a place and time. In software
+              he seeks to uncover clarity. Armatures is where the two meet.
+            </p>
+            <p class="author-bio-link">
+              <a href="https://jonhanson.art" target="_blank" rel="noopener">jonhanson.art →</a>
+            </p>
+          </div>
+        </aside>
+
+        <h2 id="further-reading">Further reading</h2>
+        <ul class="references">
+          <li>
+            Jay Hambidge,
+            <a href="https://archive.org/details/elementsofdynami0000hamb" target="_blank" rel="noopener"><em>The Elements of Dynamic Symmetry</em></a>
+            (1920) — Hambidge's own foundational text, free to read on the Internet Archive.
+          </li>
+          <li>
+            Charles Bouleau,
+            <a href="https://books.google.com/books/about/The_Painter_s_Secret_Geometry.html?id=oBy4AAAAIAAJ" target="_blank" rel="noopener"><em>The Painter's Secret Geometry</em></a>
+            — a survey of compositional geometry across 500 years of Western painting.
+          </li>
+        </ul>
+      </article>
+    </main>
+
+    <footer>
+      <p>
+        Composition Armatures is a free, browser-based tool for overlaying classic composition grids
+        on your own paintings and photographs. <a href="/">Open the tool →</a>
+      </p>
+    </footer>
+  </body>
+</html>

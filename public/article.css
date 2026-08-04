@@ -173,6 +173,50 @@ li {
 .toc li {
   margin: 0 0 0.35em;
 }
+.toc-deep {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.toc-deep:hover {
+  color: var(--accent);
+}
+
+/* ---- "go deeper" block ---- */
+.go-deeper {
+  margin: 3em 0 0;
+  padding: 20px 22px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.go-deeper-title {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.go-deeper ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.go-deeper li {
+  margin: 0;
+  border-top: 1px solid var(--border);
+}
+.go-deeper li:first-child {
+  border-top: none;
+}
+.go-deeper li a {
+  display: block;
+  padding: 11px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
 
 /* ---- figures ---- */
 figure {

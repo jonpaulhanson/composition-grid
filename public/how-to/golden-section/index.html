@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Vercel Web Analytics — cookieless, so no consent banner needed -->
+    <script>
+      window.va =
+        window.va ||
+        function () {
+          (window.vaq = window.vaq || []).push(arguments);
+        };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+
+    <title>How to Use the Golden Section in Painting (and Photography)</title>
+    <meta
+      name="description"
+      content="How to use the golden section in painting and photography: what the 1.618 ratio actually is, why it works, how it differs from the rule of thirds, and how to compose on the grid — myths and all."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://armatures.app/how-to/golden-section" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Composition Armatures" />
+    <meta property="og:title" content="How to Use the Golden Section in Painting (and Photography)" />
+    <meta property="og:description" content="What the 1.618 ratio actually is, why it works, how it differs from the rule of thirds, and how to compose on the grid — myths and all." />
+    <meta property="og:url" content="https://armatures.app/how-to/golden-section" />
+    <meta property="og:image" content="https://armatures.app/og.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="How to Use the Golden Section in Painting (and Photography)" />
+    <meta name="twitter:description" content="What φ actually is, why it works, how it differs from thirds, and how to compose with it — myths and all." />
+    <meta name="twitter:image" content="https://armatures.app/og.jpg" />
+
+    <meta name="author" content="Jon" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "How to Use the Golden Section in Painting (and Photography)",
+        "description": "What the golden section is, why it works, how it differs from the rule of thirds, and how to compose on the grid.",
+        "author": { "@type": "Person", "name": "Jon", "description": "Painter and product designer.", "url": "https://jonhanson.art", "image": "https://armatures.app/composition-armatures/jon-avatar.jpg" },
+        "datePublished": "2026-08-04",
+        "dateModified": "2026-08-04",
+        "image": "https://armatures.app/og.jpg",
+        "isPartOf": { "@type": "Article", "@id": "https://armatures.app/composition-armatures" },
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://armatures.app/how-to/golden-section" }
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the golden section in composition?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It's a way of dividing the picture using the golden ratio (about 1.618), placing two vertical and two horizontal lines at roughly 0.382 and 0.618 across each axis. Focal points placed on the resulting intersections feel balanced and classically proportioned."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What's the difference between the golden section and the rule of thirds?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The golden section's lines sit slightly closer to the center — about 0.382/0.618 versus the thirds' 0.333/0.667. The golden section reads as calmer and more classical; thirds reads as more dynamic and open. They're close cousins, and many artists use them interchangeably."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does the golden ratio really appear in famous paintings?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Less often than the popular story claims. Many well-known examples only work if you cherry-pick which points to measure. The ratio is real mathematics and a useful grid, but its supposed presence in the Parthenon, the Mona Lisa, and the like is largely retrospective myth-making."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Should I use the golden section or dynamic symmetry?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The golden section is a focal-point grid — quick to apply, great for placement. Dynamic symmetry is a full structural system whose divisions respond to your rectangle's specific proportions. Use the section for placing a subject; reach for dynamic symmetry when you want the whole composition internally related."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <link rel="stylesheet" href="/article.css" />
+  </head>
+
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <rect x="2.5" y="2.5" width="19" height="19" rx="2.5" />
+          <line x1="9" y1="3" x2="9" y2="21" />
+          <line x1="15" y1="3" x2="15" y2="21" />
+          <line x1="3" y1="9" x2="21" y2="9" />
+          <line x1="3" y1="15" x2="21" y2="15" />
+        </svg>
+        Composition Armatures
+      </a>
+      <a class="topbar-cta" href="/">Open the tool</a>
+    </header>
+
+    <main class="with-jumpnav">
+      <article>
+        <p class="eyebrow"><a href="/composition-armatures">Composition</a> · 02</p>
+        <h1>The Golden Section</h1>
+        <p class="byline">By Jon · August 2026 · ~8 min read</p>
+
+        <figure class="hero">
+          <div class="fig-frame">
+            <svg viewBox="-14 -14 748.00 433.00" role="img" aria-label="A golden-section grid: two vertical and two horizontal lines at roughly 0.382 and 0.618 of each axis, with the lower horizontal drawn as a horizon and the focal point on the lower-right inner crossing." xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="719.00" height="404.00" fill="#131417" stroke="#34353a"/><line x1="275.02" y1="0" x2="275.02" y2="405" stroke="#6b6d75" stroke-width="1.8" stroke-linecap="round"/><line x1="444.98" y1="0" x2="444.98" y2="405" stroke="#6b6d75" stroke-width="1.8" stroke-linecap="round"/><line x1="0" y1="154.70" x2="720" y2="154.70" stroke="#6b6d75" stroke-width="1.8" stroke-linecap="round"/><line x1="0" y1="250.30" x2="720" y2="250.30" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><circle cx="275.02" cy="154.70" r="4.5" fill="#4d8dff" opacity="0.4"/><circle cx="444.98" cy="154.70" r="4.5" fill="#4d8dff" opacity="0.4"/><circle cx="275.02" cy="250.30" r="4.5" fill="#4d8dff" opacity="0.4"/><circle cx="444.98" cy="250.30" r="11" fill="#4d8dff"/></svg>
+          </div>
+          <figcaption>The golden grid: lines at ~0.382 and ~0.618 of each axis, with the focal point on an inner crossing.</figcaption>
+        </figure>
+
+        <p class="lede">
+          The golden section is the rule of thirds' more refined relative. It divides the picture with the
+          same four-line structure — two vertical, two horizontal — but the lines sit slightly closer to
+          the center, at roughly 0.382 and 0.618 of the way across instead of at the even thirds. Those
+          proportions come from a single number, the golden ratio (φ, about 1.618), and placing your focal
+          point on the resulting intersections gives a composition that feels balanced and a little more
+          elegant than thirds, without tipping into the dead symmetry of the center.
+        </p>
+
+        <nav class="jump-nav" aria-label="On this page">
+          <a href="#why">Why it works</a>
+          <a href="#vs">Thirds vs. golden</a>
+          <a href="#when">When to reach for it</a>
+          <a href="#steps">Building a composition</a>
+          <a href="#gallery">In the gallery</a>
+          <a href="#mistakes">Common mistakes</a>
+          <a href="#history">A short history</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+
+        <h2 id="why">Why it works</h2>
+        <p>
+          The golden ratio describes a specific way of dividing a line: split it so that the whole relates
+          to the larger part exactly as the larger part relates to the smaller. That single relationship
+          (about 1.618 to 1) produces divisions that feel proportionate rather than arbitrary — each part
+          echoes the whole. Applied to a rectangle as two vertical and two horizontal cuts, it gives you
+          four intersections that sit off-center but not by much, and a focal point placed there reads as
+          resolved.
+        </p>
+        <p>
+          Like thirds, the intersections carry more weight than the lines, and the lines carry more than
+          open space. The difference is subtlety: because the golden divisions pull nearer the center than
+          the thirds do, the resulting composition feels a touch calmer and more classical, where thirds
+          feels a touch more dynamic and open.
+        </p>
+
+        <aside class="callout-pro">
+          <span class="callout-label">For the experienced</span>
+          <p>
+            The golden section is the entry point to the whole family of φ-based armatures on this site.
+            The same ratio, applied differently, generates the
+            <a href="/learn/golden-ratio">golden spiral</a>, the
+            <a href="/learn/golden-triangle">golden triangle</a>, and the reciprocal subdivisions at the
+            heart of <a href="/learn/dynamic-symmetry">dynamic symmetry</a>. If the section grid appeals to
+            you, those are the natural next steps.
+          </p>
+        </aside>
+
+        <h2 id="vs">Thirds vs. the golden section</h2>
+        <p>
+          These two grids look nearly identical at a glance and get used interchangeably, but the small
+          difference is worth understanding because it's the whole reason to choose one over the other.
+        </p>
+        <p>
+          The rule of thirds places its lines at 1/3 and 2/3 — 0.333 and 0.667. The golden section places
+          them at roughly 0.382 and 0.618. So the golden lines sit about 5% of the frame nearer the
+          center. That's a small shift, but it changes the feel: thirds opens up a larger "empty" side and
+          reads as more energetic and modern; the golden section keeps the focal point a little closer in
+          and reads as more settled and traditional.
+        </p>
+
+        <figure>
+          <div class="fig-frame"><svg viewBox="-12 -12 484.00 308.00" role="img" aria-label="The rule-of-thirds grid (amber dashed, at 0.333 and 0.667) and the golden-section grid (blue solid, at 0.382 and 0.618) overlaid on one rectangle, with the small gap between each pair of lines shaded to show the golden lines sitting about 5% nearer the center." xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="459.00" height="283.00" fill="#131417" stroke="#34353a"/><rect x="153.33" y="0.00" width="22.37" height="284.00" fill="rgba(77,141,255,0.10)"/><rect x="284.30" y="0.00" width="22.37" height="284.00" fill="rgba(77,141,255,0.10)"/><rect x="0.00" y="94.67" width="460.00" height="13.81" fill="rgba(77,141,255,0.10)"/><rect x="0.00" y="175.52" width="460.00" height="13.81" fill="rgba(77,141,255,0.10)"/><line x1="153.33" y1="0.00" x2="153.33" y2="284.00" stroke="#e6a94d" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="5 4"/><line x1="306.67" y1="0.00" x2="306.67" y2="284.00" stroke="#e6a94d" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="5 4"/><line x1="0.00" y1="94.67" x2="460.00" y2="94.67" stroke="#e6a94d" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="5 4"/><line x1="0.00" y1="189.33" x2="460.00" y2="189.33" stroke="#e6a94d" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="5 4"/><line x1="175.70" y1="0.00" x2="175.70" y2="284.00" stroke="#4d8dff" stroke-width="2.2" stroke-linecap="round"/><line x1="284.30" y1="0.00" x2="284.30" y2="284.00" stroke="#4d8dff" stroke-width="2.2" stroke-linecap="round"/><line x1="0.00" y1="108.48" x2="460.00" y2="108.48" stroke="#4d8dff" stroke-width="2.2" stroke-linecap="round"/><line x1="0.00" y1="175.52" x2="460.00" y2="175.52" stroke="#4d8dff" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+          <figcaption>
+            <span style="color: #e6a94d; font-weight: 600">— — Thirds</span> at 0.333 / 0.667 ·
+            <span style="color: #4d8dff; font-weight: 600">—— Golden section</span> at 0.382 / 0.618. The
+            shaded slivers are the gap — the golden lines sit about 5% nearer the center.
+          </figcaption>
+        </figure>
+
+        <p>
+          Neither is more "correct." Thirds is faster to eyeball and slightly more forgiving; the golden
+          section is the more deliberate, proportion-aware choice when you have time to compose carefully.
+        </p>
+
+        <aside class="callout-pro">
+          <span class="callout-label">For the experienced</span>
+          <p>
+            The thirds grid is best thought of as a rounded-off approximation of the golden section — close
+            enough for fast work, and easier to divide by eye. When a thirds composition feels almost right
+            but a hair too loose or too punchy, nudging the focal point from the thirds line to the golden
+            line is often the adjustment you're reaching for.
+          </p>
+        </aside>
+
+        <h2 id="when">When to reach for it</h2>
+        <p>
+          The golden section suits work where you want balance with a classical, composed quality rather
+          than punchy tension. A few natural fits:
+        </p>
+        <ul>
+          <li>
+            <strong>Considered studio compositions.</strong> When you're building a piece deliberately
+            rather than working fast, the golden section rewards the extra care with a more refined
+            placement than thirds.
+          </li>
+          <li>
+            <strong>Portraits and figurative work.</strong> The slightly-closer-to-center placement keeps a
+            figure feeling anchored and dignified rather than pushed to the edge.
+          </li>
+          <li>
+            <strong>Quiet landscapes and still life.</strong> Subjects where you want harmony and
+            settledness over drama — the golden division supports calm.
+          </li>
+          <li>
+            <strong>Anywhere thirds felt too blunt.</strong> If a composition kept feeling approximate, the
+            golden section is the finer instrument.
+          </li>
+        </ul>
+
+        <aside class="callout-pro">
+          <span class="callout-label">For the experienced</span>
+          <p>
+            The golden section shares the rule of thirds' core limitation — it's applied as fixed
+            proportional cuts regardless of your rectangle's own aspect ratio. The systems that genuinely
+            respond to the shape of your specific rectangle are the root-rectangle armatures; see
+            <a href="/learn/dynamic-symmetry">dynamic symmetry</a>. Use the golden section as a refined
+            focal-point grid, not as a complete structural system.
+          </p>
+        </aside>
+
+        <h2 id="steps">Building a composition on the grid</h2>
+        <p>
+          As with all these armatures, you're placing elements onto the structure, not hunting for
+          structure in a finished scene.
+        </p>
+        <ol>
+          <li><strong>Name the focal point.</strong> The one element the picture is about.</li>
+          <li>
+            <strong>Set it on an inner intersection.</strong> The golden grid gives you four crossings;
+            choose the one that leaves the most useful open space for the picture to breathe into.
+          </li>
+          <li>
+            <strong>Run the dominant division along a golden line.</strong> A horizon, a wall, a strong
+            edge — align it to one of the four lines rather than centering it.
+          </li>
+          <li>
+            <strong>Align secondary elements to the lines.</strong> Support reads as intentional when it
+            relates to the grid.
+          </li>
+          <li>
+            <strong>Compare against thirds.</strong> Toggle the thirds grid on for the same composition; if
+            thirds feels better, use it. The two are close enough that the right call is often "whichever
+            looks resolved," and seeing both is the fastest way to decide.
+          </li>
+        </ol>
+
+        <figure>
+          <div class="fig-frame"><svg viewBox="-12 -12 890.00 187.33" role="img" aria-label="Building a composition on the golden-section grid in four steps: place the focal point on an inner crossing, run the dominant division along a golden line, align supporting elements, and the finished arrangement." xmlns="http://www.w3.org/2000/svg"><g transform="translate(0,0)"><rect x="0.5" y="0.5" width="199.00" height="132.33" fill="#131417" stroke="#34353a"/><line x1="76.39" y1="0.00" x2="76.39" y2="133.33" stroke="#6b6d75" stroke-width="1.3" stroke-linecap="round"/><line x1="123.61" y1="0.00" x2="123.61" y2="133.33" stroke="#6b6d75" stroke-width="1.3" stroke-linecap="round"/><line x1="0.00" y1="50.93" x2="200.00" y2="50.93" stroke="#6b6d75" stroke-width="1.3" stroke-linecap="round"/><line x1="0.00" y1="82.40" x2="200.00" y2="82.40" stroke="#6b6d75" stroke-width="1.3" stroke-linecap="round"/><circle cx="123.61" cy="82.40" r="7" fill="#4d8dff"/><text x="100.00" y="153.33" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#9a9ba3">1 · Focal</text></g><g transform="translate(222,0)"><rect x="0.5" y="0.5" width="199.00" height="132.33" fill="#131417" stroke="#34353a"/><line x1="76.39" y1="0.00" x2="76.39" y2="133.33" stroke="#6b6d75" stroke-width="1.3" stroke-linecap="round"/><line x1="123.61" y1="0.00" x2="123.61" y2="133.33" stroke="#6b6d75" stroke-width="1.3" stroke-linecap="round"/><line x1="0.00" y1="50.93" x2="200.00" y2="50.93" stroke="#6b6d75" stroke-width="1.3" stroke-linecap="round"/><line x1="0.00" y1="82.40" x2="200.00" y2="82.40" stroke="#6b6d75" stroke-width="1.3" stroke-linecap="round"/><line x1="0" y1="82.40" x2="200" y2="82.40" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><circle cx="123.61" cy="82.40" r="7" fill="#4d8dff"/><text x="100.00" y="153.33" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#9a9ba3">2 · Division</text></g><g transform="translate(444,0)"><rect x="0.5" y="0.5" width="199.00" height="132.33" fill="#131417" stroke="#34353a"/><line x1="76.39" y1="0.00" x2="76.39" y2="133.33" stroke="#6b6d75" stroke-width="1.3" stroke-linecap="round"/><line x1="123.61" y1="0.00" x2="123.61" y2="133.33" stroke="#6b6d75" stroke-width="1.3" stroke-linecap="round"/><line x1="0.00" y1="50.93" x2="200.00" y2="50.93" stroke="#6b6d75" stroke-width="1.3" stroke-linecap="round"/><line x1="0.00" y1="82.40" x2="200.00" y2="82.40" stroke="#6b6d75" stroke-width="1.3" stroke-linecap="round"/><line x1="0" y1="82.40" x2="200" y2="82.40" stroke="#4d8dff" stroke-width="3" stroke-linecap="round"/><circle cx="76.39" cy="82.40" r="4" fill="#4d8dff"/><circle cx="76.39" cy="50.93" r="4" fill="#4d8dff"/><circle cx="123.61" cy="82.40" r="7" fill="#4d8dff"/><text x="100.00" y="153.33" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#9a9ba3">3 · Support</text></g><g transform="translate(666,0)"><rect x="0.5" y="0.5" width="199.00" height="132.33" fill="#131417" stroke="#34353a"/><line x1="76.39" y1="0.00" x2="76.39" y2="133.33" stroke="#45464c" stroke-width="1.1" stroke-linecap="round"/><line x1="123.61" y1="0.00" x2="123.61" y2="133.33" stroke="#45464c" stroke-width="1.1" stroke-linecap="round"/><line x1="0.00" y1="50.93" x2="200.00" y2="50.93" stroke="#45464c" stroke-width="1.1" stroke-linecap="round"/><line x1="0.00" y1="82.40" x2="200.00" y2="82.40" stroke="#45464c" stroke-width="1.1" stroke-linecap="round"/><line x1="0" y1="82.40" x2="200" y2="82.40" stroke="#4d8dff" stroke-width="2.6" stroke-linecap="round" opacity="0.9"/><circle cx="76.39" cy="82.40" r="4" fill="#4d8dff"/><circle cx="76.39" cy="50.93" r="4" fill="#4d8dff"/><circle cx="123.61" cy="82.40" r="7" fill="#4d8dff"/><text x="100.00" y="153.33" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#9a9ba3">4 · Compose</text></g></svg></div>
+          <figcaption>
+            Focal point on an inner crossing, the dominant division run along a golden line, support
+            aligned, and the finished arrangement.
+          </figcaption>
+        </figure>
+
+        <p class="inline-cta">
+          <a href="/">Open this grid in Armatures →</a>
+          <span>Drop the golden-section overlay on your work, then toggle thirds on top to see the difference on your own composition.</span>
+        </p>
+
+        <h2 id="gallery">In the gallery</h2>
+        <p>
+          The comparison is easiest to feel on finished pictures — focal point on a golden crossing, the
+          dominant division on a golden line, and the same image imagined on thirds for contrast.
+        </p>
+        <div class="gallery">
+          <div class="gallery-placeholder">Overlaid painting examples on the golden section are coming to this spot.</div>
+          <div class="gallery-placeholder">Captions will note what lands on the grid — and how the same image would sit on thirds.</div>
+        </div>
+
+        <h2 id="mistakes">Common mistakes</h2>
+        <ul>
+          <li>
+            <strong>Expecting a dramatic difference from thirds.</strong> It's a subtle refinement, not a
+            different composition. If you're waiting for it to transform a picture, you'll be disappointed —
+            it's a nudge, not a lever.
+          </li>
+          <li>
+            <strong>Believing the mythology (see below).</strong> The golden section is a fine grid to
+            compose with; it is not a magic proportion that guarantees beauty or that secretly underlies
+            every masterpiece.
+          </li>
+          <li>
+            <strong>Using it as a full structural system.</strong> It's a focal-point grid. For work that
+            needs its whole internal scaffolding to relate, that's dynamic symmetry's job, not the section
+            grid's.
+          </li>
+          <li>
+            <strong>Centering by default anyway.</strong> The whole point is the off-center placement.
+            Commit to a line.
+          </li>
+        </ul>
+
+        <h2 id="history">A short history</h2>
+        <p>
+          The ratio itself is ancient mathematics — Euclid described the "extreme and mean ratio" around
+          300 BCE — and it appears genuinely in nature, from leaf arrangements to shell growth. Its
+          reputation in art, though, is a more complicated and more recent story, and it's worth being
+          honest about.
+        </p>
+        <p>
+          Much of the popular lore — that the Parthenon, the pyramids, and the Mona Lisa were all
+          deliberately built on the golden ratio — took hold in the 19th century and doesn't hold up well
+          under scrutiny. The "golden rectangle" over the Parthenon only appears if you choose which points
+          to measure from; there's no documentary evidence Leonardo used φ; and the ancient Greeks left no
+          record of tying the ratio to architecture at all. You can "find" the golden ratio in almost any
+          image if you're free to pick your measuring points.
+        </p>
+        <p>
+          None of that makes it useless as a compositional tool. It remains a genuinely pleasant,
+          proportionate way to divide a rectangle, and plenty of artists compose with it on purpose to good
+          effect. The honest position sits in the middle: real and elegant mathematics, a useful grid to
+          compose with, and a mythology that got wildly oversold. Use it because it helps you make a
+          decision — not because it certifies your work as objectively beautiful.
+        </p>
+
+        <aside class="callout-pro">
+          <span class="callout-label">For the experienced</span>
+          <p>
+            This is the same debate that surrounds <a href="/learn/dynamic-symmetry">dynamic symmetry</a>
+            and Jay Hambidge's claims about Greek design. The pattern repeats across composition history: a
+            real mathematical tool acquires a romantic origin story that outruns the evidence. Worth knowing
+            so you can use the tool without buying the legend.
+          </p>
+        </aside>
+
+        <h2 id="faq">Frequently asked questions</h2>
+        <div class="faq">
+          <details>
+            <summary>What is the golden section in composition?</summary>
+            <div class="faq-answer">
+              <p>
+                It's a way of dividing the picture using the golden ratio (about 1.618), placing two
+                vertical and two horizontal lines at roughly 0.382 and 0.618 across each axis. Focal points
+                placed on the resulting intersections feel balanced and classically proportioned.
+              </p>
+            </div>
+          </details>
+          <details>
+            <summary>What's the difference between the golden section and the rule of thirds?</summary>
+            <div class="faq-answer">
+              <p>
+                The golden section's lines sit slightly closer to the center — about 0.382/0.618 versus the
+                thirds' 0.333/0.667. The golden section reads as calmer and more classical; thirds reads as
+                more dynamic and open. They're close cousins, and many artists use them interchangeably. See
+                the <a href="/how-to/rule-of-thirds">rule of thirds guide</a> for its side of the story.
+              </p>
+            </div>
+          </details>
+          <details>
+            <summary>Does the golden ratio really appear in famous paintings?</summary>
+            <div class="faq-answer">
+              <p>
+                Less often than the popular story claims. Many well-known examples only "work" if you
+                cherry-pick which points to measure. The ratio is real mathematics and a useful grid, but
+                its supposed presence in the Parthenon, the Mona Lisa, and the like is largely retrospective
+                myth-making.
+              </p>
+            </div>
+          </details>
+          <details>
+            <summary>Should I use the golden section or dynamic symmetry?</summary>
+            <div class="faq-answer">
+              <p>
+                The golden section is a focal-point grid — quick to apply, great for placement. Dynamic
+                symmetry is a full structural system whose divisions respond to your rectangle's specific
+                proportions. Use the section for placing a subject; reach for
+                <a href="/learn/dynamic-symmetry">dynamic symmetry</a> when you want the whole composition
+                internally related.
+              </p>
+            </div>
+          </details>
+        </div>
+
+        <aside class="author-bio">
+          <img class="author-avatar" src="/composition-armatures/jon-avatar.jpg" alt="Jon — painter and product designer" width="56" height="56" loading="lazy" />
+          <div class="author-bio-body">
+            <p class="author-bio-label">About the author</p>
+            <p>
+              Jon is a painter and product designer. In watercolor he chases atmosphere, impressions of
+              cities, landscapes, and figures. Chasing the essence of a place and time. In software he
+              seeks to uncover clarity. Armatures is where the two meet.
+            </p>
+            <p class="author-bio-link">
+              <a href="https://jonhanson.art" target="_blank" rel="noopener">jonhanson.art →</a>
+            </p>
+          </div>
+        </aside>
+
+        <nav class="prev-next" aria-label="More armatures">
+          <a class="pn-prev" href="/how-to/rule-of-thirds">
+            <span class="pn-label">←</span>
+            The rule of thirds
+          </a>
+          <a class="pn-next" href="/learn/golden-triangle">
+            <span class="pn-label">Next →</span>
+            The golden triangle
+          </a>
+        </nav>
+
+        <div class="cta">
+          <h2>See it on your own work</h2>
+          <p>Open the golden section in Armatures, and toggle thirds alongside it to feel the difference — free, in your browser.</p>
+          <a class="cta-btn" href="/">Open the golden section in Armatures →</a>
+        </div>
+      </article>
+    </main>
+
+    <footer>
+      <p>
+        Composition Armatures is a free, browser-based tool for overlaying classic composition grids on
+        your own paintings and photographs. <a href="/">Open the tool →</a>
+      </p>
+    </footer>
+  </body>
+</html>

@@ -566,6 +566,31 @@
 }
 
 /* ---------------------------------------------------------------- */
+/* Export                                                             */
+/* ---------------------------------------------------------------- */
+
+.export-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.export-btn {
+  flex: 0 0 auto;
+  width: 100%;
+  text-align: center;
+}
+
+.export-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.export-btn:disabled:hover {
+  border-color: var(--border);
+}
+
+/* ---------------------------------------------------------------- */
 /* Crop                                                               */
 /* ---------------------------------------------------------------- */
 

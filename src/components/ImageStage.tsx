@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useImageBox } from '../hooks/useImageBox';
 import { useCropViewport } from '../hooks/useCropViewport';
 import type { NaturalSize } from '../hooks/useNaturalSize';
@@ -20,6 +20,9 @@ interface ImageStageProps {
   draftCrop: CropRect;
   onDraftCropChange: (rect: CropRect) => void;
   natural: NaturalSize;
+  /** Reports the on-screen size of the committed overlay box (cropped viewport if a crop is
+   * applied, else the whole image), used as the export's stroke/geometry reference. */
+  onOverlayBoxChange: (box: { width: number; height: number }) => void;
 }
 
 export function ImageStage({
@@ -33,6 +36,7 @@ export function ImageStage({
   draftCrop,
   onDraftCropChange,
   natural,
+  onOverlayBoxChange,
 }: ImageStageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -40,6 +44,17 @@ export function ImageStage({
 
   const showCroppedView = crop !== null && !isCropping;
   const viewport = useCropViewport(containerRef, natural.width, natural.height, crop ?? FULL_CROP, showCroppedView);
+
+  // The overlay box the export should match: the cropped viewport when a crop is committed,
+  // otherwise the whole rendered image. Reported up so the download can reproduce the exact
+  // on-screen line weight at full resolution.
+  const overlayBoxWidth = showCroppedView ? viewport.viewportWidth : box.width;
+  const overlayBoxHeight = showCroppedView ? viewport.viewportHeight : box.height;
+  useEffect(() => {
+    if (overlayBoxWidth > 0 && overlayBoxHeight > 0) {
+      onOverlayBoxChange({ width: overlayBoxWidth, height: overlayBoxHeight });
+    }
+  }, [overlayBoxWidth, overlayBoxHeight, onOverlayBoxChange]);
 
   const imgStyle = grayscale > 0 ? { filter: `grayscale(${grayscale}%)` } : undefined;
 

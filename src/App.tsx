@@ -8,6 +8,8 @@ import { createDefaultOverlay, FULL_CROP, OVERLAY_DEFS, SPIRAL_FAMILY } from './
 import type { CropRect, OverlayState, OverlayType } from './types';
 import { isSpiralViable } from './geometry/goldenSpiral';
 import { convertHeicToJpeg, isHeic } from './utils/heic';
+import { downloadBlob, renderExportBlob } from './utils/exportImage';
+import type { ExportMode } from './utils/exportImage';
 import './App.css';
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
   const [isCropping, setIsCropping] = useState(false);
   const [draftCrop, setDraftCrop] = useState<CropRect>(FULL_CROP);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [overlayBox, setOverlayBox] = useState({ width: 0, height: 0 });
+  const [isExporting, setIsExporting] = useState(false);
   const objectUrlRef = useRef<string | null>(null);
   const natural = useNaturalSize(imageUrl);
 
@@ -114,6 +118,31 @@ function App() {
     setIsCropping(false);
   }, []);
 
+  const handleDownload = useCallback(
+    async (mode: ExportMode) => {
+      if (!imageUrl || natural.width === 0 || isExporting) return;
+      setIsExporting(true);
+      try {
+        const blob = await renderExportBlob({
+          mode,
+          imageUrl,
+          natural,
+          crop,
+          grayscale,
+          overlays,
+          displayBox: overlayBox,
+        });
+        downloadBlob(blob, mode === 'overlay' ? 'armatures-overlay.png' : 'armatures-image.png');
+        track('image_downloaded', { mode });
+      } catch (err) {
+        console.error('Export failed', err);
+      } finally {
+        setIsExporting(false);
+      }
+    },
+    [imageUrl, natural, crop, grayscale, overlays, overlayBox, isExporting],
+  );
+
   return (
     <div className="app">
       <header className="app-header">
@@ -166,6 +195,7 @@ function App() {
           draftCrop={draftCrop}
           onDraftCropChange={setDraftCrop}
           natural={natural}
+          onOverlayBoxChange={setOverlayBox}
         />
         <ControlPanel
           hasImage={imageUrl !== null}
@@ -185,6 +215,8 @@ function App() {
           onApplyCrop={handleApplyCrop}
           onCancelCrop={handleCancelCrop}
           onResetCrop={handleResetCrop}
+          onDownload={handleDownload}
+          isExporting={isExporting}
         />
       </div>
       <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />

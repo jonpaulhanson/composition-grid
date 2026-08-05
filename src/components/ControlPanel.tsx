@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { OVERLAY_DEFS, OVERLAY_GROUPS, SPIRAL_FAMILY } from '../types';
 import type { OverlayState, OverlayType } from '../types';
 import { SPIRAL_MAX_ASPECT_RATIO } from '../geometry/goldenSpiral';
+import type { ExportMode } from '../utils/exportImage';
 import { OverlayControls } from './OverlayControls';
 import { Dropzone } from './Dropzone';
 
@@ -28,6 +29,8 @@ interface ControlPanelProps {
   onApplyCrop: () => void;
   onCancelCrop: () => void;
   onResetCrop: () => void;
+  onDownload: (mode: ExportMode) => void;
+  isExporting: boolean;
 }
 
 export function ControlPanel({
@@ -48,6 +51,8 @@ export function ControlPanel({
   onApplyCrop,
   onCancelCrop,
   onResetCrop,
+  onDownload,
+  isExporting,
 }: ControlPanelProps) {
   const activeTypes = new Set(overlays.map((o) => o.type));
   const overlayByType = new Map(overlays.map((o) => [o.type, o]));
@@ -218,6 +223,33 @@ export function ControlPanel({
           })}
         </div>
       </div>
+
+      {hasImage && (
+        <div className="control-section">
+          <h2 className="control-section-title">Export</h2>
+          <div className="export-controls">
+            <button
+              type="button"
+              className="btn-secondary export-btn"
+              onClick={() => onDownload('composite')}
+              disabled={isCropping || isExporting}
+            >
+              {isExporting ? 'Preparing…' : 'Download image + overlays'}
+            </button>
+            <button
+              type="button"
+              className="btn-secondary export-btn"
+              onClick={() => onDownload('overlay')}
+              disabled={isCropping || isExporting || overlays.length === 0}
+            >
+              Download overlays only (transparent PNG)
+            </button>
+          </div>
+          <p className="control-hint">
+            Saved at your image's full resolution. Apply your crop first to export just that region.
+          </p>
+        </div>
+      )}
 
       <div className="control-section">
         <button type="button" className="btn-reset" onClick={onResetAll} disabled={overlays.length === 0}>

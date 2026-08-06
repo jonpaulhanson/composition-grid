@@ -8,7 +8,7 @@ import { createDefaultOverlay, FULL_CROP, OVERLAY_DEFS, SPIRAL_FAMILY } from './
 import type { CropRect, OverlayState, OverlayType } from './types';
 import { isSpiralViable } from './geometry/goldenSpiral';
 import { convertHeicToJpeg, isHeic } from './utils/heic';
-import { downloadBlob, renderExportBlob } from './utils/exportImage';
+import { buildExportFilename, downloadBlob, renderExportBlob } from './utils/exportImage';
 import type { ExportMode } from './utils/exportImage';
 import './App.css';
 
@@ -132,7 +132,7 @@ function App() {
           overlays,
           displayBox: overlayBox,
         });
-        downloadBlob(blob, mode === 'overlay' ? 'armatures-overlay.png' : 'armatures-image.png');
+        downloadBlob(blob, buildExportFilename(mode, overlays));
         track('image_downloaded', { mode });
       } catch (err) {
         console.error('Export failed', err);

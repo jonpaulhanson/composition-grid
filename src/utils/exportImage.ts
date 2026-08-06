@@ -1,7 +1,32 @@
 import { buildOverlayGeometry, computeBounds } from '../geometry';
+import { OVERLAY_DEFS } from '../types';
 import type { CropRect, OverlayState } from '../types';
 
 export type ExportMode = 'composite' | 'overlay';
+
+const OVERLAY_SLUGS = new Map(
+  OVERLAY_DEFS.map((d) => [d.type, d.label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')]),
+);
+
+function timestamp(date = new Date()): string {
+  const p = (n: number) => String(n).padStart(2, '0');
+  return (
+    `${date.getFullYear()}${p(date.getMonth() + 1)}${p(date.getDate())}` +
+    `-${p(date.getHours())}${p(date.getMinutes())}${p(date.getSeconds())}`
+  );
+}
+
+/** A descriptive download name: the overlays in play (up to three, else a count) plus a local
+ * timestamp — e.g. `armatures-rule-of-thirds-golden-spiral-20260805-143205.png`, or with an
+ * `-overlay` marker for the transparent version. */
+export function buildExportFilename(mode: ExportMode, overlays: OverlayState[]): string {
+  const slugs = overlays.map((o) => OVERLAY_SLUGS.get(o.type)).filter((s): s is string => Boolean(s));
+  let names = '';
+  if (slugs.length > 0 && slugs.length <= 3) names = slugs.join('-');
+  else if (slugs.length > 3) names = `${slugs.length}-overlays`;
+  const parts = ['armatures', names, mode === 'overlay' ? 'overlay' : '', timestamp()].filter(Boolean);
+  return `${parts.join('-')}.png`;
+}
 
 export interface DisplayBox {
   width: number;

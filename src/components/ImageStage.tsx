@@ -8,13 +8,15 @@ import { CropEditor } from './CropEditor';
 import { FULL_CROP, SPIRAL_FAMILY } from '../types';
 import type { CropRect, OverlayState } from '../types';
 import { isSpiralViable } from '../geometry/goldenSpiral';
+import { buildValueFilter } from '../utils/imageFilter';
+import type { ValueStudy } from '../utils/imageFilter';
 
 interface ImageStageProps {
   imageUrl: string | null;
   overlays: OverlayState[];
   onFileSelected: (file: File) => void;
   isConverting: boolean;
-  grayscale: number;
+  valueStudy: ValueStudy;
   crop: CropRect | null;
   isCropping: boolean;
   draftCrop: CropRect;
@@ -30,7 +32,7 @@ export function ImageStage({
   overlays,
   onFileSelected,
   isConverting,
-  grayscale,
+  valueStudy,
   crop,
   isCropping,
   draftCrop,
@@ -56,7 +58,11 @@ export function ImageStage({
     }
   }, [overlayBoxWidth, overlayBoxHeight, onOverlayBoxChange]);
 
-  const imgStyle = grayscale > 0 ? { filter: `grayscale(${grayscale}%)` } : undefined;
+  // A notan's blur is measured in pixels, so it's derived from the on-screen box width —
+  // that keeps the masses the same proportion of the picture as the window (and with it the
+  // rendered image) resizes, and matches how the export derives it from the output width.
+  const valueFilter = buildValueFilter(valueStudy, overlayBoxWidth);
+  const imgStyle = valueFilter ? { filter: valueFilter } : undefined;
 
   // While cropping, an active spiral overlay is hidden from the live preview once the draft
   // crop passes the viable ratio (CropEditor filters it out). Call that out in-canvas so it

@@ -3,10 +3,17 @@ import { OVERLAY_DEFS, OVERLAY_GROUPS, SPIRAL_FAMILY } from '../types';
 import type { OverlayState, OverlayType } from '../types';
 import { SPIRAL_MAX_ASPECT_RATIO } from '../geometry/goldenSpiral';
 import type { ExportMode } from '../utils/exportImage';
+import type { ValueStudy } from '../utils/imageFilter';
 import { OverlayControls } from './OverlayControls';
 import { Dropzone } from './Dropzone';
 
 const OVERLAY_LABELS = new Map(OVERLAY_DEFS.map((d) => [d.type, d.label]));
+
+const VALUE_MODES = [
+  { mode: 'off', label: 'Off' },
+  { mode: 'grayscale', label: 'Grayscale' },
+  { mode: 'notan', label: 'Notan' },
+] as const;
 
 interface ControlPanelProps {
   hasImage: boolean;
@@ -21,8 +28,8 @@ interface ControlPanelProps {
   onResetAll: () => void;
   isConverting: boolean;
   conversionError: string | null;
-  grayscale: number;
-  onGrayscaleChange: (value: number) => void;
+  valueStudy: ValueStudy;
+  onValueStudyChange: (patch: Partial<ValueStudy>) => void;
   hasCrop: boolean;
   isCropping: boolean;
   onStartCrop: () => void;
@@ -43,8 +50,8 @@ export function ControlPanel({
   onResetAll,
   isConverting,
   conversionError,
-  grayscale,
-  onGrayscaleChange,
+  valueStudy,
+  onValueStudyChange,
   hasCrop,
   isCropping,
   onStartCrop,
@@ -84,17 +91,61 @@ export function ControlPanel({
         )}
         {conversionError && <p className="control-error">{conversionError}</p>}
         {hasImage && (
-          <label className="slider-label">
-            Grayscale
-            <input
-              type="range"
-              min={0}
-              max={100}
-              step={1}
-              value={grayscale}
-              onChange={(e) => onGrayscaleChange(Number(e.target.value))}
-            />
-          </label>
+          <div className="ctrl-group">
+            <span className="ctrl-group-label">Value study</span>
+            <div className="value-mode-group">
+              {VALUE_MODES.map(({ mode, label }) => (
+                <button
+                  key={mode}
+                  type="button"
+                  className={`ctrl-btn${valueStudy.mode === mode ? ' ctrl-btn--active' : ''}`}
+                  onClick={() => onValueStudyChange({ mode })}
+                  aria-pressed={valueStudy.mode === mode}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            {valueStudy.mode === 'grayscale' && (
+              <label className="slider-label">
+                <span className="slider-label-text">Amount</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  step={1}
+                  value={valueStudy.grayscale}
+                  onChange={(e) => onValueStudyChange({ grayscale: Number(e.target.value) })}
+                />
+              </label>
+            )}
+            {valueStudy.mode === 'notan' && (
+              <>
+                <label className="slider-label">
+                  <span className="slider-label-text">Threshold</span>
+                  <input
+                    type="range"
+                    min={10}
+                    max={90}
+                    step={1}
+                    value={valueStudy.threshold}
+                    onChange={(e) => onValueStudyChange({ threshold: Number(e.target.value) })}
+                  />
+                </label>
+                <label className="slider-label">
+                  <span className="slider-label-text">Simplify</span>
+                  <input
+                    type="range"
+                    min={0}
+                    max={4}
+                    step={0.1}
+                    value={valueStudy.simplify}
+                    onChange={(e) => onValueStudyChange({ simplify: Number(e.target.value) })}
+                  />
+                </label>
+              </>
+            )}
+          </div>
         )}
         {hasImage && (
           <div className="crop-controls">

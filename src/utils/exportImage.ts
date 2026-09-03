@@ -1,6 +1,8 @@
 import { buildOverlayGeometry, computeBounds } from '../geometry';
 import { OVERLAY_DEFS } from '../types';
 import type { CropRect, OverlayState } from '../types';
+import { buildValueFilter } from './imageFilter';
+import type { ValueMode, ValueStudy } from './imageFilter';
 
 export type ExportMode = 'composite' | 'overlay';
 
@@ -19,12 +21,22 @@ function timestamp(date = new Date()): string {
 /** A descriptive download name: the overlays in play (up to three, else a count) plus a local
  * timestamp — e.g. `armatures-rule-of-thirds-golden-spiral-20260805-143205.png`, or with an
  * `-overlay` marker for the transparent version. */
-export function buildExportFilename(mode: ExportMode, overlays: OverlayState[]): string {
+export function buildExportFilename(
+  mode: ExportMode,
+  overlays: OverlayState[],
+  valueMode: ValueMode = 'off',
+): string {
   const slugs = overlays.map((o) => OVERLAY_SLUGS.get(o.type)).filter((s): s is string => Boolean(s));
   let names = '';
   if (slugs.length > 0 && slugs.length <= 3) names = slugs.join('-');
   else if (slugs.length > 3) names = `${slugs.length}-overlays`;
-  const parts = ['armatures', names, mode === 'overlay' ? 'overlay' : '', timestamp()].filter(Boolean);
+  const parts = [
+    'armatures',
+    names,
+    valueMode === 'notan' ? 'notan' : '',
+    mode === 'overlay' ? 'overlay' : '',
+    timestamp(),
+  ].filter(Boolean);
   return `${parts.join('-')}.png`;
 }
 
@@ -40,7 +52,7 @@ export interface ExportOptions {
   natural: { width: number; height: number };
   /** Active crop as normalized fractions, or null for the full frame. */
   crop: CropRect | null;
-  grayscale: number;
+  valueStudy: ValueStudy;
   overlays: OverlayState[];
   /** The on-screen rendered size of the overlay box, used as the geometry/stroke reference so
    * the exported line weight matches what the user sees regardless of output resolution. */
@@ -123,10 +135,10 @@ async function rasterizeSvg(markup: string): Promise<HTMLImageElement> {
 }
 
 /** Render the requested export to a PNG blob. For 'composite' the source image is drawn first
- * (honoring the crop + grayscale the user is viewing), then the overlays on top; for 'overlay'
+ * (honoring the crop + value study the user is viewing), then the overlays on top; for 'overlay'
  * only the overlays are drawn, leaving a transparent background. */
 export async function renderExportBlob(opts: ExportOptions): Promise<Blob> {
-  const { mode, imageUrl, natural, crop, grayscale, overlays, displayBox } = opts;
+  const { mode, imageUrl, natural, crop, valueStudy, overlays, displayBox } = opts;
 
   const cropX = crop?.x ?? 0;
   const cropY = crop?.y ?? 0;
@@ -143,7 +155,10 @@ export async function renderExportBlob(opts: ExportOptions): Promise<Blob> {
 
   if (mode === 'composite') {
     const src = await loadImage(imageUrl);
-    if (grayscale > 0) ctx.filter = `grayscale(${grayscale}%)`;
+    // Derived from the output width so the notan's blur stays the same proportion of the
+    // picture as it is on screen.
+    const filter = buildValueFilter(valueStudy, outW);
+    if (filter) ctx.filter = filter;
     ctx.drawImage(
       src,
       cropX * natural.width,

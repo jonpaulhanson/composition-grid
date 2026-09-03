@@ -502,6 +502,17 @@
   gap: 6px;
 }
 
+/* Segmented Off / Grayscale / Notan switch — equal-width so it reads as one control. */
+.value-mode-group {
+  display: flex;
+  gap: 6px;
+}
+
+.value-mode-group .ctrl-btn {
+  flex: 1 1 0;
+  padding: 0 8px;
+}
+
 .swatch-group {
   display: flex;
   gap: 12px;

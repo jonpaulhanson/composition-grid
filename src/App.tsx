@@ -10,6 +10,8 @@ import { isSpiralViable } from './geometry/goldenSpiral';
 import { convertHeicToJpeg, isHeic } from './utils/heic';
 import { buildExportFilename, downloadBlob, renderExportBlob } from './utils/exportImage';
 import type { ExportMode } from './utils/exportImage';
+import { DEFAULT_VALUE_STUDY } from './utils/imageFilter';
+import type { ValueStudy } from './utils/imageFilter';
 import './App.css';
 
 function App() {
@@ -17,7 +19,7 @@ function App() {
   const [overlays, setOverlays] = useState<OverlayState[]>([]);
   const [isConverting, setIsConverting] = useState(false);
   const [conversionError, setConversionError] = useState<string | null>(null);
-  const [grayscale, setGrayscale] = useState(0);
+  const [valueStudy, setValueStudy] = useState<ValueStudy>(DEFAULT_VALUE_STUDY);
   const [crop, setCrop] = useState<CropRect | null>(null);
   const [isCropping, setIsCropping] = useState(false);
   const [draftCrop, setDraftCrop] = useState<CropRect>(FULL_CROP);
@@ -98,6 +100,10 @@ function App() {
     setOverlays([]);
   }, []);
 
+  const handleValueStudyChange = useCallback((patch: Partial<ValueStudy>) => {
+    setValueStudy((prev) => ({ ...prev, ...patch }));
+  }, []);
+
   const handleStartCrop = useCallback(() => {
     setDraftCrop(crop ?? FULL_CROP);
     setIsCropping(true);
@@ -128,11 +134,11 @@ function App() {
           imageUrl,
           natural,
           crop,
-          grayscale,
+          valueStudy,
           overlays,
           displayBox: overlayBox,
         });
-        downloadBlob(blob, buildExportFilename(mode, overlays));
+        downloadBlob(blob, buildExportFilename(mode, overlays, valueStudy.mode));
         track('image_downloaded', { mode });
       } catch (err) {
         console.error('Export failed', err);
@@ -140,7 +146,7 @@ function App() {
         setIsExporting(false);
       }
     },
-    [imageUrl, natural, crop, grayscale, overlays, overlayBox, isExporting],
+    [imageUrl, natural, crop, valueStudy, overlays, overlayBox, isExporting],
   );
 
   return (
@@ -189,7 +195,7 @@ function App() {
           overlays={overlays}
           onFileSelected={handleFileSelected}
           isConverting={isConverting}
-          grayscale={grayscale}
+          valueStudy={valueStudy}
           crop={crop}
           isCropping={isCropping}
           draftCrop={draftCrop}
@@ -207,8 +213,8 @@ function App() {
           onResetAll={handleResetAll}
           isConverting={isConverting}
           conversionError={conversionError}
-          grayscale={grayscale}
-          onGrayscaleChange={setGrayscale}
+          valueStudy={valueStudy}
+          onValueStudyChange={handleValueStudyChange}
           hasCrop={crop !== null}
           isCropping={isCropping}
           onStartCrop={handleStartCrop}

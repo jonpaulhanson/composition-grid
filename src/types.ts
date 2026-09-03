@@ -99,6 +99,9 @@ export function createDefaultOverlay(type: OverlayType): OverlayState {
     opacity: 1.00,
     strokeWidth: 2.75, // midpoint of the 0.5-5 thickness slider range
     multiplicity: 1,
-    showSquares: false,
+    // The nested squares are the construction the spiral is drawn from, so showing them by
+    // default makes the golden spiral read as geometry rather than a bare curve. Inert for
+    // every other overlay, which never draws squares.
+    showSquares: type === 'goldenSpiral',
   };
 }

@@ -1,7 +1,7 @@
 import { buildOverlayGeometry, computeBounds } from '../geometry';
 import { OVERLAY_DEFS } from '../types';
 import type { CropRect, OverlayState } from '../types';
-import { buildValueFilter, valueBlurPx } from './imageFilter';
+import { buildValueToneFilter, posterizeLut, valueBlurPx } from './imageFilter';
 import type { ValueMode, ValueStudy } from './imageFilter';
 
 export type ExportMode = 'composite' | 'overlay';
@@ -24,7 +24,7 @@ function timestamp(date = new Date()): string {
 export function buildExportFilename(
   mode: ExportMode,
   overlays: OverlayState[],
-  valueMode: ValueMode = 'off',
+  valueStudy?: { mode: ValueMode; values: number },
 ): string {
   const slugs = overlays.map((o) => OVERLAY_SLUGS.get(o.type)).filter((s): s is string => Boolean(s));
   let names = '';
@@ -33,7 +33,7 @@ export function buildExportFilename(
   const parts = [
     'armatures',
     names,
-    valueMode === 'notan' ? 'notan' : '',
+    valueStudy?.mode === 'notan' ? (valueStudy.values > 2 ? `notan-${valueStudy.values}` : 'notan') : '',
     mode === 'overlay' ? 'overlay' : '',
     timestamp(),
   ].filter(Boolean);
@@ -160,8 +160,10 @@ export async function renderExportBlob(opts: ExportOptions): Promise<Blob> {
     const srcW = natural.width * cropW;
     const srcH = natural.height * cropH;
     // Derived from the output width so the notan's blur stays the same proportion of the
-    // picture as it is on screen.
-    const filter = buildValueFilter(valueStudy, outW);
+    // picture as it is on screen. Only the tonal steps go through the canvas filter — the
+    // posterizing is a pixel pass below, since a canvas filter can't reliably reference the
+    // SVG filter the preview uses.
+    const filter = buildValueToneFilter(valueStudy, outW);
     const blur = valueBlurPx(valueStudy, outW);
 
     if (filter && blur > 0) {
@@ -190,6 +192,20 @@ export async function renderExportBlob(opts: ExportOptions): Promise<Blob> {
       ctx.drawImage(src, srcX, srcY, srcW, srcH, 0, 0, outW, outH);
     }
     ctx.filter = 'none';
+
+    if (valueStudy.mode === 'notan') {
+      // Flatten to the chosen number of tones, using the same posterization the preview's SVG
+      // filter applies. Runs before the overlays are drawn so the grid lines stay untouched.
+      const lut = posterizeLut(valueStudy.values);
+      const pixels = ctx.getImageData(0, 0, outW, outH);
+      const data = pixels.data;
+      for (let i = 0; i < data.length; i += 4) {
+        data[i] = lut[data[i]];
+        data[i + 1] = lut[data[i + 1]];
+        data[i + 2] = lut[data[i + 2]];
+      }
+      ctx.putImageData(pixels, 0, 0);
+    }
   }
 
   if (overlays.length > 0 && displayBox.width > 0 && displayBox.height > 0) {

@@ -3,8 +3,8 @@ import { OVERLAY_DEFS, OVERLAY_GROUPS, SPIRAL_FAMILY } from '../types';
 import type { OverlayState, OverlayType } from '../types';
 import { SPIRAL_MAX_ASPECT_RATIO } from '../geometry/goldenSpiral';
 import type { ExportMode } from '../utils/exportImage';
-import { SIMPLIFY_MAX, SIMPLIFY_STEP } from '../utils/imageFilter';
-import type { ValueStudy } from '../utils/imageFilter';
+import { SIMPLIFY_MAX, SIMPLIFY_STEP, VALUE_LEVELS } from '../utils/imageFilter';
+import type { ValueLevels, ValueStudy } from '../utils/imageFilter';
 import { OverlayControls } from './OverlayControls';
 import { Dropzone } from './Dropzone';
 
@@ -122,6 +122,20 @@ export function ControlPanel({
             )}
             {valueStudy.mode === 'notan' && (
               <>
+                <label className="slider-label">
+                  <span className="slider-label-text">Values</span>
+                  <input
+                    type="range"
+                    min={VALUE_LEVELS[0]}
+                    max={VALUE_LEVELS[VALUE_LEVELS.length - 1]}
+                    step={1}
+                    value={valueStudy.values}
+                    onChange={(e) =>
+                      onValueStudyChange({ values: Number(e.target.value) as ValueLevels })
+                    }
+                  />
+                  <span className="slider-value">{valueStudy.values}</span>
+                </label>
                 <label className="slider-label">
                   <span className="slider-label-text">Threshold</span>
                   <input

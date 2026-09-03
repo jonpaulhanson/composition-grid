@@ -555,6 +555,15 @@
   flex: 1;
 }
 
+/* Current value for sliders whose exact stop matters (e.g. a 2-4 tone count). */
+.slider-value {
+  flex: 0 0 auto;
+  min-width: 12px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
 .btn-reset {
   cursor: pointer;
   width: 100%;

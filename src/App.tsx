@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ImageStage } from './components/ImageStage';
 import { ControlPanel } from './components/ControlPanel';
 import { FeedbackModal } from './components/FeedbackModal';
+import { ValueFilterDefs } from './components/ValueFilterDefs';
 import { track } from '@vercel/analytics';
 import { useNaturalSize } from './hooks/useNaturalSize';
 import { createDefaultOverlay, FULL_CROP, OVERLAY_DEFS, SPIRAL_FAMILY } from './types';
@@ -138,7 +139,7 @@ function App() {
           overlays,
           displayBox: overlayBox,
         });
-        downloadBlob(blob, buildExportFilename(mode, overlays, valueStudy.mode));
+        downloadBlob(blob, buildExportFilename(mode, overlays, valueStudy));
         track('image_downloaded', { mode });
       } catch (err) {
         console.error('Export failed', err);
@@ -226,6 +227,7 @@ function App() {
         />
       </div>
       <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
+      <ValueFilterDefs />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { buildOverlayGeometry, computeBounds } from '../geometry';
 import { OVERLAY_DEFS } from '../types';
 import type { CropRect, OverlayState } from '../types';
-import { buildValueFilter } from './imageFilter';
+import { buildValueFilter, valueBlurPx } from './imageFilter';
 import type { ValueMode, ValueStudy } from './imageFilter';
 
 export type ExportMode = 'composite' | 'overlay';
@@ -155,21 +155,40 @@ export async function renderExportBlob(opts: ExportOptions): Promise<Blob> {
 
   if (mode === 'composite') {
     const src = await loadImage(imageUrl);
+    const srcX = cropX * natural.width;
+    const srcY = cropY * natural.height;
+    const srcW = natural.width * cropW;
+    const srcH = natural.height * cropH;
     // Derived from the output width so the notan's blur stays the same proportion of the
     // picture as it is on screen.
     const filter = buildValueFilter(valueStudy, outW);
-    if (filter) ctx.filter = filter;
-    ctx.drawImage(
-      src,
-      cropX * natural.width,
-      cropY * natural.height,
-      natural.width * cropW,
-      natural.height * cropH,
-      0,
-      0,
-      outW,
-      outH,
-    );
+    const blur = valueBlurPx(valueStudy, outW);
+
+    if (filter && blur > 0) {
+      // A blur samples past the picture's edges, where there is nothing — which would fade
+      // the border to transparent and, once thresholded, leave a halo. Render onto a canvas
+      // whose margins repeat the edge pixels, blur that, and let the margin fall outside the
+      // output. A gaussian is spent by ~3 radii, so that's how wide the margin needs to be.
+      const margin = Math.ceil(blur * 3);
+      const padded = document.createElement('canvas');
+      padded.width = outW + margin * 2;
+      padded.height = outH + margin * 2;
+      const pctx = padded.getContext('2d');
+      if (!pctx) throw new Error('Canvas is not supported in this browser');
+      pctx.drawImage(src, srcX, srcY, srcW, srcH, margin, margin, outW, outH);
+      // Stretch the outermost row/column of the drawn picture out into each margin.
+      pctx.drawImage(padded, margin, margin, outW, 1, margin, 0, outW, margin);
+      pctx.drawImage(padded, margin, margin + outH - 1, outW, 1, margin, margin + outH, outW, margin);
+      pctx.drawImage(padded, margin, 0, 1, padded.height, 0, 0, margin, padded.height);
+      pctx.drawImage(padded, margin + outW - 1, 0, 1, padded.height, margin + outW, 0, margin, padded.height);
+      // Drawn whole (not via a source rect, which would crop the padding away before the
+      // filter ran) and offset so the margin lands outside the canvas.
+      ctx.filter = filter;
+      ctx.drawImage(padded, -margin, -margin);
+    } else {
+      if (filter) ctx.filter = filter;
+      ctx.drawImage(src, srcX, srcY, srcW, srcH, 0, 0, outW, outH);
+    }
     ctx.filter = 'none';
   }
 

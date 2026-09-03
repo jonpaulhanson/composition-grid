@@ -38,6 +38,11 @@ export const DEFAULT_VALUE_STUDY: ValueStudy = {
  * measured in pixels, so it has to be derived from that width to stay the same *proportion*
  * of the picture at any resolution.
  */
+export function valueBlurPx(study: ValueStudy, referenceWidth: number): number {
+  if (study.mode !== 'notan') return 0;
+  return Math.max(0, (study.simplify / 100) * referenceWidth);
+}
+
 export function buildValueFilter(study: ValueStudy, referenceWidth: number): string | undefined {
   if (study.mode === 'grayscale') {
     return study.grayscale > 0 ? `grayscale(${study.grayscale}%)` : undefined;
@@ -47,7 +52,7 @@ export function buildValueFilter(study: ValueStudy, referenceWidth: number): str
     // Clamped away from 0/100, where the brightness multiplier would blow up or flatten the
     // picture to a single value.
     const threshold = Math.min(Math.max(study.threshold, 1), 99) / 100;
-    const blur = Math.max(0, (study.simplify / 100) * referenceWidth);
+    const blur = valueBlurPx(study, referenceWidth);
     // grayscale() reduces to true luminance; blur() groups detail into masses; brightness()
     // slides the split point (luminance crosses 0.5 exactly at `threshold`); and the extreme
     // contrast() snaps everything either side of that to black or white.

@@ -11,15 +11,21 @@ export interface ValueStudy {
   threshold: number;
   /** Blur applied *before* thresholding, which collapses fine detail into readable masses —
    * without it a notan comes out as speckle rather than shapes. Expressed as a percentage of
-   * the picture's width so it stays proportional at any preview or export size. */
+   * the picture's width so it stays proportional at any preview or export size. The useful
+   * range is small (see SIMPLIFY_MAX): past a fraction of a percent the masses stop following
+   * the picture's actual shapes and turn into blobs. */
   simplify: number;
 }
+
+/** Slider bounds for `simplify`, in percent of picture width. */
+export const SIMPLIFY_MAX = 0.25;
+export const SIMPLIFY_STEP = 0.005;
 
 export const DEFAULT_VALUE_STUDY: ValueStudy = {
   mode: 'off',
   grayscale: 100,
   threshold: 50,
-  simplify: 1.5,
+  simplify: 0.1,
 };
 
 /**

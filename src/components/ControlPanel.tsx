@@ -3,6 +3,7 @@ import { OVERLAY_DEFS, OVERLAY_GROUPS, SPIRAL_FAMILY } from '../types';
 import type { OverlayState, OverlayType } from '../types';
 import { SPIRAL_MAX_ASPECT_RATIO } from '../geometry/goldenSpiral';
 import type { ExportMode } from '../utils/exportImage';
+import { SIMPLIFY_MAX, SIMPLIFY_STEP } from '../utils/imageFilter';
 import type { ValueStudy } from '../utils/imageFilter';
 import { OverlayControls } from './OverlayControls';
 import { Dropzone } from './Dropzone';
@@ -137,8 +138,8 @@ export function ControlPanel({
                   <input
                     type="range"
                     min={0}
-                    max={4}
-                    step={0.1}
+                    max={SIMPLIFY_MAX}
+                    step={SIMPLIFY_STEP}
                     value={valueStudy.simplify}
                     onChange={(e) => onValueStudyChange({ simplify: Number(e.target.value) })}
                   />

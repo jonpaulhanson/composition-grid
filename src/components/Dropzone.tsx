@@ -134,8 +134,8 @@ export function Dropzone({ onFileSelected, variant = 'full' }: DropzoneProps) {
           <circle cx="8.75" cy="8.75" r="1.75" />
           <path d="M21 14.5 16.5 10 5 21" />
         </svg>
-        <p className="dropzone-title">Drop a picture in</p>
-        <p className="dropzone-subtitle">Let’s see what it’s built on.</p>
+        <p className="dropzone-title">Let’s find the bones.</p>
+        <p className="dropzone-subtitle">Drop, browse, or paste a picture.</p>
         <div className="dropzone-actions">
           <button
             type="button"

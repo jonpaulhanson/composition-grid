@@ -29,18 +29,21 @@ export interface OverlayState {
 export interface OverlayDef {
   type: OverlayType;
   label: string;
+  /** Why you'd reach for this one, in a line. The picker shows a thumbnail of the actual
+   * geometry alongside, so this doesn't need to describe the shape. */
+  description: string;
 }
 
 export const OVERLAY_DEFS: OverlayDef[] = [
-  { type: 'thirds', label: 'Rule of Thirds' },
-  { type: 'goldenSection', label: 'Golden Section' },
-  { type: 'goldenTriangle', label: 'Golden Triangle' },
-  { type: 'harmoniousTriangle', label: 'Harmonious Triangle' },
-  { type: 'goldenSpiral', label: 'Golden Spiral' },
-  { type: 'spiralCircles', label: 'Golden Circles' },
-  { type: 'spiralDiagonal', label: 'Diagonal Spiral' },
-  { type: 'dynamicSymmetry', label: 'Dynamic Symmetry' },
-  { type: 'harmonicArmature', label: 'Harmonic Armature' },
+  { type: 'thirds', label: 'Rule of Thirds', description: 'The quickest way off dead-center.' },
+  { type: 'goldenSection', label: 'Golden Section', description: 'Like thirds, but nearer the center.' },
+  { type: 'goldenTriangle', label: 'Golden Triangle', description: 'For subjects that run on a diagonal.' },
+  { type: 'harmoniousTriangle', label: 'Harmonious Triangle', description: 'Diagonal, with accents on true thirds.' },
+  { type: 'goldenSpiral', label: 'Golden Spiral', description: 'Nested squares coiling to an eye.' },
+  { type: 'spiralCircles', label: 'Golden Circles', description: 'The same squares, as circles.' },
+  { type: 'spiralDiagonal', label: 'Diagonal Spiral', description: 'The same squares, as straight chords.' },
+  { type: 'dynamicSymmetry', label: 'Dynamic Symmetry', description: 'Divisions from the frame’s own shape.' },
+  { type: 'harmonicArmature', label: 'Harmonic Armature', description: 'The full 14-line classical armature.' },
 ];
 
 /** Overlay types built from the same golden-spiral square construction — these are the only

@@ -487,7 +487,6 @@
 /* ---------------------------------------------------------------- */
 
 .overlay-picker {
-  position: relative;
   display: flex;
   flex-direction: column;
 }
@@ -525,21 +524,15 @@
 
 /* Sits in flow rather than floating: the control panel is its own scroll container, so an
  * absolutely positioned popover would be clipped by it on a short viewport. */
-/* Overlaid rather than in flow, so opening the catalog doesn't shove Value and Export
- * down the panel. The control panel is its own scroll container, so this is clipped by it
- * rather than escaping — but it adds to that container's scroll height instead of displacing
- * siblings, and the picker scrolls itself into view on open. */
+/* In flow, expanding into the slack that Export's auto margin was holding open below it —
+ * so the catalog fills the empty panel rather than floating over it. (It was overlaid back
+ * when Export sat directly beneath and got shoved down.) */
 .overlay-picker-panel {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  right: 0;
-  z-index: 20;
+  margin-top: 6px;
   padding: 10px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--bg-sunken);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
   /* All nine rows run ~980px — taller than most viewports, which would bury everything
    * below the picker. Cap it and let the catalog scroll within itself instead. */
   max-height: min(55vh, 440px);

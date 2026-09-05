@@ -175,19 +175,22 @@
 .dropzone {
   cursor: pointer;
   border: 2px dashed var(--border);
-  border-radius: 12px;
-  padding: 52px 44px;
-  max-width: 440px;
+  border-radius: 14px;
+  padding: 68px 52px;
+  max-width: 500px;
   text-align: center;
   color: var(--text-dim);
+  /* A fill of its own, so it reads as a surface sitting on the canvas rather than a dashed
+   * outline drawn straight onto the checkerboard. */
+  background: var(--bg-elevated);
   transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .dropzone-icon {
   display: block;
-  width: 40px;
-  height: 40px;
-  margin: 0 auto 18px;
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 20px;
   color: var(--text-dim);
   transition: color 0.15s;
 }
@@ -227,13 +230,13 @@
 
 .dropzone--active {
   border-color: var(--accent);
-  background: rgba(77, 141, 255, 0.08);
+  background: linear-gradient(rgba(77, 141, 255, 0.12), rgba(77, 141, 255, 0.12)), var(--bg-elevated);
   color: var(--text);
 }
 
 .dropzone-title {
-  margin: 0 0 5px;
-  font-size: 19px;
+  margin: 0 0 6px;
+  font-size: 21px;
   font-weight: 600;
   color: var(--text);
 }

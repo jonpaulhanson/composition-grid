@@ -89,77 +89,6 @@ export function ControlPanel({
         )}
         {conversionError && <p className="control-error">{conversionError}</p>}
         {hasImage && (
-          <div className="ctrl-group">
-            <span className="ctrl-group-label">Value study</span>
-            <div className="value-mode-group">
-              {VALUE_MODES.map(({ mode, label }) => (
-                <button
-                  key={mode}
-                  type="button"
-                  className={`ctrl-btn${valueStudy.mode === mode ? ' ctrl-btn--active' : ''}`}
-                  onClick={() => onValueStudyChange({ mode })}
-                  aria-pressed={valueStudy.mode === mode}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-            {valueStudy.mode === 'grayscale' && (
-              <label className="slider-label">
-                <span className="slider-label-text">Amount</span>
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  step={1}
-                  value={valueStudy.grayscale}
-                  onChange={(e) => onValueStudyChange({ grayscale: Number(e.target.value) })}
-                />
-              </label>
-            )}
-            {valueStudy.mode === 'notan' && (
-              <>
-                <label className="slider-label">
-                  <span className="slider-label-text">Values</span>
-                  <input
-                    type="range"
-                    min={VALUE_LEVELS[0]}
-                    max={VALUE_LEVELS[VALUE_LEVELS.length - 1]}
-                    step={1}
-                    value={valueStudy.values}
-                    onChange={(e) =>
-                      onValueStudyChange({ values: Number(e.target.value) as ValueLevels })
-                    }
-                  />
-                  <span className="slider-value">{valueStudy.values}</span>
-                </label>
-                <label className="slider-label">
-                  <span className="slider-label-text">Threshold</span>
-                  <input
-                    type="range"
-                    min={10}
-                    max={90}
-                    step={1}
-                    value={valueStudy.threshold}
-                    onChange={(e) => onValueStudyChange({ threshold: Number(e.target.value) })}
-                  />
-                </label>
-                <label className="slider-label">
-                  <span className="slider-label-text">Simplify</span>
-                  <input
-                    type="range"
-                    min={0}
-                    max={SIMPLIFY_MAX}
-                    step={SIMPLIFY_STEP}
-                    value={valueStudy.simplify}
-                    onChange={(e) => onValueStudyChange({ simplify: Number(e.target.value) })}
-                  />
-                </label>
-              </>
-            )}
-          </div>
-        )}
-        {hasImage && (
           <div className="crop-controls">
             {isCropping ? (
               <>
@@ -215,6 +144,78 @@ export function ControlPanel({
           onAdd={onToggleOverlay}
         />
       </div>
+
+      {hasImage && (
+        <div className="control-section">
+          <h2 className="control-section-title">Value</h2>
+          <div className="value-mode-group">
+            {VALUE_MODES.map(({ mode, label }) => (
+              <button
+                key={mode}
+                type="button"
+                className={`ctrl-btn${valueStudy.mode === mode ? ' ctrl-btn--active' : ''}`}
+                onClick={() => onValueStudyChange({ mode })}
+                aria-pressed={valueStudy.mode === mode}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          {valueStudy.mode === 'grayscale' && (
+            <label className="slider-label">
+              <span className="slider-label-text">Amount</span>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                step={1}
+                value={valueStudy.grayscale}
+                onChange={(e) => onValueStudyChange({ grayscale: Number(e.target.value) })}
+              />
+            </label>
+          )}
+          {valueStudy.mode === 'notan' && (
+            <>
+              <label className="slider-label">
+                <span className="slider-label-text">Values</span>
+                <input
+                  type="range"
+                  min={VALUE_LEVELS[0]}
+                  max={VALUE_LEVELS[VALUE_LEVELS.length - 1]}
+                  step={1}
+                  value={valueStudy.values}
+                  onChange={(e) =>
+                    onValueStudyChange({ values: Number(e.target.value) as ValueLevels })
+                  }
+                />
+                <span className="slider-value">{valueStudy.values}</span>
+              </label>
+              <label className="slider-label">
+                <span className="slider-label-text">Threshold</span>
+                <input
+                  type="range"
+                  min={10}
+                  max={90}
+                  step={1}
+                  value={valueStudy.threshold}
+                  onChange={(e) => onValueStudyChange({ threshold: Number(e.target.value) })}
+                />
+              </label>
+              <label className="slider-label">
+                <span className="slider-label-text">Simplify</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={SIMPLIFY_MAX}
+                  step={SIMPLIFY_STEP}
+                  value={valueStudy.simplify}
+                  onChange={(e) => onValueStudyChange({ simplify: Number(e.target.value) })}
+                />
+              </label>
+            </>
+          )}
+        </div>
+      )}
 
       {hasImage && (
         <div className="control-section">

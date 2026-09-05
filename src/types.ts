@@ -37,11 +37,11 @@ export interface OverlayDef {
 export const OVERLAY_DEFS: OverlayDef[] = [
   { type: 'thirds', label: 'Rule of Thirds', description: 'The quickest way off dead-center.' },
   { type: 'goldenSection', label: 'Golden Section', description: 'Like thirds, but nearer the center.' },
-  { type: 'goldenTriangle', label: 'Golden Triangle', description: 'For subjects that run on a diagonal.' },
-  { type: 'harmoniousTriangle', label: 'Harmonious Triangle', description: 'Diagonal, with accents on true thirds.' },
   { type: 'goldenSpiral', label: 'Golden Spiral', description: 'Nested squares coiling to an eye.' },
   { type: 'spiralCircles', label: 'Golden Circles', description: 'The same squares, as circles.' },
   { type: 'spiralDiagonal', label: 'Diagonal Spiral', description: 'The same squares, as straight chords.' },
+  { type: 'goldenTriangle', label: 'Golden Triangle', description: 'For subjects that run on a diagonal.' },
+  { type: 'harmoniousTriangle', label: 'Harmonious Triangle', description: 'Diagonal, with accents on true thirds.' },
   { type: 'dynamicSymmetry', label: 'Dynamic Symmetry', description: 'Divisions from the frame’s own shape.' },
   { type: 'harmonicArmature', label: 'Harmonic Armature', description: 'The full 14-line classical armature.' },
 ];
@@ -61,8 +61,8 @@ export interface OverlayGroup {
  * scannable (one row per overlay). Every OverlayType must appear in exactly one group. */
 export const OVERLAY_GROUPS: OverlayGroup[] = [
   { label: 'Thirds & Sections', types: ['thirds', 'goldenSection'] },
-  { label: 'Triangles', types: ['goldenTriangle', 'harmoniousTriangle'] },
   { label: 'Golden Ratios', types: ['goldenSpiral', 'spiralCircles', 'spiralDiagonal'] },
+  { label: 'Triangles', types: ['goldenTriangle', 'harmoniousTriangle'] },
   { label: 'Armatures', types: ['dynamicSymmetry', 'harmonicArmature'] },
 ];
 

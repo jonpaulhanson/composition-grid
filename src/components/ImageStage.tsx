@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useImageBox } from '../hooks/useImageBox';
 import { useCropViewport } from '../hooks/useCropViewport';
 import type { NaturalSize } from '../hooks/useNaturalSize';
@@ -44,8 +44,10 @@ export function ImageStage({
   conversionError,
 }: ImageStageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const imgRef = useRef<HTMLImageElement>(null);
-  const box = useImageBox(imgRef, containerRef, imageUrl);
+  // Held as state, not a ref: the uncropped <img> unmounts whenever a crop is applied, and
+  // useImageBox has to re-measure the new element when it comes back.
+  const [imgEl, setImgEl] = useState<HTMLImageElement | null>(null);
+  const box = useImageBox(imgEl, containerRef);
 
   const showCroppedView = crop !== null && !isCropping;
   const viewport = useCropViewport(containerRef, natural.width, natural.height, crop ?? FULL_CROP, showCroppedView);
@@ -125,7 +127,7 @@ export function ImageStage({
         )
       ) : imageUrl ? (
         <>
-          <img ref={imgRef} src={imageUrl} alt="Uploaded" className="stage-img" style={imgStyle} />
+          <img ref={setImgEl} src={imageUrl} alt="Uploaded" className="stage-img" style={imgStyle} />
           {box.width > 0 && !isCropping && (
             <div
               className="overlay-stack"

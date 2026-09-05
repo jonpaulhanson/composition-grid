@@ -16,16 +16,15 @@ const EMPTY_BOX: ImageBox = { width: 0, height: 0, top: 0, left: 0 };
  * image's contained (letterboxed) size changes.
  */
 export function useImageBox(
-  imgRef: RefObject<HTMLImageElement | null>,
+  /** The element itself rather than a ref, so the effect re-attaches whenever it changes.
+   * A ref object is stable, so an effect keyed on it can't tell that the <img> was swapped —
+   * it would keep measuring a detached node and freeze the box at its last value. */
+  img: HTMLImageElement | null,
   containerRef: RefObject<HTMLDivElement | null>,
-  /** Include the image source (or any value that changes when the <img> (re)mounts) so the
-   * effect re-attaches — imgRef/containerRef are stable objects and won't retrigger it. */
-  resetKey: unknown,
 ): ImageBox {
   const [box, setBox] = useState<ImageBox>(EMPTY_BOX);
 
   useEffect(() => {
-    const img = imgRef.current;
     const container = containerRef.current;
     if (!img || !container) return;
 
@@ -54,7 +53,7 @@ export function useImageBox(
       window.removeEventListener('resize', update);
       img.removeEventListener('load', update);
     };
-  }, [imgRef, containerRef, resetKey]);
+  }, [img, containerRef]);
 
   return box;
 }

@@ -420,6 +420,19 @@
   flex: 0 0 auto;
 }
 
+/* Removing is rarer than cropping or replacing, and it's the one that throws work away — so
+ * it gets an icon's worth of room rather than an equal third of the row. */
+.image-action-btn--icon {
+  flex: 0 0 auto;
+  width: 36px;
+  padding: 0;
+}
+
+.image-action-btn--icon:hover:not(:disabled) {
+  border-color: var(--error);
+  color: var(--error);
+}
+
 /* ---------------------------------------------------------------- */
 /* Control panel                                                     */
 /* ---------------------------------------------------------------- */

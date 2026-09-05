@@ -38,6 +38,7 @@ interface ControlPanelProps {
   onApplyCrop: () => void;
   onCancelCrop: () => void;
   onResetCrop: () => void;
+  onClearImage: () => void;
   onDownload: (mode: ExportMode) => void;
   isExporting: boolean;
   pickerOpen: boolean;
@@ -62,6 +63,7 @@ export function ControlPanel({
   onApplyCrop,
   onCancelCrop,
   onResetCrop,
+  onClearImage,
   onDownload,
   isExporting,
   pickerOpen,
@@ -102,6 +104,18 @@ export function ControlPanel({
               {hasCrop ? 'Edit crop' : 'Crop'}
             </button>
             <Dropzone onFileSelected={onFileSelected} variant="button" />
+            <button
+              type="button"
+              className="btn-secondary image-action-btn image-action-btn--icon"
+              onClick={onClearImage}
+              title="Remove image"
+              aria-label="Remove image"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                <line x1="6" y1="6" x2="18" y2="18" />
+                <line x1="18" y1="6" x2="6" y2="18" />
+              </svg>
+            </button>
           </div>
         )}
         {conversionError && <p className="control-error">{conversionError}</p>}

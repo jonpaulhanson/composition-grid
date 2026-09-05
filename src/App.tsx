@@ -80,6 +80,19 @@ function App() {
     };
   }, []);
 
+  /** Back to the empty state. Overlays and the value study are deliberately left alone —
+   * they're a setup you've built, not part of this picture, and Reset all clears those. */
+  const handleClearImage = useCallback(() => {
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+      objectUrlRef.current = null;
+    }
+    setImageUrl(null);
+    setCrop(null);
+    setIsCropping(false);
+    setConversionError(null);
+  }, []);
+
   const handleToggleOverlay = useCallback(
     (type: OverlayType) => {
       // Fire the event on add only (not remove), outside the state updater so StrictMode's
@@ -257,6 +270,7 @@ function App() {
             onApplyCrop={handleApplyCrop}
             onCancelCrop={handleCancelCrop}
             onResetCrop={handleResetCrop}
+            onClearImage={handleClearImage}
             onDownload={handleDownload}
             isExporting={isExporting}
             pickerOpen={pickerOpen}

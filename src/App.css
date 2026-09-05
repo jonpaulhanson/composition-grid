@@ -526,8 +526,24 @@
  * absolutely positioned popover would be clipped by it on a short viewport. */
 /* In flow, expanding into the slack that Export's auto margin was holding open below it —
  * so the catalog fills the empty panel rather than floating over it. (It was overlaid back
- * when Export sat directly beneath and got shoved down.) */
+ * when Export sat directly beneath and got shoved down.)
+ *
+ * Opening it is a height transition, which CSS can't run against `auto` — so the panel sits in
+ * a grid whose single row goes 0fr to 1fr. That interpolates to the content's own height, so
+ * the catalog doesn't need to know how tall it is, and everything below slides rather than
+ * jumping. The panel keeps its own max-height and scrolling inside that row. */
+.overlay-picker-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 260ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.overlay-picker-collapse--open {
+  grid-template-rows: 1fr;
+}
+
 .overlay-picker-panel {
+  min-height: 0;
   margin-top: 6px;
   padding: 10px;
   border: 1px solid var(--border);
@@ -538,6 +554,20 @@
   max-height: min(55vh, 440px);
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+
+/* Collapsed: no border, padding or margin to leave a sliver behind at 0fr. */
+.overlay-picker-collapse:not(.overlay-picker-collapse--open) .overlay-picker-panel {
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay-picker-collapse {
+    transition: none;
+  }
 }
 
 .picker-group + .picker-group {

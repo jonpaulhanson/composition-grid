@@ -88,8 +88,14 @@ export function OverlayPicker({
         {allAdded ? 'All overlays added' : 'Add overlay'}
       </button>
 
-      {open && (
-        <div className="overlay-picker-panel" ref={panelRef} role="dialog" aria-label="Add an overlay">
+      <div className={`overlay-picker-collapse${open ? ' overlay-picker-collapse--open' : ''}`}>
+        <div
+          className="overlay-picker-panel"
+          ref={panelRef}
+          role="dialog"
+          aria-label="Add an overlay"
+          inert={!open}
+        >
           {OVERLAY_GROUPS.map((group) => {
             // The picker only offers what you haven't got. An added overlay already has a card
             // above with its own remove control, so listing it again — even greyed — is a row
@@ -162,7 +168,7 @@ export function OverlayPicker({
             );
           })}
         </div>
-      )}
+      </div>
     </div>
   );
 }

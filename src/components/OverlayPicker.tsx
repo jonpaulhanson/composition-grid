@@ -19,7 +19,9 @@ import { OverlaySvg } from './OverlaySvg';
  * border and 7px padding, so the box is 53 and the drawing 47. */
 const THUMB_W = 58;
 const THUMB_H = 47;
-const THUMB_COLOR = '#c9ccd2';
+/** Resolved from --thumb-ink via the container's `color`, so the thumbnails re-ink with the
+ * theme rather than staying pinned to a colour picked for a dark panel. */
+const THUMB_COLOR = 'currentColor';
 const THUMB_STROKE = 0.9;
 
 const OVERLAY_BY_TYPE = new Map(OVERLAY_DEFS.map((d) => [d.type, d]));

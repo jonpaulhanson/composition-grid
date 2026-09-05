@@ -4,6 +4,7 @@ import { ControlPanel } from './components/ControlPanel';
 import { FeedbackModal } from './components/FeedbackModal';
 import { track } from '@vercel/analytics';
 import { useNaturalSize } from './hooks/useNaturalSize';
+import { useTheme } from './hooks/useTheme';
 import { createDefaultOverlay, FULL_CROP, OVERLAY_DEFS, SPIRAL_FAMILY } from './types';
 import type { CropRect, OverlayState, OverlayType } from './types';
 import { isSpiralViable } from './geometry/goldenSpiral';
@@ -28,6 +29,7 @@ function App() {
   // Lifted out of OverlayPicker so loading an image can open it (see handleFileSelected).
   const [pickerOpen, setPickerOpen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const { theme, toggle: toggleTheme } = useTheme();
   const objectUrlRef = useRef<string | null>(null);
   const natural = useNaturalSize(imageUrl);
 
@@ -177,6 +179,35 @@ function App() {
         </div>
         <div className="app-header-actions">
           <a className="app-nav-link" href="/composition-armatures">Guide</a>
+          <button
+            type="button"
+            className={`theme-switch${theme === 'dark' ? ' theme-switch--dark' : ''}`}
+            role="switch"
+            aria-checked={theme === 'dark'}
+            aria-label="Dark theme"
+            title={theme === 'dark' ? 'Switch to light' : 'Switch to dark'}
+            onClick={toggleTheme}
+          >
+            <span className="theme-switch-knob" aria-hidden="true" />
+            <span className="theme-switch-icon theme-switch-icon--sun" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round">
+                <circle cx="12" cy="12" r="4.2" />
+                <line x1="12" y1="2.5" x2="12" y2="4.6" />
+                <line x1="12" y1="19.4" x2="12" y2="21.5" />
+                <line x1="4.2" y1="4.2" x2="5.7" y2="5.7" />
+                <line x1="18.3" y1="18.3" x2="19.8" y2="19.8" />
+                <line x1="2.5" y1="12" x2="4.6" y2="12" />
+                <line x1="19.4" y1="12" x2="21.5" y2="12" />
+                <line x1="4.2" y1="19.8" x2="5.7" y2="18.3" />
+                <line x1="18.3" y1="5.7" x2="19.8" y2="4.2" />
+              </svg>
+            </span>
+            <span className="theme-switch-icon theme-switch-icon--moon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" />
+              </svg>
+            </span>
+          </button>
           <button
             type="button"
             className="feedback-btn"

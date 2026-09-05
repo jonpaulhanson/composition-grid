@@ -94,6 +94,71 @@
   height: 15px;
 }
 
+/* One control that reads as a switch: click anywhere and it flips, rather than two buttons
+ * where you have to hit the right half. Both icons stay put and the knob travels between
+ * them, so the animation shows which way it went. */
+.theme-switch {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  /* Matches the Feedback button beside it, so the header's controls sit on one line. */
+  width: 64px;
+  height: 36px;
+  padding: 4px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-sunken);
+}
+
+.theme-switch-knob {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  /* Square, so the track gives a round knob rather than a stretched one. Sized off the track
+   * rather than fixed: height, less its border and the padding above and below. */
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: transform 260ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* The track's inner width less the knob — i.e. exactly the room it has to travel. Moving it
+ * by its own width instead would park it flush against the far edge, losing the inset it
+ * rests at on the other side. */
+.theme-switch--dark .theme-switch-knob {
+  transform: translateX(28px);
+}
+
+.theme-switch-icon {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 0;
+  display: grid;
+  place-items: center;
+  color: var(--text-dim);
+  transition: color 260ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Whichever the knob is sitting under takes the knob's own foreground. */
+.theme-switch:not(.theme-switch--dark) .theme-switch-icon--sun,
+.theme-switch--dark .theme-switch-icon--moon {
+  color: var(--accent-text);
+}
+
+.theme-switch-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-switch-knob,
+  .theme-switch-icon {
+    transition: none;
+  }
+}
+
 @media (max-width: 480px) {
   .app-tagline {
     display: none;
@@ -314,7 +379,7 @@
   margin: 12px 0 0;
   font-size: 12.5px;
   line-height: 1.4;
-  color: #e8bd6d;
+  color: var(--warning-text);
 }
 
 /* The image's two actions, side by side. Icon plus label rather than icon alone: there are
@@ -346,7 +411,7 @@
 /* Dragging a file over the Replace button. */
 .image-action-btn--active {
   border-color: var(--accent);
-  background: rgba(77, 141, 255, 0.08);
+  background: var(--accent-wash);
 }
 
 .image-action-btn svg {
@@ -403,7 +468,7 @@
 .control-error {
   margin: 0;
   font-size: 12.5px;
-  color: #e0392c;
+  color: var(--error);
 }
 
 /* Medium-severity callout — louder than a plain hint, a step below the red error state. */
@@ -416,9 +481,9 @@
   border-radius: 7px;
   font-size: 12.5px;
   line-height: 1.35;
-  color: #e8bd6d;
-  background: rgba(224, 168, 60, 0.12);
-  border: 1px solid rgba(224, 168, 60, 0.32);
+  color: var(--warning-text);
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
 }
 
 .callout-notice-icon {
@@ -426,7 +491,7 @@
   width: 15px;
   height: 15px;
   margin-top: 0.5px;
-  color: #e0a63c;
+  color: var(--warning-icon);
 }
 
 /* Same callout, floated as a pill over the image while cropping — opaque backing so it stays
@@ -504,7 +569,7 @@
 }
 
 .overlay-card-toggle:hover {
-  color: #fff;
+  color: var(--text);
 }
 
 .overlay-card-chevron {
@@ -554,8 +619,8 @@
 }
 
 .overlay-card-remove:hover {
-  background: rgba(255, 255, 255, 0.07);
-  color: #e0392c;
+  background: var(--hover-wash);
+  color: var(--error);
 }
 
 /* ---------------------------------------------------------------- */
@@ -692,7 +757,7 @@
 
 .picker-row:hover:not(:disabled) {
   border-color: var(--accent);
-  background: rgba(77, 141, 255, 0.08);
+  background: var(--accent-wash);
 }
 
 .picker-row:disabled {
@@ -704,6 +769,7 @@
  * .picker-thumb-inner so edge strokes aren't clipped — padding here wouldn't do it, since an
  * absolutely positioned child resolves inset:0 against the padding box, not the content box. */
 .picker-thumb {
+  color: var(--thumb-ink);
   position: relative;
   flex: 0 0 auto;
   align-self: stretch;

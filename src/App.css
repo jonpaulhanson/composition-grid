@@ -387,11 +387,13 @@
 /* Overlay cards (the ones you've added)                              */
 /* ---------------------------------------------------------------- */
 
+/* Sits below the Add button now, so the extra breathing room goes above the stack rather
+ * than trailing off the end of the section. */
 .overlay-cards {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 8px;
+  margin-top: 8px;
 }
 
 /* Header and settings fuse into one card so the controls read as belonging to the overlay

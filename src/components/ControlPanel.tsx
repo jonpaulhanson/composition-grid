@@ -129,6 +129,14 @@ export function ControlPanel({
 
       <div className="control-section">
         <h2 className="control-section-title">Overlays</h2>
+        <OverlayPicker
+          activeTypes={activeTypes}
+          hasImage={hasImage}
+          spiralViable={spiralViable}
+          onAdd={onToggleOverlay}
+          open={pickerOpen}
+          onOpenChange={onPickerOpenChange}
+        />
         {overlays.length > 0 && (
           <div className="overlay-cards">
             {overlays.map((overlay) => (
@@ -144,17 +152,6 @@ export function ControlPanel({
             ))}
           </div>
         )}
-        {overlays.length === 0 && (
-          <p className="control-hint">No overlays yet — add one below.</p>
-        )}
-        <OverlayPicker
-          activeTypes={activeTypes}
-          hasImage={hasImage}
-          spiralViable={spiralViable}
-          onAdd={onToggleOverlay}
-          open={pickerOpen}
-          onOpenChange={onPickerOpenChange}
-        />
       </div>
 
       {hasImage && (

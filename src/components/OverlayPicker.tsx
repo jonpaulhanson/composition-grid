@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { OVERLAY_DEFS, OVERLAY_GROUPS, SPIRAL_FAMILY, createDefaultOverlay } from '../types';
 import type { OverlayType } from '../types';
 import { SPIRAL_MAX_ASPECT_RATIO } from '../geometry/goldenSpiral';
@@ -29,10 +29,19 @@ interface OverlayPickerProps {
   hasImage: boolean;
   spiralViable: boolean;
   onAdd: (type: OverlayType) => void;
+  /** Controlled from App, so loading an image can open the catalog. */
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-export function OverlayPicker({ activeTypes, hasImage, spiralViable, onAdd }: OverlayPickerProps) {
-  const [open, setOpen] = useState(false);
+export function OverlayPicker({
+  activeTypes,
+  hasImage,
+  spiralViable,
+  onAdd,
+  open,
+  onOpenChange,
+}: OverlayPickerProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -46,10 +55,10 @@ export function OverlayPicker({ activeTypes, hasImage, spiralViable, onAdd }: Ov
   useEffect(() => {
     if (!open) return;
     const onPointerDown = (e: MouseEvent) => {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) onOpenChange(false);
     };
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') onOpenChange(false);
     };
     document.addEventListener('mousedown', onPointerDown);
     document.addEventListener('keydown', onKeyDown);
@@ -57,7 +66,7 @@ export function OverlayPicker({ activeTypes, hasImage, spiralViable, onAdd }: Ov
       document.removeEventListener('mousedown', onPointerDown);
       document.removeEventListener('keydown', onKeyDown);
     };
-  }, [open]);
+  }, [open, onOpenChange]);
 
   // Nothing to add once every overlay is on.
   const allAdded = OVERLAY_DEFS.every((d) => activeTypes.has(d.type));
@@ -67,7 +76,7 @@ export function OverlayPicker({ activeTypes, hasImage, spiralViable, onAdd }: Ov
       <button
         type="button"
         className="overlay-add-btn"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => onOpenChange(!open)}
         disabled={!hasImage || allAdded}
         aria-expanded={open}
         aria-haspopup="dialog"
@@ -125,7 +134,7 @@ export function OverlayPicker({ activeTypes, hasImage, spiralViable, onAdd }: Ov
                       disabled={blocked}
                       onClick={() => {
                         onAdd(type);
-                        setOpen(false);
+                        onOpenChange(false);
                       }}
                     >
                       <span className="picker-thumb" aria-hidden="true">

@@ -170,14 +170,52 @@
 /* Dropzone                                                          */
 /* ---------------------------------------------------------------- */
 
+/* The whole of the initial view — there's no control panel until an image is loaded — so it
+ * carries the weight of explaining what this is and what it does with your picture. */
 .dropzone {
   cursor: pointer;
   border: 2px dashed var(--border);
-  border-radius: 10px;
-  padding: 48px 32px;
+  border-radius: 12px;
+  padding: 52px 44px;
+  max-width: 440px;
   text-align: center;
   color: var(--text-dim);
   transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.dropzone-icon {
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 18px;
+  color: var(--text-dim);
+  transition: color 0.15s;
+}
+
+.dropzone:hover .dropzone-icon,
+.dropzone:focus-visible .dropzone-icon,
+.dropzone--active .dropzone-icon {
+  color: var(--accent);
+}
+
+.dropzone-meta {
+  margin: 20px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.stage-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.stage-intro-error {
+  max-width: 440px;
+  text-align: center;
 }
 
 .dropzone:hover,
@@ -194,18 +232,19 @@
 }
 
 .dropzone-title {
-  margin: 0 0 4px;
-  font-size: 15px;
-  font-weight: 500;
+  margin: 0 0 5px;
+  font-size: 19px;
+  font-weight: 600;
   color: var(--text);
 }
 
 .dropzone-subtitle {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .dropzone--compact {
+  max-width: none;
   padding: 10px 12px;
   border-radius: 6px;
   font-size: 12.5px;

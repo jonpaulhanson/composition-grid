@@ -57,8 +57,26 @@ export function Dropzone({ onFileSelected, compact }: DropzoneProps) {
         <span>Upload a different image</span>
       ) : (
         <>
+          <svg
+            className="dropzone-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="2.5" />
+            <circle cx="8.75" cy="8.75" r="1.75" />
+            <path d="M21 14.5 16.5 10 5 21" />
+          </svg>
           <p className="dropzone-title">Drop an image here</p>
           <p className="dropzone-subtitle">or click to browse</p>
+          <p className="dropzone-meta">
+            JPG, PNG, WebP or HEIC — your image is never uploaded, everything happens in
+            your browser.
+          </p>
         </>
       )}
     </div>

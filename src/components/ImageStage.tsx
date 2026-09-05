@@ -25,6 +25,8 @@ interface ImageStageProps {
   /** Reports the on-screen size of the committed overlay box (cropped viewport if a crop is
    * applied, else the whole image), used as the export's stroke/geometry reference. */
   onOverlayBoxChange: (box: { width: number; height: number }) => void;
+  /** Shown beneath the dropzone: with no image there's no control panel to report it in. */
+  conversionError: string | null;
 }
 
 export function ImageStage({
@@ -39,6 +41,7 @@ export function ImageStage({
   onDraftCropChange,
   natural,
   onOverlayBoxChange,
+  conversionError,
 }: ImageStageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -140,7 +143,10 @@ export function ImageStage({
       ) : isConverting ? (
         <p className="stage-status">Converting HEIC image…</p>
       ) : (
-        <Dropzone onFileSelected={onFileSelected} />
+        <div className="stage-intro">
+          <Dropzone onFileSelected={onFileSelected} />
+          {conversionError && <p className="control-error stage-intro-error">{conversionError}</p>}
+        </div>
       )}
     </div>
   );

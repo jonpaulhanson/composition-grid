@@ -26,6 +26,8 @@ function App() {
   const [draftCrop, setDraftCrop] = useState<CropRect>(FULL_CROP);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [overlayBox, setOverlayBox] = useState({ width: 0, height: 0 });
+  // Lifted out of OverlayPicker so loading an image can open it (see handleFileSelected).
+  const [pickerOpen, setPickerOpen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const objectUrlRef = useRef<string | null>(null);
   const natural = useNaturalSize(imageUrl);
@@ -65,10 +67,11 @@ function App() {
     setCrop(null);
     setIsCropping(false);
     track('image_uploaded');
-    // Start a fresh image with Rule of Thirds on as a sensible default; if the user already
-    // has overlays configured (e.g. swapping images mid-session), leave their setup alone.
-    setOverlays((prev) => (prev.length === 0 ? [createDefaultOverlay('thirds')] : prev));
-  }, []);
+    // Rather than pick an overlay on the user's behalf, open the catalog so they choose — which
+    // also surfaces what's on offer to a first-time visitor. Swapping images mid-session leaves
+    // an existing setup alone, and doesn't reopen the picker over it.
+    setPickerOpen(overlays.length === 0);
+  }, [overlays.length]);
 
   useEffect(() => {
     return () => {
@@ -203,28 +206,33 @@ function App() {
           onDraftCropChange={setDraftCrop}
           natural={natural}
           onOverlayBoxChange={setOverlayBox}
-        />
-        <ControlPanel
-          hasImage={imageUrl !== null}
-          spiralViable={spiralViable}
-          overlays={overlays}
-          onFileSelected={handleFileSelected}
-          onToggleOverlay={handleToggleOverlay}
-          onChangeOverlay={handleChangeOverlay}
-          onResetAll={handleResetAll}
-          isConverting={isConverting}
           conversionError={conversionError}
-          valueStudy={valueStudy}
-          onValueStudyChange={handleValueStudyChange}
-          hasCrop={crop !== null}
-          isCropping={isCropping}
-          onStartCrop={handleStartCrop}
-          onApplyCrop={handleApplyCrop}
-          onCancelCrop={handleCancelCrop}
-          onResetCrop={handleResetCrop}
-          onDownload={handleDownload}
-          isExporting={isExporting}
         />
+        {imageUrl && (
+          <ControlPanel
+              hasImage
+            spiralViable={spiralViable}
+            overlays={overlays}
+            onFileSelected={handleFileSelected}
+            onToggleOverlay={handleToggleOverlay}
+            onChangeOverlay={handleChangeOverlay}
+            onResetAll={handleResetAll}
+            isConverting={isConverting}
+            conversionError={conversionError}
+            valueStudy={valueStudy}
+            onValueStudyChange={handleValueStudyChange}
+            hasCrop={crop !== null}
+            isCropping={isCropping}
+            onStartCrop={handleStartCrop}
+            onApplyCrop={handleApplyCrop}
+            onCancelCrop={handleCancelCrop}
+            onResetCrop={handleResetCrop}
+            onDownload={handleDownload}
+            isExporting={isExporting}
+            pickerOpen={pickerOpen}
+            onPickerOpenChange={setPickerOpen}
+          />
+        )}
       </div>
       <FeedbackModal open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
       <ValueFilterDefs />

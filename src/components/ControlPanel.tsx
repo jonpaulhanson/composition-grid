@@ -39,6 +39,8 @@ interface ControlPanelProps {
   onResetCrop: () => void;
   onDownload: (mode: ExportMode) => void;
   isExporting: boolean;
+  pickerOpen: boolean;
+  onPickerOpenChange: (open: boolean) => void;
 }
 
 export function ControlPanel({
@@ -61,6 +63,8 @@ export function ControlPanel({
   onResetCrop,
   onDownload,
   isExporting,
+  pickerOpen,
+  onPickerOpenChange,
 }: ControlPanelProps) {
   const activeTypes = new Set(overlays.map((o) => o.type));
   // Only expanded cards are tracked, so cards start collapsed — the list stays a scannable
@@ -82,10 +86,8 @@ export function ControlPanel({
         <h2 className="control-section-title">Image</h2>
         {isConverting ? (
           <p className="control-hint">Converting HEIC image…</p>
-        ) : hasImage ? (
-          <Dropzone onFileSelected={onFileSelected} compact />
         ) : (
-          <p className="control-hint">Upload an image to get started.</p>
+          <Dropzone onFileSelected={onFileSelected} compact />
         )}
         {conversionError && <p className="control-error">{conversionError}</p>}
         {hasImage && (
@@ -133,15 +135,15 @@ export function ControlPanel({
           </div>
         )}
         {overlays.length === 0 && (
-          <p className="control-hint">
-            {hasImage ? 'No overlays yet — add one below.' : 'Upload an image to add overlays.'}
-          </p>
+          <p className="control-hint">No overlays yet — add one below.</p>
         )}
         <OverlayPicker
           activeTypes={activeTypes}
           hasImage={hasImage}
           spiralViable={spiralViable}
           onAdd={onToggleOverlay}
+          open={pickerOpen}
+          onOpenChange={onPickerOpenChange}
         />
       </div>
 

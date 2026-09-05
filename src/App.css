@@ -181,8 +181,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  outline: none;
 }
 
 .dropzone {
@@ -207,8 +205,6 @@
   transition: color 0.15s;
 }
 
-.dropzone-area:hover .dropzone-icon,
-.dropzone-area:focus-visible .dropzone-icon,
 .dropzone-area--active .dropzone-icon {
   color: var(--accent);
 }
@@ -236,11 +232,7 @@
   text-align: center;
 }
 
-.dropzone-area:hover .dropzone,
-.dropzone-area:focus-visible .dropzone {
-  border-color: var(--accent);
-  color: var(--text);
-}
+
 
 /* Dragging anywhere over the canvas lights the panel, so it's clear the whole area accepts. */
 .dropzone-area--active .dropzone {
@@ -256,9 +248,47 @@
   color: var(--text);
 }
 
-.dropzone-subtitle {
-  margin: 0;
-  font-size: 14px;
+.dropzone-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px 0 0;
+}
+
+.dropzone-btn {
+  cursor: pointer;
+  min-width: 108px;
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--bg-sunken);
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: border-color 0.15s, filter 0.15s;
+}
+
+.dropzone-btn:hover {
+  border-color: var(--accent);
+}
+
+/* Browse leads — dropping and browsing are the paths most people take; paste is the shortcut
+ * for those already carrying an image. */
+.dropzone-btn--primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.dropzone-btn--primary:hover {
+  filter: brightness(1.08);
+}
+
+.dropzone-hint {
+  margin: 12px 0 0;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: #e8bd6d;
 }
 
 /* The image's two actions, side by side. Icon plus label rather than icon alone: there are

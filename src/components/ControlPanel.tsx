@@ -220,7 +220,7 @@ export function ControlPanel({
       )}
 
       {hasImage && (
-        <div className="control-section">
+        <div className="control-section control-section--footer">
           <h2 className="control-section-title">Export</h2>
           <div className="export-controls">
             <button

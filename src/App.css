@@ -267,6 +267,14 @@
   gap: 20px;
 }
 
+/* Anchors Export (and Reset all after it) to the bottom of the panel, so they don't float
+ * mid-column with dead space beneath whenever the sections above are short. The auto margin
+ * takes up the slack when there is any and collapses to nothing when the panel overflows, so
+ * a long list still scrolls normally. */
+.control-section--footer {
+  margin-top: auto;
+}
+
 .control-section {
   display: flex;
   flex-direction: column;

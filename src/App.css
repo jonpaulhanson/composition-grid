@@ -243,12 +243,42 @@
   font-size: 14px;
 }
 
-.dropzone--compact {
-  max-width: none;
-  padding: 10px 12px;
-  border-radius: 6px;
-  font-size: 12.5px;
-  text-align: left;
+/* The image's two actions, side by side. Icon plus label rather than icon alone: there are
+ * only two, and 'Crop' changing to 'Edit crop' is worth being able to read. */
+.image-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.image-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1 1 0;
+  cursor: pointer;
+  min-height: 36px;
+}
+
+.image-action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.image-action-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+/* Dragging a file over the Replace button. */
+.image-action-btn--active {
+  border-color: var(--accent);
+  background: rgba(77, 141, 255, 0.08);
+}
+
+.image-action-btn svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
 }
 
 /* ---------------------------------------------------------------- */

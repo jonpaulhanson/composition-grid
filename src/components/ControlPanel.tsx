@@ -87,10 +87,26 @@ export function ControlPanel({
         {isConverting ? (
           <p className="control-hint">Converting HEIC image…</p>
         ) : (
-          <Dropzone onFileSelected={onFileSelected} compact />
+          <div className="image-actions">
+            <button
+              type="button"
+              className="btn-secondary image-action-btn"
+              onClick={onStartCrop}
+              disabled={isCropping}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M6.13 1 6 16a2 2 0 0 0 2 2h15" />
+                <path d="M1 6.13 16 6a2 2 0 0 1 2 2v15" />
+              </svg>
+              {hasCrop ? 'Edit crop' : 'Crop'}
+            </button>
+            <Dropzone onFileSelected={onFileSelected} variant="button" />
+          </div>
         )}
         {conversionError && <p className="control-error">{conversionError}</p>}
-        {hasImage && (
+        {/* Only the states that need a decision get full-width buttons; plain "crop this" is
+            the icon above. */}
+        {(isCropping || hasCrop) && (
           <div className="crop-controls">
             {isCropping ? (
               <>
@@ -102,16 +118,9 @@ export function ControlPanel({
                 </button>
               </>
             ) : (
-              <>
-                <button type="button" className="btn-secondary" onClick={onStartCrop}>
-                  {hasCrop ? 'Edit crop' : 'Crop'}
-                </button>
-                {hasCrop && (
-                  <button type="button" className="btn-secondary" onClick={onResetCrop}>
-                    Reset crop
-                  </button>
-                )}
-              </>
+              <button type="button" className="btn-secondary" onClick={onResetCrop}>
+                Reset crop
+              </button>
             )}
           </div>
         )}

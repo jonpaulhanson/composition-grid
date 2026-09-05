@@ -110,7 +110,7 @@ Thirds & Sections, to keep the panel scannable. The golden-ratio family defaults
 rotation 3, which puts the coil's eye in the bottom-right quadrant on a landscape or square
 frame without engaging a flip.
 
-## Value study: grayscale and notan
+## Value: grayscale and notan
 
 The **Value** section, below Overlays, has a three-way mode control — **Off / Grayscale /
 Notan** — for judging value structure independent of color.
@@ -118,29 +118,27 @@ Notan** — for judging value structure independent of color.
 **Grayscale** is a 0–100% slider. Partial desaturation is often more useful than a hard
 switch, letting you dial in how much color to keep while reading values.
 
-**Notan** reduces the picture to flat tones, the way a painter's value sketch does. Three
-controls:
+**Notan** reduces the picture to flat light and dark — 濃淡 is literally "dark-light", and the
+two-value relationship is the whole exercise, so that's deliberately all it does. Two controls:
 
-- **Values** (2–4) — how many flat tones. Two is the classic black-and-white notan; three
-  and four keep a midtone band, which usually reads more like an actual value sketch.
 - **Threshold** — where the split falls; biases the result light or dark.
-- **Simplify** — a blur applied *before* posterizing, which groups fine detail into
+- **Simplify** — a blur applied *before* thresholding, which groups fine detail into
   readable masses. Without it a notan comes out as speckle rather than shapes. It's
   expressed as a percentage of picture width (not pixels) so it stays the same proportion
   at any preview or export size. The useful range is small — capped at 0.25%, past which
   the masses stop following the picture's actual shapes and turn into blobs.
 
-The pipeline is the same in both renderers: luminance → blur → brightness bias → posterize
-(`src/utils/imageFilter.ts`). Only the last step differs, because CSS has no filter function
-that flattens a continuous range into a fixed number of tones:
+The whole thing is four CSS filter functions (`src/utils/imageFilter.ts`): reduce to true
+luminance, blur, slide the range so the threshold lands at the midpoint, then a contrast high
+enough that everything either side of it saturates. That matters beyond brevity — being plain
+CSS is what lets the *same string* drive the preview and the export, which hands it straight to
+`ctx.filter`. There's no second rendering path to keep in step.
 
-- The **preview** references an SVG `feComponentTransfer` by id from its CSS filter chain
-  (`ValueFilterDefs.tsx`).
-- The **export** stops after the tonal steps and posterizes in a pixel pass, since a canvas
-  filter can't reliably reference an SVG filter across browsers.
-
-Both derive their tones from one shared definition (`posterizeTones`) rather than each
-rounding independently, so the two paths can't drift apart.
+A three- and four-tone posterize lived here for a while. It's a useful exercise, but it's a
+value study rather than a notan, and supporting it cost a whole parallel renderer: an SVG
+`feComponentTransfer` for the preview (CSS can't flatten a range into N tones), a pixel pass for
+the export (a canvas filter can't reliably reference an SVG filter), and shared tone definitions
+to stop the two drifting. If it comes back it should be its own mode under its own name.
 
 ## Export
 

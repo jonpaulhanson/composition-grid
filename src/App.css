@@ -184,6 +184,7 @@
 }
 
 .dropzone {
+  cursor: pointer;
   border: 2px dashed var(--border);
   border-radius: 14px;
   padding: 68px 52px;
@@ -235,6 +236,10 @@
 
 
 /* Dragging anywhere over the canvas lights the panel, so it's clear the whole area accepts. */
+.dropzone:hover {
+  border-color: var(--accent);
+}
+
 .dropzone-area--active .dropzone {
   border-color: var(--accent);
   background: linear-gradient(rgba(77, 141, 255, 0.12), rgba(77, 141, 255, 0.12)), var(--bg-elevated);
@@ -256,6 +261,10 @@
 }
 
 .dropzone-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   cursor: pointer;
   min-width: 108px;
   padding: 9px 18px;
@@ -282,6 +291,18 @@
 
 .dropzone-btn--primary:hover {
   filter: brightness(1.08);
+}
+
+/* The shortcut, shown on the button it belongs to — the fastest route in is also the least
+ * discoverable one. */
+.dropzone-kbd {
+  padding: 1px 5px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 11.5px;
 }
 
 .dropzone-hint {

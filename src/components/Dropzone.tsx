@@ -116,7 +116,10 @@ export function Dropzone({ onFileSelected, variant = 'full' }: DropzoneProps) {
       onDrop={handleDrop}
     >
       <input ref={inputRef} type="file" accept="image/*,.heic,.heif" onChange={handleInputChange} hidden />
-      <div className="dropzone">
+      {/* Clicking anywhere on the panel browses — the common case shouldn't require hitting a
+          108px target. Not a role=button: it contains buttons, and nesting controls would be
+          worse for keyboard and screen readers than leaving those buttons to do that job. */}
+      <div className="dropzone" onClick={() => inputRef.current?.click()}>
         <svg
           className="dropzone-icon"
           viewBox="0 0 24 24"
@@ -136,12 +139,23 @@ export function Dropzone({ onFileSelected, variant = 'full' }: DropzoneProps) {
           <button
             type="button"
             className="dropzone-btn dropzone-btn--primary"
-            onClick={() => inputRef.current?.click()}
+            onClick={(e) => {
+              e.stopPropagation();
+              inputRef.current?.click();
+            }}
           >
             Browse
           </button>
-          <button type="button" className="dropzone-btn" onClick={handlePasteClick}>
+          <button
+            type="button"
+            className="dropzone-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePasteClick();
+            }}
+          >
             Paste
+            <kbd className="dropzone-kbd">{PASTE_SHORTCUT}</kbd>
           </button>
         </div>
         {pasteHint && <p className="dropzone-hint">{pasteHint}</p>}

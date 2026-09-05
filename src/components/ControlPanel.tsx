@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { OVERLAY_DEFS, OVERLAY_GROUPS, SPIRAL_FAMILY } from '../types';
+import { OVERLAY_DEFS } from '../types';
 import type { OverlayState, OverlayType } from '../types';
-import { SPIRAL_MAX_ASPECT_RATIO } from '../geometry/goldenSpiral';
 import type { ExportMode } from '../utils/exportImage';
 import { SIMPLIFY_MAX, SIMPLIFY_STEP, VALUE_LEVELS } from '../utils/imageFilter';
 import type { ValueLevels, ValueStudy } from '../utils/imageFilter';
-import { OverlayControls } from './OverlayControls';
+import { OverlayCard } from './OverlayCard';
+import { OverlayPicker } from './OverlayPicker';
 import { Dropzone } from './Dropzone';
 
 const OVERLAY_LABELS = new Map(OVERLAY_DEFS.map((d) => [d.type, d.label]));
@@ -63,18 +63,15 @@ export function ControlPanel({
   isExporting,
 }: ControlPanelProps) {
   const activeTypes = new Set(overlays.map((o) => o.type));
-  const overlayByType = new Map(overlays.map((o) => [o.type, o]));
-  // Start with only the Thirds group open (the common starting point); the rest collapse to
-  // keep the panel scannable, and the user can expand them as needed.
-  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(
-    () => new Set(OVERLAY_GROUPS.filter((g) => !g.types.includes('thirds')).map((g) => g.label)),
-  );
+  // Only expanded cards are tracked, so cards start collapsed — the list stays a scannable
+  // summary of what's on, and settings are opened on demand.
+  const [expandedCards, setExpandedCards] = useState<Set<OverlayType>>(() => new Set());
 
-  const toggleGroup = (label: string) => {
-    setCollapsedGroups((prev) => {
+  const toggleCard = (type: OverlayType) => {
+    setExpandedCards((prev) => {
       const next = new Set(prev);
-      if (next.has(label)) next.delete(label);
-      else next.add(label);
+      if (next.has(type)) next.delete(type);
+      else next.add(type);
       return next;
     });
   };
@@ -191,103 +188,32 @@ export function ControlPanel({
 
       <div className="control-section">
         <h2 className="control-section-title">Overlays</h2>
-        <div className="overlay-groups">
-          {OVERLAY_GROUPS.map((group) => {
-            const collapsed = collapsedGroups.has(group.label);
-            const activeCount = group.types.filter((t) => activeTypes.has(t)).length;
-            const isSpiralGroup = group.types.every((t) => SPIRAL_FAMILY.includes(t));
-            const spiralBlocked = isSpiralGroup && hasImage && !spiralViable;
-            return (
-              <div className="overlay-group" key={group.label}>
-                <button
-                  type="button"
-                  className="overlay-group-header"
-                  onClick={() => toggleGroup(group.label)}
-                  aria-expanded={!collapsed}
-                >
-                  <svg
-                    className={`overlay-group-chevron${collapsed ? '' : ' overlay-group-chevron--open'}`}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    aria-hidden="true"
-                  >
-                    <polyline points="9 6 15 12 9 18" />
-                  </svg>
-                  <span className="overlay-group-label">{group.label}</span>
-                  {collapsed && activeCount > 0 && (
-                    <span className="overlay-group-count">{activeCount}</span>
-                  )}
-                </button>
-                {!collapsed && spiralBlocked && (
-                  <p className="callout-notice overlay-group-note">
-                    <svg
-                      className="callout-notice-icon"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                      <line x1="12" y1="9" x2="12" y2="13" />
-                      <line x1="12" y1="17" x2="12.01" y2="17" />
-                    </svg>
-                    <span>
-                      Too wide or tall for this ratio — golden-ratio overlays need the image
-                      within about {SPIRAL_MAX_ASPECT_RATIO.toFixed(1)}:1.
-                    </span>
-                  </p>
-                )}
-                {!collapsed && (
-                  <div className="overlay-list">
-                    {group.types.map((type) => {
-                      const active = activeTypes.has(type);
-                      const overlay = overlayByType.get(type);
-                      return (
-                        <div
-                          key={type}
-                          className={`overlay-item${active ? ' overlay-item--active' : ''}`}
-                        >
-                          <button
-                            type="button"
-                            className="overlay-row"
-                            onClick={() => onToggleOverlay(type)}
-                            aria-pressed={active}
-                            disabled={!hasImage || spiralBlocked}
-                          >
-                            <span className="overlay-row-label">{OVERLAY_LABELS.get(type)}</span>
-                            {active && (
-                              <svg
-                                className="overlay-row-check"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="3"
-                                aria-hidden="true"
-                              >
-                                <polyline points="20 6 9 17 4 12" />
-                              </svg>
-                            )}
-                          </button>
-                          {active && overlay && (
-                            <OverlayControls
-                              overlay={overlay}
-                              onChange={(patch) => onChangeOverlay(type, patch)}
-                            />
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+        {overlays.length > 0 && (
+          <div className="overlay-cards">
+            {overlays.map((overlay) => (
+              <OverlayCard
+                key={overlay.type}
+                overlay={overlay}
+                label={OVERLAY_LABELS.get(overlay.type) ?? overlay.type}
+                collapsed={!expandedCards.has(overlay.type)}
+                onToggleCollapse={() => toggleCard(overlay.type)}
+                onRemove={() => onToggleOverlay(overlay.type)}
+                onChange={(patch) => onChangeOverlay(overlay.type, patch)}
+              />
+            ))}
+          </div>
+        )}
+        {overlays.length === 0 && (
+          <p className="control-hint">
+            {hasImage ? 'No overlays yet — add one below.' : 'Upload an image to add overlays.'}
+          </p>
+        )}
+        <OverlayPicker
+          activeTypes={activeTypes}
+          hasImage={hasImage}
+          spiralViable={spiralViable}
+          onAdd={onToggleOverlay}
+        />
       </div>
 
       {hasImage && (

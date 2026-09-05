@@ -1,10 +1,14 @@
-# Composition Grid Overlay
+# Composition Armatures
 
 A single-purpose tool for checking an image's composition against classic composition
 grids — rule of thirds, golden section, golden triangle, harmonious triangle, golden
 spiral (plus two variants), dynamic symmetry, and the harmonic armature. Upload an image,
-toggle on one or more grid overlays, adjust their orientation, and visually check
-alignment. Everything runs client-side; the image never leaves the browser.
+toggle on one or more grid overlays, adjust their orientation, reduce the picture to flat
+value masses, and download the result. Everything runs client-side; the image never leaves
+the browser.
+
+Live at [armatures.app](https://armatures.app). (The repo is still named
+`composition-grid`, from before the app had a name.)
 
 ## Running locally
 
@@ -13,7 +17,8 @@ npm install
 npm run dev
 ```
 
-Requires Node 20.19+ or 22.12+ (Vite 8).
+Requires Node 20.19+ or 22.12+ (Vite 8). `npm run build` type-checks and builds;
+`npm run lint` runs oxlint.
 
 ## How the grids work
 
@@ -53,6 +58,8 @@ the implementation:
 Flip and rotation are implemented by relabeling which real corner of the rectangle plays
 each role (`src/geometry/orientation.ts`), rather than literally transforming coordinates
 — that keeps every construction exact for any W×H instead of distorting non-square images.
+A single mirror Flip plus Rotate's four 90° steps reaches all eight orientations, so
+there's no second flip control.
 
 The golden-spiral family (Golden Spiral, Golden Circles, Diagonal Spiral) is the only
 construction whose bounding box can fall short of an image edge (each square is 61.8% of
@@ -64,28 +71,118 @@ construction "golden" in the first place, which would defeat the point of overla
 Thirds, golden triangle, and dynamic symmetry always span corner-to-corner already, so
 this doesn't come up for them.
 
-Each square's side is capped at the *shorter* dimension of the current rectangle, so past a
-certain aspect ratio that cap — not the golden-ratio decay — is what determines every
-square's size: the construction stamps out identical squares marching sideways instead of
-shrinking ones, and stops looking like a spiral at all. `1 + φ` (≈2.618:1) is the exact
-ratio where a *second* square first gets forced to that cap (`SPIRAL_MAX_ASPECT_RATIO` in
-`src/geometry/goldenSpiral.ts`) — past it, the golden-spiral family (Golden Spiral, Golden
-Circles, Diagonal Spiral) is unavailable: their rows are disabled with an inline note, and
-an already-active one is automatically turned off if you crop into that range. This checks
-the *effective* (post-crop) ratio, not just the uploaded image's own.
+### Where the spiral stops being a spiral
 
-The golden-spiral family also gets a "1×/2×/4×" multiplicity control that layers extra
-copies of the same construction into one overlay instead of just showing a single spiral:
-2× pairs the current orientation with its horizontal mirror, 4× shows all 4 rotations of
-the current flip state at once (a symmetric 4-corner pinwheel). Implemented by generating
-the underlying square/arc geometry once per orientation variant and merging the results
+Each square's side is capped at the *shorter* dimension of the current rectangle, so past
+the golden ratio the largest square is clamped to fill the whole short side. At exactly
+**2:1** the leftover after that square is a *perfect square* — there's no oriented golden
+rectangle left to keep curling into, and the next square's curve turns the opposite way.
+Below 2:1 every square turns the same way; from 2:1 up it doesn't (verified by sweeping
+every ratio, rotation and flip). So `SPIRAL_MAX_ASPECT_RATIO = 2` in
+`src/geometry/goldenSpiral.ts` is the real boundary rather than a tuned guess — and it's
+why no amount of pivot tweaking fixes the wide case: the shape simply isn't a spiral there.
+
+Past that ratio the golden-spiral family is unavailable: their rows are disabled with an
+inline note, and an already-active one is automatically turned off if you crop into that
+range. This checks the *effective* (post-crop) ratio, not just the uploaded image's own.
+
+### Spiral-only controls
+
+The golden-spiral family gets a "1×/2×/4×" multiplicity control that layers extra copies of
+the same construction into one overlay instead of just showing a single spiral: 2× pairs the
+current orientation with its horizontal mirror, 4× shows all 4 rotations of the current flip
+state at once (a symmetric 4-corner pinwheel). Implemented by generating the underlying
+square/arc geometry once per orientation variant and merging the results
 (`buildSpiralGeometry` in `src/geometry/index.ts`).
 
 Golden Spiral specifically (not Golden Circles or Diagonal Spiral, which never draw them)
-also has a "Squares" toggle for the nested square outlines, off by default (just the
-curve), on adds them in. This only affects what's drawn (`OverlaySvg.tsx`) — the square
-geometry is still generated and still feeds the centering bounding-box math either way, so
-hiding the squares doesn't change where the curve sits.
+also has a "Squares" toggle for the nested square outlines, **on by default** — the squares
+are the construction the curve is drawn from, so showing them makes the overlay read as
+geometry rather than a bare arc. This only affects what's drawn (`OverlaySvg.tsx`); the
+square geometry is generated and feeds the centering bounding-box math either way, so
+toggling it doesn't move the curve.
+
+### Defaults
+
+Uploading an image switches Rule of Thirds on, as the most common starting point (swapping
+images mid-session leaves an existing setup alone). Overlay groups start collapsed except
+Thirds & Sections, to keep the panel scannable. The golden-ratio family defaults to
+rotation 3, which puts the coil's eye in the bottom-right quadrant on a landscape or square
+frame without engaging a flip.
+
+## Value study: grayscale and notan
+
+The Image section has a three-way mode control — **Off / Grayscale / Notan** — for judging
+value structure independent of color.
+
+**Grayscale** is a 0–100% slider. Partial desaturation is often more useful than a hard
+switch, letting you dial in how much color to keep while reading values.
+
+**Notan** reduces the picture to flat tones, the way a painter's value sketch does. Three
+controls:
+
+- **Values** (2–4) — how many flat tones. Two is the classic black-and-white notan; three
+  and four keep a midtone band, which usually reads more like an actual value sketch.
+- **Threshold** — where the split falls; biases the result light or dark.
+- **Simplify** — a blur applied *before* posterizing, which groups fine detail into
+  readable masses. Without it a notan comes out as speckle rather than shapes. It's
+  expressed as a percentage of picture width (not pixels) so it stays the same proportion
+  at any preview or export size. The useful range is small — capped at 0.25%, past which
+  the masses stop following the picture's actual shapes and turn into blobs.
+
+The pipeline is the same in both renderers: luminance → blur → brightness bias → posterize
+(`src/utils/imageFilter.ts`). Only the last step differs, because CSS has no filter function
+that flattens a continuous range into a fixed number of tones:
+
+- The **preview** references an SVG `feComponentTransfer` by id from its CSS filter chain
+  (`ValueFilterDefs.tsx`).
+- The **export** stops after the tonal steps and posterizes in a pixel pass, since a canvas
+  filter can't reliably reference an SVG filter across browsers.
+
+Both derive their tones from one shared definition (`posterizeTones`) rather than each
+rounding independently, so the two paths can't drift apart.
+
+## Export
+
+Two downloads, both PNG, at the image's **full native resolution** — or the cropped
+region's native pixels when a crop is applied:
+
+- **Download image + overlays** — the picture with every active overlay composited in,
+  honoring the current crop and value study.
+- **Download overlays only** — the same overlay composite on a transparent background.
+
+Overlays are re-serialized from the shared geometry into a single SVG
+(`src/utils/exportImage.ts`). Its coordinate system is the *on-screen* overlay box while its
+intrinsic size is the output resolution, so stroke weight matches what you were looking at
+while still rasterizing crisply at full size; `ImageStage` reports its live overlay box up
+for that reference. When a notan blur is active, the source is drawn onto a canvas whose
+margins repeat the edge pixels so the blur can't sample past the picture and fade the border
+to transparent.
+
+Filenames describe what they contain — overlays in play, a notan marker, and a local
+timestamp, e.g. `armatures-rule-of-thirds-golden-spiral-notan-3-20260904-142153.png`. Past
+three overlays the list collapses to a count.
+
+## Cropping
+
+The "Crop" button (Image section) enters an editing mode: a draggable rectangle over the
+full image with drag-to-move on the rectangle itself, corner handles for resizing both axes
+and elongated edge handles for one axis at a time (`CropEditor.tsx`). Handles are sized for
+touch, and the stage gains breathing room on entry so a grab near the edge doesn't collide
+with an OS swipe gesture. Everything outside the rectangle is dimmed, and active overlays
+are live-previewed inside it as it's resized, so you can see how the grid will land before
+committing.
+
+Crop state is stored as normalized (0–1) fractions of the image's natural width/height
+(`CropRect` in `types.ts`) rather than pixels, so it doesn't need to know the image's size
+up front and survives any display size.
+
+Hitting "Apply crop" doesn't touch the uploaded file — it switches the stage to a
+letterboxed viewport sized to the crop rectangle's aspect ratio, with the full image scaled
+and offset inside it (`overflow: hidden` clips the rest), so the cropped region fills the
+frame (`useCropViewport.ts`). Overlays then recompute against that cropped W×H like any
+other image, exactly as if you'd uploaded the cropped region directly. "Edit crop" reopens
+the rectangle at its last position; "Reset crop" clears it back to the full image.
 
 ## Image formats
 
@@ -97,31 +194,21 @@ That decoder is a ~1.3MB dependency, so it's dynamically imported only when a HE
 actually selected (`src/utils/heic.ts`) rather than bundled into the main app — everyone
 else's page weight is unaffected.
 
-## Image display controls
+## Guide pages
 
-A "Grayscale" slider (0–100%) in the Image section desaturates the photo itself — useful
-for judging tonal/value structure independent of color. It's a plain CSS `filter:
-grayscale()` on the `<img>` element (`ImageStage.tsx`), so it's a display-only change: it
-never touches the uploaded file, and has no effect on overlay geometry or colors. A slider
-rather than an on/off toggle, since partial desaturation is often more useful than a hard
-switch for this — you can dial in how much color to keep while judging values.
+Alongside the app, `public/` holds a set of static HTML articles, served at clean URLs.
+They're deliberately plain HTML rather than React routes so they're crawlable without
+client-side rendering, and they share one stylesheet (`public/article.css`):
 
-## Cropping
+- **`/composition-armatures`** — the main guide, and the hub the rest link back to.
+- **`/learn/*`** — "what it is" deep dives (rule of thirds, golden ratio, golden triangle,
+  dynamic symmetry).
+- **`/how-to/*`** — painting-first practical guides: how to actually compose on each
+  armature, with jump nav, build steps, common mistakes and FAQ schema.
 
-The "Crop" button (Image section) enters an editing mode: a draggable rectangle over the
-full image, with corner handles for resizing and drag-to-move on the rectangle itself
-(`CropEditor.tsx`). Everything outside the rectangle is dimmed, and any active overlays
-are live-previewed inside it as it's resized, so you can see how the grid will land before
-committing. Crop state is stored as normalized (0–1) fractions of the image's natural
-width/height (`CropRect` in `types.ts`) rather than pixels, so it doesn't need to know the
-image's size up front and survives any display size.
-
-Hitting "Apply crop" doesn't touch the uploaded file — it switches the stage to a
-letterboxed viewport sized to the crop rectangle's aspect ratio, with the full image scaled
-and offset inside it (`overflow: hidden` clips the rest), so the cropped region fills the
-frame (`useCropViewport.ts`). Overlays then recompute against that cropped W×H like any
-other image, exactly as if you'd uploaded the cropped region directly. "Edit crop" reopens
-the rectangle at its last position; "Reset crop" clears it back to the full image.
+Their diagrams are generated from the app's own `src/geometry/` code, so the illustrations
+can't drift from what the tool draws. `sitemap.xml`, `robots.txt` and `og.jpg` live in
+`public/` too.
 
 ## Feedback
 
@@ -143,15 +230,25 @@ The key is read at build time via `import.meta.env` and is safe to ship in clien
 Web3Forms access keys are designed to be public. Until a key is set, the form still opens but
 reports that it isn't configured on submit. A hidden honeypot field drops obvious bots.
 
+## Analytics
+
+Vercel Web Analytics (`@vercel/analytics`), chosen because it's cookieless — it needs no
+consent banner, which a client-side tool with no accounts shouldn't have to carry. The
+`<Analytics />` component covers the app; the static guide pages load the script directly.
+
+`track()` calls mark the moments worth knowing about (upload, overlay added, crop applied,
+download, feedback). Custom events are a Vercel Pro feature, so on the Hobby plan only
+pageviews are visible — the calls are harmless either way and are left in place.
+
 ## Future work
 
-Not built in v1, in rough priority order:
+In rough priority order:
 
 - Free-angle rotation (slider) in addition to 90° steps
 - Draggable (mouse/touch) grid repositioning and continuous resizing
-- Export: flatten the image + active overlays into a downloadable PNG
 - Save/recall a favorite overlay combination
-- Touch/mobile support
+- Remaining `/how-to/` guides (harmonious triangle, the spiral family, dynamic symmetry,
+  harmonic armature), and real painting examples in place of the generated diagrams
 
 ## Out of scope
 

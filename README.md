@@ -112,8 +112,8 @@ frame without engaging a flip.
 
 ## Value study: grayscale and notan
 
-The Image section has a three-way mode control — **Off / Grayscale / Notan** — for judging
-value structure independent of color.
+The **Value** section, below Overlays, has a three-way mode control — **Off / Grayscale /
+Notan** — for judging value structure independent of color.
 
 **Grayscale** is a 0–100% slider. Partial desaturation is often more useful than a hard
 switch, letting you dial in how much color to keep while reading values.

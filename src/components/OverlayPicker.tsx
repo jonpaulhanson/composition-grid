@@ -10,9 +10,15 @@ import { OverlaySvg } from './OverlaySvg';
  *
  * These are the *drawing* dimensions, inset from the visible box (see .picker-thumb-inner):
  * constructions run corner to corner, and a stroke is centred on its path, so at the exact
- * box size the outer half of every edge line would be clipped away. */
-const THUMB_W = 38;
-const THUMB_H = 24;
+ * box size the outer half of every edge line would be clipped away.
+ *
+ * The box stretches to the row's full content height rather than floating centred in it, so
+ * these are that box less its 1px border and 2px inset on each side. Matching it exactly is
+ * what makes the drawing fill too — otherwise the viewBox letterboxes inside and you get the
+ * dead space back, just inside the frame instead of around it. The row is 69px with a 1px
+ * border and 7px padding, so the box is 53 and the drawing 47. */
+const THUMB_W = 58;
+const THUMB_H = 47;
 const THUMB_COLOR = '#c9ccd2';
 const THUMB_STROKE = 0.9;
 
@@ -28,6 +34,13 @@ interface OverlayPickerProps {
 export function OverlayPicker({ activeTypes, hasImage, spiralViable, onAdd }: OverlayPickerProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // The panel is absolutely positioned, so it can open past the bottom of the control panel's
+  // scroll area. Bring it into view — 'nearest' leaves it alone when it already fits.
+  useEffect(() => {
+    if (open) panelRef.current?.scrollIntoView({ block: 'nearest' });
+  }, [open]);
 
   // Close on click-outside or Escape, the two things a panel like this is expected to do.
   useEffect(() => {
@@ -67,8 +80,13 @@ export function OverlayPicker({ activeTypes, hasImage, spiralViable, onAdd }: Ov
       </button>
 
       {open && (
-        <div className="overlay-picker-panel" role="dialog" aria-label="Add an overlay">
+        <div className="overlay-picker-panel" ref={panelRef} role="dialog" aria-label="Add an overlay">
           {OVERLAY_GROUPS.map((group) => {
+            // The picker only offers what you haven't got. An added overlay already has a card
+            // above with its own remove control, so listing it again — even greyed — is a row
+            // you can't act on. Groups drop out once emptied rather than leaving a bare label.
+            const available = group.types.filter((t) => !activeTypes.has(t));
+            if (available.length === 0) return null;
             const isSpiralGroup = group.types.every((t) => SPIRAL_FAMILY.includes(t));
             const blocked = isSpiralGroup && !spiralViable;
             return (
@@ -96,28 +114,20 @@ export function OverlayPicker({ activeTypes, hasImage, spiralViable, onAdd }: Ov
                     </span>
                   </p>
                 )}
-                {group.types.map((type) => {
+                {available.map((type) => {
                   const def = OVERLAY_BY_TYPE.get(type);
                   if (!def) return null;
-                  const added = activeTypes.has(type);
                   return (
                     <button
                       key={type}
                       type="button"
                       className="picker-row"
-                      disabled={added || blocked}
+                      disabled={blocked}
                       onClick={() => {
                         onAdd(type);
                         setOpen(false);
                       }}
                     >
-                      <span className="picker-row-text">
-                        <span className="picker-row-label">
-                          {def.label}
-                          {added && <span className="picker-row-added">Added</span>}
-                        </span>
-                        <span className="picker-row-desc">{def.description}</span>
-                      </span>
                       <span className="picker-thumb" aria-hidden="true">
                         <span className="picker-thumb-inner">
                           <OverlaySvg
@@ -131,6 +141,10 @@ export function OverlayPicker({ activeTypes, hasImage, spiralViable, onAdd }: Ov
                             height={THUMB_H}
                           />
                         </span>
+                      </span>
+                      <span className="picker-row-text">
+                        <span className="picker-row-label">{def.label}</span>
+                        <span className="picker-row-desc">{def.description}</span>
                       </span>
                     </button>
                   );

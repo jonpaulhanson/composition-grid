@@ -410,6 +410,7 @@
 /* ---------------------------------------------------------------- */
 
 .overlay-picker {
+  position: relative;
   display: flex;
   flex-direction: column;
 }
@@ -447,12 +448,21 @@
 
 /* Sits in flow rather than floating: the control panel is its own scroll container, so an
  * absolutely positioned popover would be clipped by it on a short viewport. */
+/* Overlaid rather than in flow, so opening the catalog doesn't shove Value and Export
+ * down the panel. The control panel is its own scroll container, so this is clipped by it
+ * rather than escaping — but it adds to that container's scroll height instead of displacing
+ * siblings, and the picker scrolls itself into view on open. */
 .overlay-picker-panel {
-  margin-top: 6px;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
   padding: 10px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--bg-sunken);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
   /* All nine rows run ~980px — taller than most viewports, which would bury everything
    * below the picker. Cap it and let the catalog scroll within itself instead. */
   max-height: min(55vh, 440px);
@@ -482,7 +492,7 @@
 .picker-row {
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 10px;
   cursor: pointer;
   border: 1px solid transparent;
@@ -509,8 +519,8 @@
 .picker-thumb {
   position: relative;
   flex: 0 0 auto;
-  width: 42px;
-  height: 28px;
+  align-self: stretch;
+  width: 64px;
   border: 1px solid var(--border);
   border-radius: 4px;
   background: var(--bg);
@@ -526,6 +536,7 @@
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 2px;
   min-width: 0;
 }
@@ -538,16 +549,6 @@
   font-weight: 600;
 }
 
-.picker-row-added {
-  padding: 1px 5px;
-  border-radius: 4px;
-  background: var(--border);
-  color: var(--text-dim);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
 
 .picker-row-desc {
   font-size: 12px;

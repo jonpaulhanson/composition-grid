@@ -494,9 +494,10 @@
 .overlay-add-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 7px;
   width: 100%;
+  text-align: left;
   min-height: 40px;
   padding: 9px;
   cursor: pointer;
@@ -570,18 +571,28 @@
   }
 }
 
-.picker-group + .picker-group {
-  margin-top: 12px;
+/* Open: the plus turns 45° into a close cross, and the fill deepens so the button reads as
+ * pressed rather than merely hovered (hover brightens, so brightening again wouldn't
+ * distinguish it). */
+.overlay-add-btn--open {
+  filter: brightness(0.86);
 }
 
-.picker-group-label {
-  margin: 0 0 6px;
-  padding: 0 2px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-dim);
+.overlay-add-btn--open .overlay-add-icon {
+  transform: rotate(45deg);
+}
+
+.overlay-add-icon {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay-add-icon {
+    transition: none;
+  }
 }
 
 .picker-note {

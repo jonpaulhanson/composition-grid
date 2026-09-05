@@ -38,7 +38,7 @@ export function Dropzone({ onFileSelected, variant = 'full' }: DropzoneProps) {
       className={
         variant === 'button'
           ? `btn-secondary image-action-btn${isDragging ? ' image-action-btn--active' : ''}`
-          : `dropzone${isDragging ? ' dropzone--active' : ''}`
+          : `dropzone-area${isDragging ? ' dropzone-area--active' : ''}`
       }
       aria-label={variant === 'button' ? 'Replace image' : undefined}
       onClick={() => inputRef.current?.click()}
@@ -71,7 +71,7 @@ export function Dropzone({ onFileSelected, variant = 'full' }: DropzoneProps) {
         Replace
         </>
       ) : (
-        <>
+        <div className="dropzone">
           <svg
             className="dropzone-icon"
             viewBox="0 0 24 24"
@@ -92,7 +92,7 @@ export function Dropzone({ onFileSelected, variant = 'full' }: DropzoneProps) {
             JPG, PNG, WebP or HEIC — your image is never uploaded, everything happens in
             your browser.
           </p>
-        </>
+        </div>
       )}
     </div>
   );

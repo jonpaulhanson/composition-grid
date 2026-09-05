@@ -172,8 +172,20 @@
 
 /* The whole of the initial view — there's no control panel until an image is loaded — so it
  * carries the weight of explaining what this is and what it does with your picture. */
-.dropzone {
+/* The drop target is the whole canvas, not just the panel — a file aimed anywhere at the
+ * empty stage should land. `.dropzone` is only what you see; `.dropzone-area` is what
+ * catches. */
+.dropzone-area {
+  flex: 1 1 auto;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  outline: none;
+}
+
+.dropzone {
   border: 2px dashed var(--border);
   border-radius: 14px;
   padding: 68px 52px;
@@ -195,9 +207,9 @@
   transition: color 0.15s;
 }
 
-.dropzone:hover .dropzone-icon,
-.dropzone:focus-visible .dropzone-icon,
-.dropzone--active .dropzone-icon {
+.dropzone-area:hover .dropzone-icon,
+.dropzone-area:focus-visible .dropzone-icon,
+.dropzone-area--active .dropzone-icon {
   color: var(--accent);
 }
 
@@ -210,9 +222,12 @@
 }
 
 .stage-intro {
+  flex: 1 1 auto;
+  align-self: stretch;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 14px;
 }
 
@@ -221,14 +236,14 @@
   text-align: center;
 }
 
-.dropzone:hover,
-.dropzone:focus-visible {
+.dropzone-area:hover .dropzone,
+.dropzone-area:focus-visible .dropzone {
   border-color: var(--accent);
   color: var(--text);
-  outline: none;
 }
 
-.dropzone--active {
+/* Dragging anywhere over the canvas lights the panel, so it's clear the whole area accepts. */
+.dropzone-area--active .dropzone {
   border-color: var(--accent);
   background: linear-gradient(rgba(77, 141, 255, 0.12), rgba(77, 141, 255, 0.12)), var(--bg-elevated);
   color: var(--text);

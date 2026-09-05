@@ -253,11 +253,16 @@
   color: var(--text);
 }
 
+.dropzone-subtitle {
+  margin: 7px 0 0;
+  font-size: 14px;
+}
+
 .dropzone-actions {
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin: 20px 0 0;
+  margin: 22px 0 0;
 }
 
 .dropzone-btn {

@@ -10,8 +10,9 @@ import { Dropzone } from './Dropzone';
 
 const OVERLAY_LABELS = new Map(OVERLAY_DEFS.map((d) => [d.type, d.label]));
 
+/** 'off' has no button of its own — the two studies toggle, and neither being on *is* off.
+ * A button representing nothing was the only thing lit up when nothing was happening. */
 const VALUE_MODES = [
-  { mode: 'off', label: 'Off' },
   { mode: 'grayscale', label: 'Grayscale' },
   { mode: 'notan', label: 'Notan' },
 ] as const;
@@ -165,7 +166,7 @@ export function ControlPanel({
                 key={mode}
                 type="button"
                 className={`ctrl-btn${valueStudy.mode === mode ? ' ctrl-btn--active' : ''}`}
-                onClick={() => onValueStudyChange({ mode })}
+                onClick={() => onValueStudyChange({ mode: valueStudy.mode === mode ? 'off' : mode })}
                 aria-pressed={valueStudy.mode === mode}
               >
                 {label}

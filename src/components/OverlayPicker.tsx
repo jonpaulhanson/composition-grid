@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { OVERLAY_DEFS, OVERLAY_GROUPS, SPIRAL_FAMILY, createDefaultOverlay } from '../types';
 import type { OverlayType } from '../types';
 import { SPIRAL_MAX_ASPECT_RATIO } from '../geometry/goldenSpiral';
+import { isStackedLayout } from '../utils/layout';
 import { OverlaySvg } from './OverlaySvg';
 
 /** Thumbnail geometry is drawn by the same component as the real overlay, so a row can't
@@ -23,9 +24,6 @@ const THUMB_H = 47;
  * theme rather than staying pinned to a colour picked for a dark panel. */
 const THUMB_COLOR = 'currentColor';
 const THUMB_STROKE = 0.9;
-
-/** Keep in step with the responsive breakpoint in App.css. */
-const STACKED_LAYOUT = '(max-width: 720px)';
 
 const OVERLAY_BY_TYPE = new Map(OVERLAY_DEFS.map((d) => [d.type, d]));
 
@@ -55,7 +53,7 @@ export function OverlayPicker({
   // there the catalog is taller than the panel, so "into view" would mean scrolling the
   // button that opened it off the top.
   useEffect(() => {
-    if (!open || window.matchMedia(STACKED_LAYOUT).matches) return;
+    if (!open || isStackedLayout()) return;
     panelRef.current?.scrollIntoView({ block: 'nearest' });
   }, [open]);
 

@@ -12,6 +12,7 @@ import { convertHeicToJpeg, isHeic } from './utils/heic';
 import { buildExportFilename, downloadBlob, renderExportBlob } from './utils/exportImage';
 import type { ExportMode } from './utils/exportImage';
 import { DEFAULT_VALUE_STUDY } from './utils/imageFilter';
+import { isStackedLayout } from './utils/layout';
 import type { ValueStudy } from './utils/imageFilter';
 import './App.css';
 
@@ -103,7 +104,7 @@ function App() {
           return prev.filter((o) => o.type !== type);
         }
         const order = OVERLAY_DEFS.map((d) => d.type);
-        const next = [...prev, createDefaultOverlay(type)];
+        const next = [...prev, createDefaultOverlay(type, isStackedLayout())];
         return next.sort((a, b) => order.indexOf(a.type) - order.indexOf(b.type));
       });
     },

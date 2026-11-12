@@ -89,7 +89,14 @@ export interface CropRect {
 
 export const FULL_CROP: CropRect = { x: 0, y: 0, w: 1, h: 1 };
 
-export function createDefaultOverlay(type: OverlayType): OverlayState {
+/** Line thickness is in on-screen pixels, so what reads as a medium line depends on how big
+ * the picture is drawn. 2.75 is the midpoint of the 0.5–5 slider and suits a picture filling a
+ * desktop stage; on a phone the same picture is about half as wide, and the same line twice as
+ * heavy against it. The compact default keeps roughly the same proportion. */
+const DEFAULT_STROKE_WIDTH = 2.75;
+const COMPACT_STROKE_WIDTH = 1.5;
+
+export function createDefaultOverlay(type: OverlayType, compact = false): OverlayState {
   return {
     type,
     flipH: false,
@@ -100,7 +107,7 @@ export function createDefaultOverlay(type: OverlayType): OverlayState {
     rotation: SPIRAL_FAMILY.includes(type) ? 3 : 0,
     color: COLOR_PRESETS[0],
     opacity: 1.00,
-    strokeWidth: 2.75, // midpoint of the 0.5-5 thickness slider range
+    strokeWidth: compact ? COMPACT_STROKE_WIDTH : DEFAULT_STROKE_WIDTH,
     multiplicity: 1,
     // The nested squares are the construction the spiral is drawn from, so showing them by
     // default makes the golden spiral read as geometry rather than a bare curve. Inert for

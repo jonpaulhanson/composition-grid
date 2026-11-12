@@ -13,6 +13,8 @@ import { buildExportFilename, downloadBlob, renderExportBlob } from './utils/exp
 import type { ExportMode } from './utils/exportImage';
 import { DEFAULT_VALUE_STUDY } from './utils/imageFilter';
 import { isStackedLayout } from './utils/layout';
+import { cropRatioLock, fitCropToLock, isOrientable, matchesLock } from './utils/cropRatio';
+import type { CropRatioId } from './utils/cropRatio';
 import type { ValueStudy } from './utils/imageFilter';
 import './App.css';
 
@@ -25,6 +27,8 @@ function App() {
   const [crop, setCrop] = useState<CropRect | null>(null);
   const [isCropping, setIsCropping] = useState(false);
   const [draftCrop, setDraftCrop] = useState<CropRect>(FULL_CROP);
+  const [cropRatioId, setCropRatioId] = useState<CropRatioId>('free');
+  const [cropPortrait, setCropPortrait] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [overlayBox, setOverlayBox] = useState({ width: 0, height: 0 });
   // Lifted out of OverlayPicker so loading an image can open it (see handleFileSelected).
@@ -32,12 +36,15 @@ function App() {
   const [isExporting, setIsExporting] = useState(false);
   const { theme, toggle: toggleTheme } = useTheme();
   const objectUrlRef = useRef<string | null>(null);
+  // What the ratio choice was when cropping began, to put back if the edit is cancelled.
+  const cropRatioAtStartRef = useRef<{ id: CropRatioId; portrait: boolean }>({ id: 'free', portrait: false });
   const natural = useNaturalSize(imageUrl);
 
   // Effective displayed size — the cropped region if a crop is active, else the whole image.
   const effectiveWidth = natural.width * (crop?.w ?? 1);
   const effectiveHeight = natural.height * (crop?.h ?? 1);
   const spiralViable = isSpiralViable(effectiveWidth, effectiveHeight);
+  const cropLock = cropRatioLock(cropRatioId, cropPortrait, natural);
 
   // Cropping into too extreme a ratio should drop any spiral-family overlay that's active,
   // rather than leave it silently showing a shape the geometry can no longer produce cleanly.
@@ -68,6 +75,7 @@ function App() {
     setImageUrl(url);
     setCrop(null);
     setIsCropping(false);
+    setCropRatioId('free');
     track('image_uploaded');
     // Rather than pick an overlay on the user's behalf, open the catalog so they choose — which
     // also surfaces what's on offer to a first-time visitor. Swapping images mid-session leaves
@@ -124,23 +132,54 @@ function App() {
   }, []);
 
   const handleStartCrop = useCallback(() => {
-    setDraftCrop(crop ?? FULL_CROP);
+    const draft = crop ?? FULL_CROP;
+    setDraftCrop(draft);
     setIsCropping(true);
-  }, [crop]);
+    // The ratio is remembered between edits so reopening a 5:4 crop keeps it 5:4. But the crop
+    // can change underneath it — reset, or a different ratio tried and cancelled — and a lock
+    // that doesn't describe the crop on screen would snap it the moment a handle moved.
+    const lock = cropRatioLock(cropRatioId, cropPortrait, natural);
+    const id = lock !== null && !matchesLock(draft, lock) ? 'free' : cropRatioId;
+    // With nothing chosen that has a way up, start the proportions the way up the picture is.
+    const portrait = isOrientable(id) ? cropPortrait : natural.height > natural.width;
+    setCropRatioId(id);
+    setCropPortrait(portrait);
+    cropRatioAtStartRef.current = { id, portrait };
+  }, [crop, cropRatioId, cropPortrait, natural]);
+
+  const handleSelectCropRatio = useCallback(
+    (id: CropRatioId) => {
+      setCropRatioId(id);
+      const lock = cropRatioLock(id, cropPortrait, natural);
+      if (lock !== null) setDraftCrop((prev) => fitCropToLock(prev, lock));
+    },
+    [cropPortrait, natural],
+  );
+
+  const handleToggleCropOrientation = useCallback(() => {
+    const portrait = !cropPortrait;
+    setCropPortrait(portrait);
+    const lock = cropRatioLock(cropRatioId, portrait, natural);
+    if (lock !== null) setDraftCrop((prev) => fitCropToLock(prev, lock));
+  }, [cropRatioId, cropPortrait, natural]);
 
   const handleApplyCrop = useCallback(() => {
     setCrop(draftCrop);
     setIsCropping(false);
-    track('crop_applied');
-  }, [draftCrop]);
+    track('crop_applied', { ratio: cropRatioId });
+  }, [draftCrop, cropRatioId]);
 
   const handleCancelCrop = useCallback(() => {
     setIsCropping(false);
+    // Cancelling throws away the draft, so it throws away a ratio picked for that draft too.
+    setCropRatioId(cropRatioAtStartRef.current.id);
+    setCropPortrait(cropRatioAtStartRef.current.portrait);
   }, []);
 
   const handleResetCrop = useCallback(() => {
     setCrop(null);
     setIsCropping(false);
+    setCropRatioId('free');
   }, []);
 
   const handleDownload = useCallback(
@@ -249,6 +288,7 @@ function App() {
           isCropping={isCropping}
           draftCrop={draftCrop}
           onDraftCropChange={setDraftCrop}
+          cropLock={isCropping ? cropLock : null}
           natural={natural}
           onOverlayBoxChange={setOverlayBox}
           conversionError={conversionError}
@@ -272,6 +312,10 @@ function App() {
             onApplyCrop={handleApplyCrop}
             onCancelCrop={handleCancelCrop}
             onResetCrop={handleResetCrop}
+            cropRatioId={cropRatioId}
+            cropPortrait={cropPortrait}
+            onSelectCropRatio={handleSelectCropRatio}
+            onToggleCropOrientation={handleToggleCropOrientation}
             onClearImage={handleClearImage}
             onDownload={handleDownload}
             isExporting={isExporting}

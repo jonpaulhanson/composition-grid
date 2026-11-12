@@ -4,6 +4,8 @@ import type { OverlayState, OverlayType } from '../types';
 import type { ExportMode } from '../utils/exportImage';
 import { SIMPLIFY_MAX, SIMPLIFY_STEP } from '../utils/imageFilter';
 import type { ValueStudy } from '../utils/imageFilter';
+import { CROP_RATIOS, cropRatioHint, cropRatioLabel, isOrientable } from '../utils/cropRatio';
+import type { CropRatioId } from '../utils/cropRatio';
 import { OverlayCard } from './OverlayCard';
 import { OverlayPicker } from './OverlayPicker';
 import { Dropzone } from './Dropzone';
@@ -38,6 +40,11 @@ interface ControlPanelProps {
   onApplyCrop: () => void;
   onCancelCrop: () => void;
   onResetCrop: () => void;
+  cropRatioId: CropRatioId;
+  /** Which way up the proportions run. Ignored by the choices it means nothing for. */
+  cropPortrait: boolean;
+  onSelectCropRatio: (id: CropRatioId) => void;
+  onToggleCropOrientation: () => void;
   onClearImage: () => void;
   onDownload: (mode: ExportMode) => void;
   isExporting: boolean;
@@ -63,6 +70,10 @@ export function ControlPanel({
   onApplyCrop,
   onCancelCrop,
   onResetCrop,
+  cropRatioId,
+  cropPortrait,
+  onSelectCropRatio,
+  onToggleCropOrientation,
   onClearImage,
   onDownload,
   isExporting,
@@ -121,6 +132,47 @@ export function ControlPanel({
         {conversionError && <p className="control-error">{conversionError}</p>}
         {/* Only the states that need a decision get full-width buttons; plain "crop this" is
             the icon above. */}
+        {isCropping && (
+          <div className="crop-ratios">
+            <div className="crop-ratios-header">
+              <span className="crop-ratios-title">Ratio</span>
+              <button
+                type="button"
+                className="crop-orient-btn"
+                onClick={onToggleCropOrientation}
+                disabled={!isOrientable(cropRatioId)}
+                title={cropPortrait ? 'Switch to landscape' : 'Switch to portrait'}
+              >
+                <svg
+                  className={`crop-orient-icon${cropPortrait ? ' crop-orient-icon--portrait' : ''}`}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="6.5" width="18" height="11" rx="1.5" />
+                </svg>
+                {cropPortrait ? 'Portrait' : 'Landscape'}
+              </button>
+            </div>
+            <div className="crop-ratio-grid">
+              {CROP_RATIOS.map(({ id }) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={`ctrl-btn crop-ratio-btn${cropRatioId === id ? ' ctrl-btn--active' : ''}`}
+                  onClick={() => onSelectCropRatio(id)}
+                  aria-pressed={cropRatioId === id}
+                  title={cropRatioHint(id)}
+                >
+                  {cropRatioLabel(id, cropPortrait)}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         {(isCropping || hasCrop) && (
           <div className="crop-controls">
             {isCropping ? (

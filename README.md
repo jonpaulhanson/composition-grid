@@ -171,6 +171,14 @@ with an OS swipe gesture. Everything outside the rectangle is dimmed, and active
 are live-previewed inside it as it's resized, so you can see how the grid will land before
 committing.
 
+While cropping, a row of ratios holds the rectangle to a fixed shape: Original (the image's
+own), 1:1, 5:4, 4:3, 3:2, 16:9 and the golden rectangle, with Free as the default. Each is
+listed once and a Landscape/Portrait toggle turns it on its side. Picking one reshapes the
+rectangle around its centre at about the same area, rather than jumping to the largest crop
+that fits. With a ratio on, corner drags pin the opposite corner and edge drags pin the
+opposite edge, growing evenly either side. The choice is remembered when a crop is reopened
+with "Edit crop", and cancelling puts back whatever it was (`utils/cropRatio.ts`).
+
 Crop state is stored as normalized (0–1) fractions of the image's natural width/height
 (`CropRect` in `types.ts`) rather than pixels, so it doesn't need to know the image's size
 up front and survives any display size.

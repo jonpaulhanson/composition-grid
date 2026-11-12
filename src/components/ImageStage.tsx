@@ -22,6 +22,8 @@ interface ImageStageProps {
   isCropping: boolean;
   draftCrop: CropRect;
   onDraftCropChange: (rect: CropRect) => void;
+  /** Shape the crop is held to while it's being edited, or null. See `cropRatioLock`. */
+  cropLock: number | null;
   natural: NaturalSize;
   /** Reports the on-screen size of the committed overlay box (cropped viewport if a crop is
    * applied, else the whole image), used as the export's stroke/geometry reference. */
@@ -40,6 +42,7 @@ export function ImageStage({
   isCropping,
   draftCrop,
   onDraftCropChange,
+  cropLock,
   natural,
   onOverlayBoxChange,
   conversionError,
@@ -151,7 +154,7 @@ export function ImageStage({
             </div>
           )}
           {box.width > 0 && isCropping && (
-            <CropEditor box={box} draft={draftCrop} onChange={onDraftCropChange} overlays={overlays} />
+            <CropEditor box={box} draft={draftCrop} onChange={onDraftCropChange} overlays={overlays} lock={cropLock} />
           )}
         </>
       ) : isConverting ? (

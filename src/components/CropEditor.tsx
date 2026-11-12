@@ -11,6 +11,9 @@ interface CropEditorProps {
   draft: CropRect;
   onChange: (rect: CropRect) => void;
   overlays: OverlayState[];
+  /** The w/h the crop's fractions are held to while resizing, or null for a free crop. See
+   * `cropRatioLock`. */
+  lock: number | null;
 }
 
 type DragMode = 'move' | 'nw' | 'ne' | 'se' | 'sw' | 'n' | 'e' | 's' | 'w';
@@ -31,7 +34,53 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
-export function CropEditor({ box, draft, onChange, overlays }: CropEditorProps) {
+/**
+ * A resize that keeps the crop at a fixed shape. Whatever is opposite the handle stays put: a
+ * corner drag pins the far corner, and an edge drag pins the far edge and grows the crop
+ * evenly either side of its middle, since one edge can't move alone without changing the shape.
+ *
+ * Worked in terms of width — height always follows as w / lock — so the limits (the image's
+ * edges, the minimum size) reduce to a single range for w.
+ */
+function resizeLocked(start: CropRect, mode: Exclude<DragMode, 'move'>, dx: number, dy: number, lock: number): CropRect {
+  const x2 = start.x + start.w;
+  const y2 = start.y + start.h;
+  const cx = start.x + start.w / 2;
+  const cy = start.y + start.h / 2;
+  const horiz = mode.includes('e') ? 1 : mode.includes('w') ? -1 : 0;
+  const vert = mode.includes('s') ? 1 : mode.includes('n') ? -1 : 0;
+  // How far each axis can run from the pinned side to the image's edge.
+  const roomX = horiz > 0 ? 1 - start.x : x2;
+  const roomY = vert > 0 ? 1 - start.y : y2;
+
+  const widthFromX = start.w + horiz * dx;
+  const widthFromY = (start.h + vert * dy) * lock;
+  let wanted: number;
+  let maxW: number;
+  if (horiz && vert) {
+    // Follow whichever axis the pointer has pulled further, so the corner keeps up with it.
+    wanted = Math.max(widthFromX, widthFromY);
+    maxW = Math.min(roomX, roomY * lock);
+  } else if (horiz) {
+    wanted = widthFromX;
+    maxW = Math.min(roomX, 2 * Math.min(cy, 1 - cy) * lock);
+  } else {
+    wanted = widthFromY;
+    maxW = Math.min(roomY * lock, 2 * Math.min(cx, 1 - cx));
+  }
+  // Both sides have to clear the minimum, and width is the longer one whenever lock > 1.
+  const minW = Math.min(Math.max(MIN_SIZE, MIN_SIZE * lock), maxW);
+  const w = clamp(wanted, minW, maxW);
+  const h = w / lock;
+  return {
+    x: horiz > 0 ? start.x : horiz < 0 ? x2 - w : cx - w / 2,
+    y: vert > 0 ? start.y : vert < 0 ? y2 - h : cy - h / 2,
+    w,
+    h,
+  };
+}
+
+export function CropEditor({ box, draft, onChange, overlays, lock }: CropEditorProps) {
   const dragRef = useRef<DragState | null>(null);
 
   const beginDrag = (mode: DragMode) => (e: ReactPointerEvent<HTMLDivElement>) => {
@@ -54,6 +103,8 @@ export function CropEditor({ box, draft, onChange, overlays }: CropEditorProps) 
       const x = clamp(startRect.x + dx, 0, 1 - startRect.w);
       const y = clamp(startRect.y + dy, 0, 1 - startRect.h);
       next = { ...startRect, x, y };
+    } else if (lock !== null) {
+      next = resizeLocked(startRect, mode, dx, dy, lock);
     } else {
       // Each edge letter in the mode ('n'/'e'/'s'/'w', or two for a corner) resizes that side.
       let { x, y, w, h } = startRect;

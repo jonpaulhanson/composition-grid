@@ -238,6 +238,29 @@ consent banner, which a client-side tool with no accounts shouldn't have to carr
 download, feedback). Custom events are a Vercel Pro feature, so on the Hobby plan only
 pageviews are visible — the calls are harmless either way and are left in place.
 
+## Security headers
+
+`vercel.json` sets the response headers for every page: a Content-Security-Policy, plus
+`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Cross-Origin-Opener-Policy`
+and a `Permissions-Policy` that switches off the device features the app never asks for.
+
+The policy only lets the page load code from its own origin and only lets it talk to its own
+origin and the feedback endpoint, so a script that shouldn't be there has nowhere to send
+anything. Two things in it are looser than they'd ideally be:
+
+- `'unsafe-eval'` in `script-src`, because `heic2any`'s decoder builds functions at runtime.
+  Without it HEIC conversion fails. Replacing that library is what would let this go.
+- `'unsafe-inline'` in `style-src`, for the handful of inline `style` attributes in the guide
+  pages. Styles can't run code, so this is the cheap one.
+
+Inline scripts are allowed by hash rather than wholesale — the theme bootstrap in `index.html`
+and the analytics stub in the guide pages. Editing either changes its hash, and a browser
+silently refuses an inline script whose hash isn't listed, so `npm run build` ends with
+`scripts/check-csp.mjs`, which fails the build and prints the hash to paste into `vercel.json`.
+
+When updating dependencies, prefer versions that have been out for a week or more —
+`npm install <pkg> --before=<date>` resolves only what was published before that date.
+
 ## Future work
 
 In rough priority order:
@@ -247,6 +270,8 @@ In rough priority order:
 - Save/recall a favorite overlay combination
 - Remaining `/how-to/` guides (harmonious triangle, the spiral family, dynamic symmetry,
   harmonic armature), and real painting examples in place of the generated diagrams
+- Replace `heic2any`, which hasn't been released since 2023, with a maintained HEIC decoder —
+  which would also let `'unsafe-eval'` out of the Content-Security-Policy
 
 ## Out of scope
 

@@ -24,6 +24,9 @@ const THUMB_H = 47;
 const THUMB_COLOR = 'currentColor';
 const THUMB_STROKE = 0.9;
 
+/** Keep in step with the responsive breakpoint in App.css. */
+const STACKED_LAYOUT = '(max-width: 720px)';
+
 const OVERLAY_BY_TYPE = new Map(OVERLAY_DEFS.map((d) => [d.type, d]));
 
 interface OverlayPickerProps {
@@ -47,10 +50,13 @@ export function OverlayPicker({
   const rootRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // The panel is absolutely positioned, so it can open past the bottom of the control panel's
-  // scroll area. Bring it into view — 'nearest' leaves it alone when it already fits.
+  // The catalog can open past the bottom of the control panel's scroll area. Bring it into
+  // view — 'nearest' leaves it alone when it already fits. Not in the stacked phone layout:
+  // there the catalog is taller than the panel, so "into view" would mean scrolling the
+  // button that opened it off the top.
   useEffect(() => {
-    if (open) panelRef.current?.scrollIntoView({ block: 'nearest' });
+    if (!open || window.matchMedia(STACKED_LAYOUT).matches) return;
+    panelRef.current?.scrollIntoView({ block: 'nearest' });
   }, [open]);
 
   // Close on click-outside or Escape, the two things a panel like this is expected to do.

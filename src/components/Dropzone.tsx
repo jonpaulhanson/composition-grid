@@ -13,6 +13,10 @@ interface DropzoneProps {
 const PASTE_SHORTCUT =
   typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.userAgent) ? '⌘V' : 'Ctrl+V';
 
+/** No keyboard to fall back on, so the shortcut isn't advice worth giving. */
+const IS_TOUCH =
+  typeof window !== 'undefined' && window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
 function isAcceptable(file: File): boolean {
   // HEIC/HEIF files frequently report an empty `type`, so isHeic() checks the extension too.
   return file.type.startsWith('image/') || isHeic(file);
@@ -70,7 +74,11 @@ export function Dropzone({ onFileSelected, variant = 'full' }: DropzoneProps) {
       }
       setPasteHint('No image in the clipboard — copy one first.');
     } catch {
-      setPasteHint(`Couldn't read the clipboard. Press ${PASTE_SHORTCUT} instead.`);
+      setPasteHint(
+        IS_TOUCH
+          ? "Couldn't read the clipboard. Try Browse instead."
+          : `Couldn't read the clipboard. Press ${PASTE_SHORTCUT} instead.`,
+      );
     }
   };
 
@@ -135,7 +143,9 @@ export function Dropzone({ onFileSelected, variant = 'full' }: DropzoneProps) {
           <path d="M21 14.5 16.5 10 5 21" />
         </svg>
         <p className="dropzone-title">Let’s find the bones.</p>
-        <p className="dropzone-subtitle">Drop, browse, or paste a picture.</p>
+        {/* Nothing to drop with on a touchscreen — CSS shows whichever line applies. */}
+        <p className="dropzone-subtitle dropzone-subtitle--pointer">Drop, browse, or paste a picture.</p>
+        <p className="dropzone-subtitle dropzone-subtitle--touch">Browse or paste a picture.</p>
         <div className="dropzone-actions">
           <button
             type="button"

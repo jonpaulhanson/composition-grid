@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { useImageBox } from '../hooks/useImageBox';
 import { useCropViewport } from '../hooks/useCropViewport';
 import type { NaturalSize } from '../hooks/useNaturalSize';
@@ -79,8 +80,19 @@ export function ImageStage({
     overlays.some((o) => SPIRAL_FAMILY.includes(o.type)) &&
     !isSpiralViable(draftCrop.w * natural.width, draftCrop.h * natural.height);
 
+  // On a phone the stage is stacked above the controls and sized to the picture rather than
+  // given a fixed share of the screen (see the responsive block in App.css), which needs the
+  // ratio of whatever is showing: the crop once it's applied, the whole image otherwise.
+  const shownCrop = showCroppedView && crop ? crop : FULL_CROP;
+  const stageStyle =
+    imageUrl && natural.width > 0 && natural.height > 0
+      ? ({ '--stage-aspect': (natural.width * shownCrop.w) / (natural.height * shownCrop.h) } as CSSProperties)
+      : undefined;
+  const stageClass =
+    `stage-frame${imageUrl ? ' stage-frame--has-image' : ''}${isCropping ? ' stage-frame--cropping' : ''}`;
+
   return (
-    <div className={`stage-frame${isCropping ? ' stage-frame--cropping' : ''}`} ref={containerRef}>
+    <div className={stageClass} style={stageStyle} ref={containerRef}>
       {spiralHiddenWhileCropping && (
         <div className="crop-notice" role="status">
           <svg

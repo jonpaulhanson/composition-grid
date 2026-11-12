@@ -159,12 +159,6 @@
   }
 }
 
-@media (max-width: 480px) {
-  .app-tagline {
-    display: none;
-  }
-}
-
 .app-body {
   flex: 1 1 auto;
   min-height: 0;
@@ -323,6 +317,10 @@
   font-size: 14px;
 }
 
+.dropzone-subtitle--touch {
+  display: none;
+}
+
 .dropzone-actions {
   display: flex;
   justify-content: center;
@@ -389,7 +387,9 @@
   gap: 6px;
 }
 
-.image-action-btn {
+/* Scoped under .image-actions so these out-rank .btn-secondary's own flex and padding, which
+ * come later in the file and would otherwise win. */
+.image-actions .image-action-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -422,7 +422,7 @@
 
 /* Removing is rarer than cropping or replacing, and it's the one that throws work away — so
  * it gets an icon's worth of room rather than an equal third of the row. */
-.image-action-btn--icon {
+.image-actions .image-action-btn--icon {
   flex: 0 0 auto;
   width: 36px;
   padding: 0;
@@ -787,6 +787,10 @@
   flex: 0 0 auto;
   align-self: stretch;
   width: 64px;
+  /* The drawing's own height plus the inset and border. Stretching to the row covers a
+   * description that wraps; this covers one that doesn't — wherever the panel is wide enough
+   * for it to fit on a line, the row would otherwise be shorter than the drawing and crop it. */
+  min-height: 53px;
   border: 1px solid var(--border);
   border-radius: 4px;
   background: var(--bg);
@@ -1292,21 +1296,168 @@
 /* Responsive                                                        */
 /* ---------------------------------------------------------------- */
 
+/* Phones, and anything else too narrow for a sidebar: the picture sits on top and the controls
+ * scroll beneath it. */
 @media (max-width: 720px) {
-  .app-body {
-    flex-direction: column;
+  .app-header {
+    gap: 10px;
+    padding: 10px 14px;
   }
 
-  .control-panel {
-    flex: 0 0 auto;
-    width: 100%;
-    border-left: none;
-    border-top: 1px solid var(--border);
-    max-height: 45%;
+  .app-brand {
+    gap: 10px;
+  }
+
+  .app-logo {
+    width: 26px;
+    height: 26px;
+  }
+
+  .app-title {
+    font-size: 15.5px;
+  }
+
+  .app-tagline {
+    display: none;
+  }
+
+  .app-header-actions {
+    gap: 10px;
+  }
+
+  .app-body {
+    flex-direction: column;
   }
 
   .stage-frame {
     flex: 1 1 auto;
     min-height: 0;
+    padding: 12px;
+  }
+
+  /* Sized to the picture instead of taking a fixed share of the screen — a landscape image
+   * in a half-height stage leaves bands of empty canvas above and below it, and that's room
+   * the controls badly need. The height is what the image comes to at full width, plus the
+   * padding, up to a cap that keeps a tall portrait from squeezing the controls out. */
+  .stage-frame--has-image {
+    --stage-pad-x: 24px;
+    --stage-pad-y: 24px;
+    --stage-cap: 50%;
+    flex: 0 0 auto;
+    height: min(
+      var(--stage-cap),
+      calc((100vw - var(--stage-pad-x)) / var(--stage-aspect, 1.5) + var(--stage-pad-y))
+    );
+  }
+
+  /* Cropping is done on the picture, so it gets the larger share while that's happening. The
+   * side padding still keeps the handles clear of the screen-edge swipe gestures; the bottom
+   * needn't, now that the controls sit between the stage and the bottom of the screen. */
+  .stage-frame--cropping {
+    --stage-pad-x: 72px;
+    --stage-pad-y: 72px;
+    --stage-cap: 62%;
+    padding: 36px;
+  }
+
+  .control-panel {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    overscroll-behavior: contain;
+  }
+
+  /* One scroller, not two. On a sidebar the catalog scrolls within itself so it can't bury
+   * what's below it; here the panel is already a short scrolling window, and a second one
+   * inside it traps the finger — you can't get past the catalog without scrolling through it.
+   * (Still clipped rather than visible: the collapse animation relies on it.) */
+  .overlay-picker-panel {
+    max-height: none;
+    overflow-y: hidden;
+  }
+
+  .dropzone {
+    padding: 40px 24px;
+  }
+
+  /* iOS zooms the page in on any field whose text is under 16px, and doesn't zoom back. */
+  .feedback-textarea,
+  .feedback-email {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* The icon carries it; the button keeps its name via aria-label. */
+  .feedback-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .feedback-btn-label {
+    display: none;
+  }
+}
+
+/* The smallest phones: the two-line title and the three header controls only just clear each
+ * other at 320px without this. */
+@media (max-width: 360px) {
+  .app-header {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .app-title {
+    font-size: 14.5px;
+  }
+
+  .app-header-actions {
+    gap: 8px;
+  }
+}
+
+/* Touchscreens: nothing to drop with and no keyboard to press, and a fingertip needs more to
+ * aim at than a cursor does. */
+@media (hover: none) and (pointer: coarse) {
+  .dropzone-subtitle--pointer,
+  .dropzone-kbd {
+    display: none;
+  }
+
+  .dropzone-subtitle--touch {
+    display: block;
+  }
+
+  .overlay-card-toggle {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .overlay-card-remove {
+    width: 40px;
+    height: 40px;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-reset,
+  .ctrl-btn,
+  .dropzone-btn,
+  .overlay-add-btn,
+  .image-actions .image-action-btn {
+    min-height: 44px;
+  }
+
+  .image-actions .image-action-btn--icon {
+    width: 44px;
+  }
+
+  .modal-close {
+    min-width: 40px;
+    min-height: 40px;
   }
 }

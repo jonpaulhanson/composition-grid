@@ -224,6 +224,7 @@ function App() {
           <button
             type="button"
             className="feedback-btn"
+            aria-label="Feedback"
             onClick={() => {
               setFeedbackOpen(true);
               track('feedback_opened');
@@ -232,7 +233,7 @@ function App() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
             <path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.9-.9L3 21l1.9-5.6A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z" />
           </svg>
-          Feedback
+          <span className="feedback-btn-label">Feedback</span>
           </button>
         </div>
       </header>
